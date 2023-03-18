@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Project
 {
@@ -30,15 +31,14 @@ namespace Project
                 this.classes = new List<long>();
                 foreach (Class c in classes)
                 {
-                    this.classes.Add(hash(c.Name));
+                    this.classes.Add(c.Name);
                 }
             }
         }
         public class Class
         {
-            //w klasie tylko longi
             private string name;
-            public string Name { get => name; set => name = value; }
+            public long Name { get => name.GetHashCode();}
             private string code;
             private int duration;
             private List<long> teachers;
@@ -51,12 +51,12 @@ namespace Project
                 this.teachers = new List<long>();
                 foreach (Teacher t in teachers)
                 {
-                    this.teachers.Add(hash(t.Name));
+                   this.teachers.Add(t.Surname);
                 }
                 this.students = new List<long>();
                 foreach (Student s in students)
                 {
-                    this.students.Add(s);
+                   this.students.Add(s.Surname);
                 }
             }
         }
@@ -64,9 +64,10 @@ namespace Project
         {
             private List<string> names;
             private string surname;
+            public long Surname { get => surname.GetHashCode(); }
             private rank _rank;
             private string code;
-            private List<Class> classes;
+            private List<long> classes;
             public Teacher(string[] names, string surname, rank _rank, string code, Class[] classes)
             {
                 this.names = new List<string>();
@@ -77,10 +78,10 @@ namespace Project
                 this.surname = surname;
                 this._rank = _rank;
                 this.code = code;
-                this.classes = new List<Class>();
+                this.classes = new List<long>();
                 foreach (Class c in classes)
                 {
-                    this.classes.Add(c);
+                    this.classes.Add(c.Name);
                 }
             }
         }
@@ -88,6 +89,7 @@ namespace Project
         {
             private List<string> names;
             private string surname;
+            public long Surname { get => surname.GetHashCode(); }
             private int semester;
             private string code;
             private List<Class> classes;
