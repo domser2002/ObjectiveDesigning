@@ -5,20 +5,19 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using static Project.Objects;
 
 namespace Project
 {
-    public enum type { laboratory, training, lecture, other };
+    public enum type { laboratory, tutorials, lecture, other };
     public enum rank { KiB, MiB, GiB, TiB };
-    internal class Objects
-    {
+    //internal class Objects
+    //{
         public class Room
         {
             private int number;
             private type _type;
             private List<Class> classes;
-            public Room(int number, type _type, Class[] classes)
+            public Room(int number, type _type, ref Class[] classes)
             {
                 this.number = number;
                 this._type = _type;
@@ -36,7 +35,7 @@ namespace Project
             private int duration;
             private List<Teacher> teachers;
             private List<Student> students;
-            public Class(string name, string code, int duration, Teacher[] teachers, Student[] students)
+            public Class(string name, string code, int duration, ref Teacher[] teachers, ref Student[] students)
             {
                 this.name = name;
                 this.code = code;
@@ -60,7 +59,7 @@ namespace Project
             private rank _rank;
             private string code;
             private List<Class> classes;
-            public Teacher(string[] names, string surname, rank _rank, string code, Class[] classes)
+            public Teacher(string[] names, string surname, rank _rank, string code, ref Class[] classes)
             {
                 this.names = new List<string>();
                 foreach (string name in names)
@@ -84,7 +83,7 @@ namespace Project
             private int semester;
             private string code;
             private List<Class> classes;
-            public Student(string[] names, string surname, int semester, string code, Class[] classes)
+            public Student(string[] names, string surname, int semester, string code, ref Class[] classes)
             {
                 this.names = new List<string>();
                 foreach (string name in names)
@@ -101,5 +100,5 @@ namespace Project
                 }
             }
         }
-    }
+   // }
 }

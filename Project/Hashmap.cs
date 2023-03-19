@@ -10,15 +10,6 @@ namespace Project
 
     internal class Hashmap
     {
-        public static long hash(string s)
-        {
-            long hash = 0;
-            foreach (char c in s)
-            {
-                hash = hash * 97 + (c - 32);
-            }
-            return hash;
-        }
         public class Room
         {
             private int number;
