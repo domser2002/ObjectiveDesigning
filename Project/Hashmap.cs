@@ -15,51 +15,60 @@ namespace Project
             private int number;
             private type _type;
             private List<long> classes;
-            public Room(int number, type _type, Class[] classes)
+            public Room(int number, type _type)
             {
                 this.number = number;
                 this._type = _type;
                 this.classes = new List<long>();
-                foreach (Class c in classes)
+            }
+            public void AddClass(Class c)
+            {
+                this.classes.Add(c.Code);
+            }
+            public override string ToString()
+            {
+                string s = number.ToString() + " " + _type.ToString();
+                foreach (long c in classes)
                 {
-                    this.classes.Add(c.Name);
+                    s += " " + c;
                 }
+                return s;
             }
         }
         public class Class
         {
             private string name;
-            public long Name { get => name.GetHashCode();}
+            public long Code { get => code.GetHashCode();}
             private string code;
             private int duration;
             private List<long> teachers;
             private List<long> students;
-            public Class(string name, string code, int duration, Teacher[] teachers, Student[] students)
+            public Class(string name, string code, int duration)
             {
                 this.name = name;
                 this.code = code;
                 this.duration = duration;
                 this.teachers = new List<long>();
-                foreach (Teacher t in teachers)
-                {
-                   this.teachers.Add(t.Surname);
-                }
                 this.students = new List<long>();
-                foreach (Student s in students)
-                {
-                   this.students.Add(s.Surname);
-                }
+            }
+            public void AddTeacher(Teacher t)
+            {
+                this.teachers.Add(t.Code);
+            }
+            public void AddStudent(Student s)
+            {
+                this.students.Add(s.Code);
             }
         }
         public class Teacher
         {
             private List<string> names;
             private string surname;
-            public long Surname { get => surname.GetHashCode(); }
+            public long Code { get => code.GetHashCode(); }
             private rank _rank;
             private string code;
             private List<long> classes;
-            public Teacher(string[] names, string surname, rank _rank, string code, Class[] classes)
+            public Teacher(string[] names, string surname, rank _rank, string code)
             {
                 this.names = new List<string>();
                 foreach (string name in names)
@@ -70,21 +79,21 @@ namespace Project
                 this._rank = _rank;
                 this.code = code;
                 this.classes = new List<long>();
-                foreach (Class c in classes)
-                {
-                    this.classes.Add(c.Name);
-                }
+            }
+            public void AddClass(Class c)
+            {
+                this.classes.Add(c.Code);
             }
         }
         public class Student
         {
             private List<string> names;
             private string surname;
-            public long Surname { get => surname.GetHashCode(); }
+            public long Code { get => code.GetHashCode(); }
             private int semester;
             private string code;
-            private List<Class> classes;
-            public Student(string[] names, string surname, int semester, string code, Class[] classes)
+            private List<long> classes;
+            public Student(string[] names, string surname, int semester, string code)
             {
                 this.names = new List<string>();
                 foreach (string name in names)
@@ -94,11 +103,11 @@ namespace Project
                 this.surname = surname;
                 this.semester = semester;
                 this.code = code;
-                this.classes = new List<Class>();
-                foreach (Class c in classes)
-                {
-                    this.classes.Add(c);
-                }
+                this.classes = new List<long>();
+            }
+            public void AddClass(Class c)
+            {
+                this.classes.Add(c.Code);
             }
         }
     }
