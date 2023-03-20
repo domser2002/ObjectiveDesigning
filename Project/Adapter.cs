@@ -36,6 +36,16 @@ namespace Project
                 foreach (Hashmap.Student hs in this._adaptee.students)
                 {
                     Objects.Student os = new Objects.Student(hs.Names.ToArray(), hs.Surname, hs.Semester, hs._Code);
+                    foreach (Objects.Class c in this.classes)
+                    {
+                        foreach (Objects.Student s in this.students)
+                        {
+                            if (s.Code.GetHashCode() == hs.Code)
+                            {
+
+                            }
+                        }
+                    }
                     this.students.Add(os);
                 }
             }
@@ -63,13 +73,6 @@ namespace Project
                     this.classes.Add(oc);
                 }
             }
-            //foreach(Objects.Class c in this.classes) 
-            //{
-            //    foreach(Objects.Student s in this.students)
-            //    {
-            //        if(s.Code.GetHashCode()==hs.Code)
-            //    }
-            //}
         }
     }
 }

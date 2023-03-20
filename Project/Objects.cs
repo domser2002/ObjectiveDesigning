@@ -19,8 +19,11 @@ namespace Project
         public class Room
         {
             private int number;
+            public int Number { get => this.number; }
             private type _type;
+            public type _Type { get => this._type; }
             private List<Class> classes;
+            public List<Class> Classes { get => this.classes; }
             public Room(int number, type _type)
             {
                 this.number = number;
@@ -44,11 +47,15 @@ namespace Project
         public class Class
         {
             private string name;
+            public string Name { get => this.name; }
             private string code;
-            public string Code { get { return code; } }
+            public string Code { get => this.code; }
             private int duration;
+            public int Duration { get => this.duration; }
             private List<Teacher> teachers;
+            public List<Teacher> Teachers { get => this.teachers; }
             private List<Student> students;
+            public List<Student> Students { get => this.students; }
             public Class(string name, string code, int duration)
             {
                 this.name = name;
@@ -69,10 +76,15 @@ namespace Project
         public class Teacher
         {
             private List<string> names;
+            public List<string> Names { get => this.names; }
             private string surname;
+            public string Surname { get => this.surname; }
             private rank _rank;
+            public rank _Rank { get => this._rank; }
             private string code;
+            public string Code { get => this.code; }
             private List<Class> classes;
+            public List<Class> Classes { get => this.classes; }
             public Teacher(string[] names, string surname, rank _rank, string code)
             {
                 this.names = new List<string>();
@@ -93,10 +105,15 @@ namespace Project
         public class Student
         {
             private List<string> names;
+            public List<string> Names { get => this.names; }
             private string surname;
+            public string Surname { get => this.surname; }
             private int semester;
+            public int Semester { get => this.semester; }
             private string code;
+            public string Code { get => this.code; }
             private List<Class> classes;
+            public List<Class> Classes { get => this.classes; }
             public Student(string[] names, string surname, int semester, string code)
             {
                 this.names = new List<string>();
