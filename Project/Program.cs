@@ -12,6 +12,7 @@ namespace Project
         public static void Main()
         {
             //first representation
+            Objects first = new Objects();
             Objects.Room[] first_roooms = new Objects.Room[7];
             Objects.Class[] first_classes = new Objects.Class[4];
             Objects.Student[] first_students = new Objects.Student[5];

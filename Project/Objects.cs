@@ -10,8 +10,12 @@ namespace Project
 {
     public enum type { laboratory, tutorials, lecture, other };
     public enum rank { KiB, MiB, GiB, TiB };
-    internal class Objects
+    public class Objects
     {
+        public Room[]? rooms;
+        public Class[]? classes;
+        public Teacher[]? teachers;
+        public Student[]? students;
         public class Room
         {
             private int number;
