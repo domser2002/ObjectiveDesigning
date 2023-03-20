@@ -83,6 +83,11 @@ namespace Project
             first_roooms[5].AddClass(first_classes[0]);
             first_roooms[6].AddClass(first_classes[3]);
 
+            first.rooms = first_roooms.ToList();
+            first.teachers = first_teachers.ToList();
+            first.students = first_students.ToList();
+            first.classes = first_classes.ToList();
+
             //second representation
             Hashmap.Room[] second_roooms = new Hashmap.Room[7];
             Hashmap.Class[] second_classes = new Hashmap.Class[4];

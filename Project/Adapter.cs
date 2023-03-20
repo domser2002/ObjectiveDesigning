@@ -7,17 +7,15 @@ using System.Threading.Tasks;
 
 namespace Project
 {
-    public interface ObjInterface
-    {
-        public List<Objects.Room>? rooms { get; }
-        public List<Objects.Class>? classes { get; }
-        public List<Objects.Teacher>? teachers { get; }
-        public List<Objects.Student>? students { get; }
+    //public interface ObjInterface
+    //{
+    //    public List<Objects.Room>? rooms { get; }
+    //    public List<Objects.Class>? classes { get; }
+    //    public List<Objects.Teacher>? teachers { get; }
+    //    public List<Objects.Student>? students { get; }
+    //}
 
-    }
-
-
-    public class Adapter : ObjInterface
+    public class Adapter
     {
         private readonly Hashmap _adaptee;
         public List<Objects.Room>? rooms { get; }
@@ -36,16 +34,6 @@ namespace Project
                 foreach (Hashmap.Student hs in this._adaptee.students)
                 {
                     Objects.Student os = new Objects.Student(hs.Names.ToArray(), hs.Surname, hs.Semester, hs._Code);
-                    foreach (Objects.Class c in this.classes)
-                    {
-                        foreach (Objects.Student s in this.students)
-                        {
-                            if (s.Code.GetHashCode() == hs.Code)
-                            {
-
-                            }
-                        }
-                    }
                     this.students.Add(os);
                 }
             }
@@ -71,6 +59,28 @@ namespace Project
                 {
                     Objects.Class oc = new Objects.Class(hc.Name, hc._Code, hc.Duration);
                     this.classes.Add(oc);
+                }
+            }
+            if (this._adaptee.rooms is not null)
+            {
+                for (int i = 0; i < this._adaptee.rooms.Count; i++)
+                {
+                    foreach (var r in this._adaptee.rooms)
+                    {
+                        var c = classes.Find(_class => r.Classes.Contains(_class.Code.GetHashCode()));
+                        if (c is not null)
+                            r.AddClass(c);
+                    }
+                }
+            }
+            if (this._adaptee.teachers is not null)
+            {
+                for (int i = 0; i < this._adaptee.teachers.Count; i++)
+                {
+                    foreach (var r in this._adaptee.teachers)
+                    {
+                        var c = classes.Find(_class => r.Classes.Contains(_class.Code.GetHashCode()));
+                    }
                 }
             }
         }
