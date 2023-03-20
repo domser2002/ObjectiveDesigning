@@ -10,10 +10,10 @@ namespace Project
 
     public class Hashmap
     {
-        public Room[]? rooms;
-        public Class[]? classes;
-        public Teacher[]? teachers;
-        public Student[]? students;
+        public List<Room>? rooms;
+        public List<Class>? classes;
+        public List<Teacher>? teachers;
+        public List<Student>? students;
         public class Room
         {
             private int number;
@@ -48,6 +48,7 @@ namespace Project
             public string Name { get => this.name; }
             private string code;
             public long Code { get => this.code.GetHashCode(); }
+            public string _Code { get => this.code; }
             private int duration;
             public int Duration { get => this.duration; }   
             private List<long> teachers;
@@ -81,6 +82,7 @@ namespace Project
             public rank _Rank { get => this._rank; }
             private string code;
             public long Code { get => code.GetHashCode(); }
+            public string _Code { get => this.code; }
 
             private List<long> classes;
             public List<long> Classes { get => this.classes; }
@@ -111,6 +113,7 @@ namespace Project
             public int Semester { get => this.semester; }
             private string code;
             public long Code { get => code.GetHashCode(); }
+            public string _Code { get => this.code; }
             private List<long> classes;
             public List<long> Classes { get => this.classes; }
             public Student(string[] names, string surname, int semester, string code)

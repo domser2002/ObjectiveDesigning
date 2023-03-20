@@ -12,10 +12,10 @@ namespace Project
     public enum rank { KiB, MiB, GiB, TiB };
     public class Objects
     {
-        public Room[]? rooms;
-        public Class[]? classes;
-        public Teacher[]? teachers;
-        public Student[]? students;
+        public List<Room>? rooms;
+        public List<Class>? classes;
+        public List<Teacher>? teachers;
+        public List<Student>? students;
         public class Room
         {
             private int number;
