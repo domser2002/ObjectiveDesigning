@@ -7,40 +7,88 @@ using System.Threading.Tasks;
 
 namespace Project
 {
+    public interface IRepresentation
+    {
+        public Room[] rooms { get; set; }
+        public Class[] classes { get; set; }
+        public Teacher[] teachers { get; set; }
+        public Student[] students { get; set; }
+    }
+    public interface IRoom
+    {
+        public int Number { get; }
+        public type _Type { get; }
+        public List<Class> Classes { get; }
+        public void AddClass(Class c);
+    }
+    public interface IClass
+    {
+        public string Name { get; }
+        public string Code { get; }
+        public int Duration { get; }
+        public List<Teacher> Teachers { get; }
+        public List<Student> Students { get; }
+        public void AddStudent(Student s);
+        public void AddTeacher(Teacher t);
+
+    }
+    public interface ITeacher
+    {
+        public List<string> Names { get; }
+        public string Surname { get; }
+        public rank _Rank { get; }
+        public string Code { get; }
+        public List<Class> Classes { get; }
+        public void AddClass(Class c);
+
+    }
+    public interface IStudent
+    {
+        public List<string> Names { get; }
+        public string Surname { get; }
+        public int Semester { get; }
+        public string Code { get; }
+        public List<Class> Classes { get; }
+        public void AddClass(Class c);
+
+    }
+
+    public enum type { laboratory, tutorials, lecture, other };
+    public enum rank { KiB, MiB, GiB, TiB };
     public class Program
     {
         public static void Main()
         {
             //first representation
             Objects first = new Objects();
-            Objects.Room[] first_roooms = new Objects.Room[7];
-            Objects.Class[] first_classes = new Objects.Class[4];
-            Objects.Student[] first_students = new Objects.Student[5];
-            Objects.Teacher[] first_teachers = new Objects.Teacher[5];
-            first_roooms[0] = new Objects.Room(107, type.lecture);
-            first_roooms[1] = new Objects.Room(204, type.tutorials);
-            first_roooms[2] = new Objects.Room(21, type.lecture);
-            first_roooms[3] = new Objects.Room(123, type.laboratory);
-            first_roooms[4] = new Objects.Room(404, type.lecture);
-            first_roooms[5] = new Objects.Room(504, type.tutorials);
-            first_roooms[6] = new Objects.Room(73, type.laboratory);
+            Room[] first_roooms = new Room[7];
+            Class[] first_classes = new Class[4];
+            Student[] first_students = new Student[5];
+            Teacher[] first_teachers = new Teacher[5];
+            first_roooms[0] = new Room(107, type.lecture);
+            first_roooms[1] = new Room(204, type.tutorials);
+            first_roooms[2] = new Room(21, type.lecture);
+            first_roooms[3] = new Room(123, type.laboratory);
+            first_roooms[4] = new Room(404, type.lecture);
+            first_roooms[5] = new Room(504, type.tutorials);
+            first_roooms[6] = new Room(73, type.laboratory);
 
-            first_classes[0] = new Objects.Class("Diabolical Mathematics 2", "MD2", 2);
-            first_classes[1] = new Objects.Class("Routers Descriptions", "RD", 1);
-            first_classes[2] = new Objects.Class("Introduction to cables", "WDK", 5);
-            first_classes[3] = new Objects.Class("Diabolical Mathematics 2", "MD2", 2);
+            first_classes[0] = new Class("Diabolical Mathematics 2", "MD2", 2);
+            first_classes[1] = new Class("Routers Descriptions", "RD", 1);
+            first_classes[2] = new Class("Introduction to cables", "WDK", 5);
+            first_classes[3] = new Class("Diabolical Mathematics 2", "MD2", 2);
 
-            first_teachers[0] = new Objects.Teacher(new string[] { "Tomas" }, "Cherrmann", rank.MiB, "P1");
-            first_teachers[1] = new Objects.Teacher(new string[] { "Jon" }, "Tron", rank.TiB, "P2");
-            first_teachers[2] = new Objects.Teacher(new string[] { "William", "Joseph" }, "Blazkowicz", rank.GiB, "P3");
-            first_teachers[3] = new Objects.Teacher(new string[] { "Arkadiusz", "Amadeusz" }, "Kamiński", rank.KiB, "P4");
-            first_teachers[4] = new Objects.Teacher(new string[] { "Cooking" }, "Mama", rank.GiB, "P5");
+            first_teachers[0] = new Teacher(new string[] { "Tomas" }, "Cherrmann", rank.MiB, "P1");
+            first_teachers[1] = new Teacher(new string[] { "Jon" }, "Tron", rank.TiB, "P2");
+            first_teachers[2] = new Teacher(new string[] { "William", "Joseph" }, "Blazkowicz", rank.GiB, "P3");
+            first_teachers[3] = new Teacher(new string[] { "Arkadiusz", "Amadeusz" }, "Kamiński", rank.KiB, "P4");
+            first_teachers[4] = new Teacher(new string[] { "Cooking" }, "Mama", rank.GiB, "P5");
 
-            first_students[0] = new Objects.Student(new string[] { "Robert" }, "Kielbica", 3, "S1");
-            first_students[1] = new Objects.Student(new string[] { "Archibald", "Agapios" }, "Linux", 7, "S2");
-            first_students[2] = new Objects.Student(new string[] { "Angrboða" }, "Kára", 1, "S3");
-            first_students[3] = new Objects.Student(new string[] { "Olympos" }, "Andronikos", 5, "S4");
-            first_students[4] = new Objects.Student(new string[] { "Mac", "Rhymes" }, "Pickuppicker", 6, "S5");
+            first_students[0] = new Student(new string[] { "Robert" }, "Kielbica", 3, "S1");
+            first_students[1] = new Student(new string[] { "Archibald", "Agapios" }, "Linux", 7, "S2");
+            first_students[2] = new Student(new string[] { "Angrboða" }, "Kára", 1, "S3");
+            first_students[3] = new Student(new string[] { "Olympos" }, "Andronikos", 5, "S4");
+            first_students[4] = new Student(new string[] { "Mac", "Rhymes" }, "Pickuppicker", 6, "S5");
 
             first_teachers[0].AddClass(first_classes[3]);
             first_teachers[1].AddClass(first_classes[0]);
@@ -89,6 +137,7 @@ namespace Project
             first.classes = first_classes.ToList();
 
             //second representation
+            Hashmap second = new Hashmap();
             Hashmap.Room[] second_roooms = new Hashmap.Room[7];
             Hashmap.Class[] second_classes = new Hashmap.Class[4];
             Hashmap.Student[] second_students = new Hashmap.Student[5];
@@ -158,16 +207,20 @@ namespace Project
             second_roooms[4].AddClass(second_classes[2]);
             second_roooms[5].AddClass(second_classes[0]);
             second_roooms[6].AddClass(second_classes[3]);
-
+            second.rooms = second_roooms.ToList();
+            second.classes = second_classes.ToList();
+            second.teachers = second_teachers.ToList();
+            second.students = second_students.ToList();
             //test
-            foreach(Objects.Room r in first_roooms)
+            foreach (Room r in first_roooms)
             {
                 Console.WriteLine(r);
             }
-            foreach (Hashmap.Room r in second_roooms)
-            {
-                Console.WriteLine(r);
-            }
+            //Adapter a = new Adapter(second);
+            //foreach (Room r in a.adapted.rooms)
+            //{
+            //    Console.WriteLine(r);
+            //}
         }
     }
 }

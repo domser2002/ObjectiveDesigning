@@ -7,82 +7,103 @@ using System.Threading.Tasks;
 
 namespace Project
 {
-    //public interface ObjInterface
-    //{
-    //    public List<Objects.Room>? rooms { get; }
-    //    public List<Objects.Class>? classes { get; }
-    //    public List<Objects.Teacher>? teachers { get; }
-    //    public List<Objects.Student>? students { get; }
-    //}
-
-    public class Adapter
+    public class HmAdapter : IRepresentation
     {
         private readonly Hashmap _adaptee;
-        public List<Objects.Room>? rooms { get; }
-        public List<Objects.Class>? classes { get; }
-        public List<Objects.Teacher>? teachers { get; }
-        public List<Objects.Student>? students { get; }
-        public Adapter(Hashmap adaptee)
+        public Room[] rooms { get; set; }
+        public Class[] classes { get; set; }
+        public Teacher[] teachers { get; set; }
+        public Student[] students { get; set; }
+        public HmAdapter(Hashmap adaptee)
         {
             this._adaptee = adaptee;
-            rooms = new List<Objects.Room>();
-            classes = new List<Objects.Class>();
-            teachers = new List<Objects.Teacher>();
-            students = new List<Objects.Student>();
-            if (this._adaptee.students is not null)
+        }
+    }
+    public class HmTeacherAdapter : ITeacher
+    {
+        Hashmap.Teacher adaptee;
+        public List<string> Names { get => adaptee.Names; }
+        public string Surname { get => adaptee.Surname; }
+        public rank _Rank { get => adaptee._Rank; }
+        public string Code { get => adaptee._Code; }
+        public List<Class> Classes
+        {
+            get
             {
-                foreach (Hashmap.Student hs in this._adaptee.students)
-                {
-                    Objects.Student os = new Objects.Student(hs.Names.ToArray(), hs.Surname, hs.Semester, hs._Code);
-                    this.students.Add(os);
-                }
+                List<Class> list = new List<Class>();
+                List<long> tmp = new List<long>(adaptee.Classes);
+                return list;
             }
-            if (this._adaptee.teachers is not null)
-            {
-                foreach (Hashmap.Teacher ht in this._adaptee.teachers)
-                {
-                    Objects.Teacher ot = new Objects.Teacher(ht.Names.ToArray(), ht.Surname, ht._Rank, ht._Code);
-                    this.teachers.Add(ot);
-                }
-            }
-            if (this._adaptee.rooms is not null)
-            {
-                foreach (Hashmap.Room hr in this._adaptee.rooms)
-                {
-                    Objects.Room or = new Objects.Room(hr.Number, hr._Type);
-                    this.rooms.Add(or);
-                }
-            }
-            if (this._adaptee.classes is not null)
-            {
-                foreach (Hashmap.Class hc in this._adaptee.classes)
-                {
-                    Objects.Class oc = new Objects.Class(hc.Name, hc._Code, hc.Duration);
-                    this.classes.Add(oc);
-                }
-            }
-            if (this._adaptee.rooms is not null)
-            {
-                for (int i = 0; i < this._adaptee.rooms.Count; i++)
-                {
-                    foreach (var r in this._adaptee.rooms)
-                    {
-                        var c = classes.Find(_class => r.Classes.Contains(_class.Code.GetHashCode()));
-                        if (c is not null)
-                            r.AddClass(c);
-                    }
-                }
-            }
-            if (this._adaptee.teachers is not null)
-            {
-                for (int i = 0; i < this._adaptee.teachers.Count; i++)
-                {
-                    foreach (var r in this._adaptee.teachers)
-                    {
-                        var c = classes.Find(_class => r.Classes.Contains(_class.Code.GetHashCode()));
-                    }
-                }
-            }
+        }
+        public void AddClass(Class c)
+        {
+            this.Classes.Add(c);
+        }
+        public HmTeacherAdapter(Hashmap.Teacher teacher)
+        {
+            this.adaptee = teacher;
+        }
+    }
+    public class HmRoomAdapter : IRoom
+    {
+        privare Hashmap.Room adaptee;
+        public int Number { get { return adaptee.Number; } }
+        public type _Type { get; }
+        public List<Class> Classes { get; }
+        public void AddClass(Class c)
+        {
+            this.Classes.Add(c);
+        }
+        Class c;
+        c.Code.GetHashCode()
+        public HmRoomAdapter(Hashmap.Room room)
+        {
+            this.adaptee = room;
+
+        }
+    }
+    public class HmClassAdapter : IClass
+    {
+        public string Name { get; }
+        public string Code { get; }
+        public int Duration { get; }
+        public List<Teacher> Teachers { get; }
+        public List<Student> Students { get; }
+        public void AddStudent(Student s)
+        {
+            this.Students.Add(s);
+        }
+        public void AddTeacher(Teacher t)
+        {
+            this.Teachers.Add(t);
+        }
+        public HmClassAdapter(Hashmap.Class _class)
+        {
+            this.Name = _class.Name;
+            this.Duration = _class.Duration;
+            this.Code = _class._Code;
+            this.Teachers = new List<Teacher>();
+            this.Students = new List<Student>();
+        }
+    }
+    public class HmStudentAdapter : IStudent
+    {
+        public List<string> Names { get; }
+        public string Surname { get; }
+        public int Semester { get; }
+        public string Code { get; }
+        public List<Class> Classes { get; }
+        public void AddClass(Class c)
+        {
+            this.Classes.Add(c);
+        }
+        public HmStudentAdapter(Hashmap.Student student)
+        {
+            this.Names = student.Names;
+            this.Semester = student.Semester;
+            this.Surname = student.Surname;
+            this.Code = student._Code;
+            this.Classes = new List<Class>();
         }
     }
 }
