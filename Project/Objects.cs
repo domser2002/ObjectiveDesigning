@@ -15,6 +15,36 @@ namespace Project
         public Class[] classes { get; set; }
         public Teacher[] teachers { get; set; }
         public Student[] students { get; set; }
+        public Objects(Room[] rooms, Class[] classes, Teacher[] teachers, Student[] students)
+        {
+            this.rooms = rooms;
+            this.classes = classes;
+            this.teachers = teachers;
+            this.students = students;
+        }
+        public void Display()
+        {
+            Console.WriteLine("Rooms:\n");
+            foreach(Room r in rooms)
+            {
+                r.Display();
+            }
+            Console.WriteLine("Classes:\n");
+            foreach (Class c in classes)
+            {
+                c.Display();
+            }
+            Console.WriteLine("Teachers:\n");
+            foreach (Teacher t in teachers)
+            {
+                t.Display();
+            }
+            Console.WriteLine("Students:\n");
+            foreach (Student s in students)
+            {
+                s.Display();
+            }
+        }
     }
     public class Room : IRoom
     {
@@ -34,14 +64,16 @@ namespace Project
         {
             this.classes.Add(c);
         }
-        public override string ToString()
+        public void Display()
         {
-            string s = number.ToString() + " " + _type.ToString();
+            Console.WriteLine("Number: " + this.number);
+            Console.WriteLine("Type: " + this._type);
+            string s = "";
             foreach (Class c in classes)
             {
-                s += " " + c.Code;
+                s += c.Code + " ";
             }
-            return s;
+            Console.WriteLine("Classes: " + s);
         }
     }
     public class Class : IClass
@@ -72,6 +104,24 @@ namespace Project
         {
             this.teachers.Add(t);
         }
+        public void Display()
+        {
+            Console.WriteLine("Name: " + this.name);
+            Console.WriteLine("Code: " + this.code);
+            Console.WriteLine("Duration: " + this.duration);
+            string tmp = "";
+            foreach(Student s in this.students)
+            {
+                tmp += s.Code + " ";
+            }
+            Console.WriteLine("Students: " + tmp);
+            tmp = "";
+            foreach (Teacher t in this.teachers)
+            {
+                tmp += t.Code + " ";
+            }
+            Console.WriteLine("Teachers: " + tmp);
+        }
     }
     public class Teacher : ITeacher
     {
@@ -101,6 +151,24 @@ namespace Project
         {
             this.classes.Add(c);
         }
+        public void Display()
+        {
+            string tmp = "";
+            foreach(string name in this.names)
+            {
+                tmp += name + " ";
+            }
+            Console.WriteLine("Names: " + tmp);
+            Console.WriteLine("Surname: " + this.surname);
+            Console.WriteLine("Rank: " + this._rank);
+            Console.WriteLine("Code: " + this.code);
+            string s = "";
+            foreach (Class c in classes)
+            {
+                s += c.Code + " ";
+            }
+            Console.WriteLine("Classes: " + s);
+        }
     }
     public class Student : IStudent
     {
@@ -129,6 +197,24 @@ namespace Project
         public void AddClass(Class c)
         {
             this.classes.Add(c);
+        }
+        public void Display()
+        {
+            string tmp = "";
+            foreach (string name in this.names)
+            {
+                tmp += name + " ";
+            }
+            Console.WriteLine("Names: " + tmp);
+            Console.WriteLine("Surname: " + this.surname);
+            Console.WriteLine("Semester: " + this.semester);
+            Console.WriteLine("Code: " + this.code);
+            string s = "";
+            foreach (Class c in classes)
+            {
+                s += c.Code + " ";
+            }
+            Console.WriteLine("Classes: " + s);
         }
     }
 }

@@ -9,17 +9,17 @@ namespace Project
 {
     public interface IRepresentation
     {
-        public Room[] rooms { get; set; }
-        public Class[] classes { get; set; }
-        public Teacher[] teachers { get; set; }
-        public Student[] students { get; set; }
+        //public Room[] rooms { get; set; }
+        //public Class[] classes { get; set; }
+        //public Teacher[] teachers { get; set; }
+        //public Student[] students { get; set; }
     }
     public interface IRoom
     {
-        public int Number { get; }
-        public type _Type { get; }
-        public List<Class> Classes { get; }
-        public void AddClass(Class c);
+        //public int Number { get; }
+        //public type _Type { get; }
+        //public List<Class> Classes { get; }
+        //public void AddClass(Class c);
     }
     public interface IClass
     {

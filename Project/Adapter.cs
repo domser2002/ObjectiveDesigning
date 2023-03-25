@@ -88,22 +88,60 @@ namespace Project
     }
     public class HmStudentAdapter : IStudent
     {
-        public List<string> Names { get; }
-        public string Surname { get; }
-        public int Semester { get; }
-        public string Code { get; }
-        public List<Class> Classes { get; }
+        Hashmap.Student _adaptee;
+        public List<string> Names
+        {
+            get
+            {
+                List<string> ret = new List<string>();
+                foreach (int hash in this._adaptee.Names)
+                {
+                    string? tmp;
+                    bool v = Hashmap.Student.Map.TryGetValue(hash, out tmp);
+                    if (v && tmp is not null) ret.Add(tmp);
+                }
+                return ret;
+            }
+        }
+        public string Surname
+        {
+            get
+            {
+                int hash = _adaptee.Surname;
+                string? tmp;
+                Hashmap.Student.Map.TryGetValue(hash, out tmp);
+                if (tmp is not null) return tmp;
+                return "";
+            }
+        }
+        public int Semester { get => this._adaptee.Semester; }
+        public string Code {
+            get
+            {
+                int hash = _adaptee.Code;
+                string? tmp;
+                Hashmap.Student.Map.TryGetValue(hash, out tmp);
+                if (tmp is not null) return tmp;
+                return "";
+            }
+        }
+        public List<Class> Classes { 
+            get
+            {
+                List<Class> ret=new List<Class> ();
+                foreach(var c in _adaptee.Classes)
+                {
+                    ret.Add((Class)(new HmClassAdapter(c)));
+                }
+            }
+        }
         public void AddClass(Class c)
         {
             this.Classes.Add(c);
         }
         public HmStudentAdapter(Hashmap.Student student)
         {
-            this.Names = student.Names;
-            this.Semester = student.Semester;
-            this.Surname = student.Surname;
-            this.Code = student._Code;
-            this.Classes = new List<Class>();
+            this._adaptee = student;
         }
     }
 }
