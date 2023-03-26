@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -68,11 +69,11 @@ namespace Project
 
     public enum type { laboratory, tutorials, lecture, other };
     public enum rank { KiB, MiB, GiB, TiB };
+
     public class Program
     {
-        public static void Main()
+        public static Objects ConstructFirst()
         {
-            //first representation
             Room[] first_roooms = new Room[7];
             Class[] first_classes = new Class[4];
             Student[] first_students = new Student[5];
@@ -157,10 +158,11 @@ namespace Project
             first_roooms[5].AddClass(first_classes[0]);
             first_roooms[6].AddClass(first_classes[3]);
 
-            Objects first = new Objects(first_roooms,first_classes,first_teachers,first_students);
-            first.Display();
-
-            //second representation
+            Objects first = new Objects(first_roooms, first_classes, first_teachers, first_students);
+            return first;
+        }
+        public static Hashmap ConstructSecond()
+        {
             Hashmap.Room[] second_roooms = new Hashmap.Room[7];
             Hashmap.Class[] second_classes = new Hashmap.Class[4];
             Hashmap.Student[] second_students = new Hashmap.Student[5];
@@ -244,9 +246,19 @@ namespace Project
             second_roooms[4].AddClass(second_classes[2]);
             second_roooms[5].AddClass(second_classes[0]);
             second_roooms[6].AddClass(second_classes[3]);
-            Hashmap second = new Hashmap(second_roooms,second_classes,second_teachers,second_students);
-            //test
+            Hashmap second = new Hashmap(second_roooms, second_classes, second_teachers, second_students);
+            return second;
+        }
+        public static void Main()
+        {
+            //first representation
+            Objects first = ConstructFirst();
+            first.Display();
 
+            //second representation
+            Hashmap second = ConstructSecond();
+
+            //test
             HmAdapter a = new HmAdapter(second);
             a.Display();
         }

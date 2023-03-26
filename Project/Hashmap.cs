@@ -39,15 +39,6 @@ namespace Project
             {
                 this.classes.Add(c);
             }
-            //public override string ToString()
-            //{
-            //    string s = number.ToString() + " " + _type.ToString();
-            //    foreach (int c in classes)
-            //    {
-            //        s += " " + c;
-            //    }
-            //    return s;
-            //}
         }
         public class Class
         {
