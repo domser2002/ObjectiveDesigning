@@ -10,10 +10,17 @@ namespace Project
 
     public class Hashmap
     {
-        public List<Room>? rooms;
-        public List<Class>? classes;
-        public List<Teacher>? teachers;
-        public List<Student>? students;
+        public Room[] rooms { get; set; }
+        public Class[] classes { get; set; }
+        public Teacher[] teachers { get; set; }
+        public Student[] students { get; set; }
+        public Hashmap(Room[] rooms, Class[] classes, Teacher[] teachers, Student[] students)
+        {
+            this.rooms = rooms;
+            this.classes = classes;
+            this.teachers = teachers;
+            this.students = students;
+        }
         public class Room
         {
             private int number;
@@ -58,9 +65,9 @@ namespace Project
             public Class(string name, string code, int duration)
             {
                 this.name = name.GetHashCode();
-                Map.Add(name.GetHashCode(), name);
+                Map.AddOrIgnore(name.GetHashCode(), name);
                 this.code = code.GetHashCode();
-                Map.Add(code.GetHashCode(), code);
+                Map.AddOrIgnore(code.GetHashCode(), code);
                 this.duration = duration;
                 this.teachers = new List<Hashmap.Teacher>();
                 this.students = new List<Hashmap.Student>();
@@ -93,13 +100,13 @@ namespace Project
                 foreach (string name in names)
                 {
                     this.names.Add(name.GetHashCode());
-                    Map.Add(name.GetHashCode(), name);
+                    Map.AddOrIgnore(name.GetHashCode(), name);
                 }
                 this.surname = surname.GetHashCode();
-                Map.Add(surname.GetHashCode(), surname);
+                Map.AddOrIgnore(surname.GetHashCode(), surname);
                 this._rank = _rank;
                 this.code = code.GetHashCode();
-                Map.Add(code.GetHashCode(), code);
+                Map.AddOrIgnore(code.GetHashCode(), code);
                 this.classes = new List<Hashmap.Class>();
             }
             public void AddClass(Hashmap.Class c)
@@ -126,13 +133,13 @@ namespace Project
                 foreach (string name in names)
                 {
                     this.names.Add(name.GetHashCode());
-                    Map.Add(name.GetHashCode(), name);  
+                    Map.AddOrIgnore(name.GetHashCode(), name);  
                 }
                 this.surname = surname.GetHashCode();
-                Map.Add(surname.GetHashCode(), surname);
+                Map.AddOrIgnore(surname.GetHashCode(), surname);
                 this.semester = semester;
                 this.code = code.GetHashCode();
-                Map.Add(code.GetHashCode(), code);
+                Map.AddOrIgnore(code.GetHashCode(), code);
                 this.classes = new List<Hashmap.Class>();
             }
             public void AddClass(Hashmap.Class c)

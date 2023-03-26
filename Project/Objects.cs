@@ -24,26 +24,32 @@ namespace Project
         }
         public void Display()
         {
-            Console.WriteLine("Rooms:\n");
+            Console.WriteLine("FORMAT 0:");
+            Console.WriteLine();
+            Console.WriteLine("Rooms:");
             foreach(Room r in rooms)
             {
                 r.Display();
             }
-            Console.WriteLine("Classes:\n");
+            Console.WriteLine();
+            Console.WriteLine("Classes:");
             foreach (Class c in classes)
             {
                 c.Display();
             }
-            Console.WriteLine("Teachers:\n");
+            Console.WriteLine();
+            Console.WriteLine("Teachers:");
             foreach (Teacher t in teachers)
             {
                 t.Display();
             }
-            Console.WriteLine("Students:\n");
+            Console.WriteLine();
+            Console.WriteLine("Students:");
             foreach (Student s in students)
             {
                 s.Display();
             }
+            Console.WriteLine();
         }
     }
     public class Room : IRoom
@@ -210,7 +216,7 @@ namespace Project
             Console.WriteLine("Semester: " + this.semester);
             Console.WriteLine("Code: " + this.code);
             string s = "";
-            foreach (Class c in classes)
+            foreach (Class c in this.classes)
             {
                 s += c.Code + " ";
             }

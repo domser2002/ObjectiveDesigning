@@ -7,12 +7,21 @@ using System.Threading.Tasks;
 
 namespace Project
 {
+    static class Extensions
+    {
+        public static void AddOrIgnore(this Dictionary<int, string> dictionary, int key, string value)
+        {
+            if (!dictionary.ContainsKey(key))
+                dictionary.Add(key, value);
+        }
+    }
     public interface IRepresentation
     {
         //public Room[] rooms { get; set; }
         //public Class[] classes { get; set; }
         //public Teacher[] teachers { get; set; }
         //public Student[] students { get; set; }
+        public void Display();
     }
     public interface IRoom
     {
@@ -20,36 +29,40 @@ namespace Project
         //public type _Type { get; }
         //public List<Class> Classes { get; }
         //public void AddClass(Class c);
+        public void Display();
     }
     public interface IClass
     {
-        public string Name { get; }
-        public string Code { get; }
-        public int Duration { get; }
-        public List<Teacher> Teachers { get; }
-        public List<Student> Students { get; }
-        public void AddStudent(Student s);
-        public void AddTeacher(Teacher t);
+        //public string Name { get; }
+        //public string Code { get; }
+        //public int Duration { get; }
+        //public List<Teacher> Teachers { get; }
+        //public List<Student> Students { get; }
+        //public void AddStudent(Student s);
+        //public void AddTeacher(Teacher t);
+        public void Display();
 
     }
     public interface ITeacher
     {
-        public List<string> Names { get; }
-        public string Surname { get; }
-        public rank _Rank { get; }
-        public string Code { get; }
-        public List<Class> Classes { get; }
-        public void AddClass(Class c);
+        //public List<string> Names { get; }
+        //public string Surname { get; }
+        //public rank _Rank { get; }
+        //public string Code { get; }
+        //public List<Class> Classes { get; }
+        //public void AddClass(Class c);
+        public void Display();
 
     }
     public interface IStudent
     {
-        public List<string> Names { get; }
-        public string Surname { get; }
-        public int Semester { get; }
-        public string Code { get; }
-        public List<Class> Classes { get; }
-        public void AddClass(Class c);
+        //public List<string> Names { get; }
+        //public string Surname { get; }
+        //public int Semester { get; }
+        //public string Code { get; }
+        //public List<Class> Classes { get; }
+        //public void AddClass(Class c);
+        public void Display();
 
     }
 
@@ -60,7 +73,6 @@ namespace Project
         public static void Main()
         {
             //first representation
-            Objects first = new Objects();
             Room[] first_roooms = new Room[7];
             Class[] first_classes = new Class[4];
             Student[] first_students = new Student[5];
@@ -97,6 +109,20 @@ namespace Project
             first_teachers[3].AddClass(first_classes[2]);
             first_teachers[4].AddClass(first_classes[3]);
 
+            first_students[0].AddClass(first_classes[0]);
+            first_students[0].AddClass(first_classes[2]);
+            first_students[1].AddClass(first_classes[0]);
+            first_students[1].AddClass(first_classes[2]);
+            first_students[1].AddClass(first_classes[3]);
+            first_students[2].AddClass(first_classes[1]);
+            first_students[2].AddClass(first_classes[2]);
+            first_students[3].AddClass(first_classes[1]);
+            first_students[3].AddClass(first_classes[2]);
+            first_students[3].AddClass(first_classes[3]);
+            first_students[4].AddClass(first_classes[0]);
+            first_students[4].AddClass(first_classes[2]);
+            first_students[4].AddClass(first_classes[3]);
+
             first_classes[0].AddStudent(first_students[0]);
             first_classes[0].AddStudent(first_students[1]);
             first_classes[0].AddStudent(first_students[4]);
@@ -131,13 +157,10 @@ namespace Project
             first_roooms[5].AddClass(first_classes[0]);
             first_roooms[6].AddClass(first_classes[3]);
 
-            first.rooms = first_roooms.ToList();
-            first.teachers = first_teachers.ToList();
-            first.students = first_students.ToList();
-            first.classes = first_classes.ToList();
+            Objects first = new Objects(first_roooms,first_classes,first_teachers,first_students);
+            first.Display();
 
             //second representation
-            Hashmap second = new Hashmap();
             Hashmap.Room[] second_roooms = new Hashmap.Room[7];
             Hashmap.Class[] second_classes = new Hashmap.Class[4];
             Hashmap.Student[] second_students = new Hashmap.Student[5];
@@ -174,6 +197,20 @@ namespace Project
             second_teachers[3].AddClass(second_classes[2]);
             second_teachers[4].AddClass(second_classes[3]);
 
+            second_students[0].AddClass(second_classes[0]);
+            second_students[0].AddClass(second_classes[2]);
+            second_students[1].AddClass(second_classes[0]);
+            second_students[1].AddClass(second_classes[2]);
+            second_students[1].AddClass(second_classes[3]);
+            second_students[2].AddClass(second_classes[1]);
+            second_students[2].AddClass(second_classes[2]);
+            second_students[3].AddClass(second_classes[1]);
+            second_students[3].AddClass(second_classes[2]);
+            second_students[3].AddClass(second_classes[3]);
+            second_students[4].AddClass(second_classes[0]);
+            second_students[4].AddClass(second_classes[2]);
+            second_students[4].AddClass(second_classes[3]);
+
             second_classes[0].AddStudent(second_students[0]);
             second_classes[0].AddStudent(second_students[1]);
             second_classes[0].AddStudent(second_students[4]);
@@ -207,20 +244,11 @@ namespace Project
             second_roooms[4].AddClass(second_classes[2]);
             second_roooms[5].AddClass(second_classes[0]);
             second_roooms[6].AddClass(second_classes[3]);
-            second.rooms = second_roooms.ToList();
-            second.classes = second_classes.ToList();
-            second.teachers = second_teachers.ToList();
-            second.students = second_students.ToList();
+            Hashmap second = new Hashmap(second_roooms,second_classes,second_teachers,second_students);
             //test
-            foreach (Room r in first_roooms)
-            {
-                Console.WriteLine(r);
-            }
-            //Adapter a = new Adapter(second);
-            //foreach (Room r in a.adapted.rooms)
-            //{
-            //    Console.WriteLine(r);
-            //}
+
+            HmAdapter a = new HmAdapter(second);
+            a.Display();
         }
     }
 }
