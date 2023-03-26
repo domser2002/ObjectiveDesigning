@@ -258,9 +258,19 @@ namespace Project
             //second representation
             Hashmap second = ConstructSecond();
 
+            //third representation
+            Stacks third=new Stacks();
+            third.AddRoom(107, type.lecture, new string[] { "MD2", "RD", "WDK", "AC3" });
+            third.AddClass("Diabolical Mathematics 2", "MD2", 2, 
+                new string[] { "P2" }, new string[] { "S1", "S2", "S5" });
+            third.AddTeacher(new string[] { "Tomas" }, "Cherrmann", rank.MiB, "P1", new string[] { "AC3" });
+            third.AddStudent(new string[] { "Robert" }, "Kielbica", 3, "S1", new string[] {"MD2", "WDK"});
             //test
             HmAdapter a = new HmAdapter(second);
             a.Display();
+
+            StAdapter st = new StAdapter(third);
+            st.Display();
         }
     }
 }

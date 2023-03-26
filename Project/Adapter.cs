@@ -57,8 +57,8 @@ namespace Project
             string? tmp2;
             foreach (int name in this.adaptee.Names)
             {
-                bool v=Hashmap.Teacher.Map.TryGetValue(name, out tmp2);
-                if(v && tmp2 is not null)
+                bool v = Hashmap.Teacher.Map.TryGetValue(name, out tmp2);
+                if (v && tmp2 is not null)
                     tmp += tmp2 + " ";
             }
             Console.WriteLine("Names: " + tmp);
@@ -105,7 +105,7 @@ namespace Project
         private Hashmap.Class adaptee;
         public HmClassAdapter(Hashmap.Class _class)
         {
-            this.adaptee= _class;
+            this.adaptee = _class;
         }
         public void Display()
         {
@@ -118,7 +118,7 @@ namespace Project
             string s = "";
             foreach (Hashmap.Teacher t in this.adaptee.Teachers)
             {
-                Hashmap.Teacher.Map.TryGetValue(t.Code, out tmp);   
+                Hashmap.Teacher.Map.TryGetValue(t.Code, out tmp);
                 s += tmp + " ";
             }
             Console.WriteLine("Teachers: " + s);
@@ -163,4 +163,71 @@ namespace Project
             Console.WriteLine("Classes: " + s);
         }
     }
+
+    public class StAdapter : IRepresentation
+    {
+        private Stacks adaptee;
+        public StAdapter(Stacks adaptee)
+        {
+            this.adaptee = adaptee;
+        }
+        private static void ReadEnumerator(IEnumerator<string> iter)
+        {
+            string final = "";
+            int test;
+            string s = "";
+            while (iter.MoveNext())
+            {
+                string tmp = iter.Current;
+                if (int.TryParse(tmp, out test))
+                {
+                    for (int i = 0; i < test; i++)
+                    {
+                        iter.MoveNext();
+                        s += iter.Current + " ";
+                    }
+                    final = s + "\n" + final;
+                    s = "";
+                }
+                else
+                {
+                    s += tmp + ": ";
+                }
+            }
+            Console.Write(final);
+        }
+        public void Display()
+        {
+            Console.WriteLine("FORMAT 8:\n");
+            Console.WriteLine("Rooms:");
+            foreach((int,Stack<string>) room in this.adaptee.rooms)
+            {
+                Console.WriteLine("Number: " + room.Item1);
+                var iter = room.Item2.GetEnumerator();
+                ReadEnumerator(iter);
+            }
+            Console.WriteLine("Classes:");
+            foreach((string,Stack<string>) c in this.adaptee.classes)
+            {
+                Console.WriteLine("Code: " + c.Item1);
+                var iter = c.Item2.GetEnumerator();
+                ReadEnumerator(iter);
+            }
+            Console.WriteLine("Teachers:");
+            foreach((string,Stack<string>) teacher in this.adaptee.teachers)
+            {
+                Console.WriteLine("Code: " + teacher.Item1);
+                var iter = teacher.Item2.GetEnumerator();
+                ReadEnumerator(iter);
+            }
+            Console.WriteLine("Students:");
+            foreach ((string, Stack<string>) student in this.adaptee.students)
+            {
+                Console.WriteLine("Code: " + student.Item1);
+                var iter = student.Item2.GetEnumerator();
+                ReadEnumerator(iter);
+            }
+        }
+    }
+
 }
