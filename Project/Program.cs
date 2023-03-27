@@ -249,6 +249,49 @@ namespace Project
             Hashmap second = new Hashmap(second_roooms, second_classes, second_teachers, second_students);
             return second;
         }
+        public static Stacks ConstructThird()
+        {
+            Stacks third = new Stacks();
+            //rooms
+            third.AddRoom(107, type.lecture, new string[] { "MD2", "RD", "WDK", "AC3" });
+            third.AddRoom(204, type.tutorials, new string[] {"WDK","AC3"});
+            third.AddRoom(21, type.lecture,new string[] { "RD" });
+            third.AddRoom(123, type.laboratory, new string[] { "RD" , "WDK" });
+            third.AddRoom(404, type.lecture, new string[] { "MD2", "WDK", "RD" });
+            third.AddRoom(504, type.tutorials, new string[] { "MD2" });
+            third.AddRoom(73, type.laboratory, new string[] { "AC3" });
+            //classes
+            third.AddClass("Diabolical Mathematics 2", "MD2", 2,
+                new string[] { "P2" }, new string[] { "S1", "S2", "S5" });
+            third.AddClass("Routers Descriptions", "RD", 1, 
+                new string[] {"P3"},new string[] {"S3","S4"});
+            third.AddClass("Introduction to cables", "WDK", 5, 
+                new string[] { "P4","P3" }, new string[] { "S1","S2","S3","S4","S5" });
+            third.AddClass("Diabolical Mathematics 2", "MD2", 2, new string[] { "P5","P1" }, new string[] { "S2","S4","S5" });
+            //teachers
+            third.AddTeacher(new string[] { "Tomas" }, "Cherrmann", rank.MiB,
+                "P1", new string[] { "AC3" });
+            third.AddTeacher(new string[] { "Jon" }, "Tron", rank.TiB,
+                "P2", new string[] {"MD2"});
+            third.AddTeacher(new string[] { "William", "Joseph" }, "Blazkowicz", rank.GiB, 
+                "P3",new string[] {"RD","WDK"});
+            third.AddTeacher(new string[] { "Arkadiusz", "Amadeusz" }, "Kamiński", rank.KiB, 
+                "P4", new string[] { "WDK" });
+            third.AddTeacher(new string[] { "Cooking" }, "Mama", rank.GiB, 
+                "P5", new string[] { "AC3" });
+            //students
+            third.AddStudent(new string[] { "Robert" }, "Kielbica", 3, 
+                "S1", new string[] { "MD2", "WDK" });
+            third.AddStudent(new string[] { "Archibald", "Agapios" }, "Linux", 7, 
+                "S2", new string[] {"MD2","WDK","AC3" });
+            third.AddStudent(new string[] { "Angrboða" }, "Kára", 1,
+                "S3", new string[] { "RD","WDK" });
+            third.AddStudent(new string[] { "Olympos" }, "Andronikos", 5,
+                "S4", new string[] { "RD","WDK","AC3" });
+            third.AddStudent(new string[] { "Mac", "Rhymes" }, "Pickuppicker", 6, 
+                "S5", new string[] { "MD2","WDK","AC3" });
+            return third;
+        }
         public static void Main()
         {
             //first representation
@@ -259,12 +302,7 @@ namespace Project
             Hashmap second = ConstructSecond();
 
             //third representation
-            Stacks third=new Stacks();
-            third.AddRoom(107, type.lecture, new string[] { "MD2", "RD", "WDK", "AC3" });
-            third.AddClass("Diabolical Mathematics 2", "MD2", 2, 
-                new string[] { "P2" }, new string[] { "S1", "S2", "S5" });
-            third.AddTeacher(new string[] { "Tomas" }, "Cherrmann", rank.MiB, "P1", new string[] { "AC3" });
-            third.AddStudent(new string[] { "Robert" }, "Kielbica", 3, "S1", new string[] {"MD2", "WDK"});
+            Stacks third=ConstructThird();
             //test
             HmAdapter a = new HmAdapter(second);
             a.Display();

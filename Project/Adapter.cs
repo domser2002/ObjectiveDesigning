@@ -198,7 +198,7 @@ namespace Project
         }
         public void Display()
         {
-            Console.WriteLine("FORMAT 8:\n");
+            Console.WriteLine("\nFORMAT 8:\n");
             Console.WriteLine("Rooms:");
             foreach((int,Stack<string>) room in this.adaptee.rooms)
             {
