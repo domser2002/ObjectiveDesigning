@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using static Project.Hashmap;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Project
 {
@@ -42,6 +43,10 @@ namespace Project
             {
                 new HmStudentAdapter(s).Display();
             }
+        }
+        public void Select()
+        {
+
         }
     }
     public class HmTeacherAdapter : ITeacher
@@ -200,21 +205,21 @@ namespace Project
         {
             Console.WriteLine("\nFORMAT 8:\n");
             Console.WriteLine("Rooms:");
-            foreach((int,Stack<string>) room in this.adaptee.rooms)
+            foreach ((int, Stack<string>) room in this.adaptee.rooms)
             {
                 Console.WriteLine("Number: " + room.Item1);
                 var iter = room.Item2.GetEnumerator();
                 ReadEnumerator(iter);
             }
             Console.WriteLine("Classes:");
-            foreach((string,Stack<string>) c in this.adaptee.classes)
+            foreach ((string, Stack<string>) c in this.adaptee.classes)
             {
                 Console.WriteLine("Code: " + c.Item1);
                 var iter = c.Item2.GetEnumerator();
                 ReadEnumerator(iter);
             }
             Console.WriteLine("Teachers:");
-            foreach((string,Stack<string>) teacher in this.adaptee.teachers)
+            foreach ((string, Stack<string>) teacher in this.adaptee.teachers)
             {
                 Console.WriteLine("Code: " + teacher.Item1);
                 var iter = teacher.Item2.GetEnumerator();
@@ -225,6 +230,84 @@ namespace Project
             {
                 Console.WriteLine("Code: " + student.Item1);
                 var iter = student.Item2.GetEnumerator();
+                ReadEnumerator(iter);
+            }
+        }
+        public void Select()
+        {
+            foreach ((string, Stack<string>) c in this.adaptee.classes)
+            {
+                bool student = false;
+                bool teacher = false;
+                int tmp, tmp2;
+                var iter = c.Item2.GetEnumerator();
+                while (iter.MoveNext())
+                {
+                    if (iter.Current == "Students")
+                    {
+                        iter.MoveNext();
+                        int.TryParse(iter.Current, out tmp);
+                        for (int i = 0; i < tmp; i++)
+                        {
+                            iter.MoveNext();
+                            string scode = iter.Current;
+                            foreach ((string, Stack<string>) s in this.adaptee.students)
+                            {
+                                if (s.Item1 == scode)
+                                {
+                                    var iters = s.Item2.GetEnumerator();
+                                    while (iters.MoveNext())
+                                    {
+                                        if (iters.Current == "Names")
+                                        {
+                                            iters.MoveNext();
+                                            int.TryParse(iters.Current, out tmp2);
+                                            if (tmp2 > 1)
+                                            {
+                                                student = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (iter.Current == "Teachers")
+                    {
+                        iter.MoveNext();
+                        int.TryParse(iter.Current, out tmp);
+                        for (int i = 0; i < tmp; i++)
+                        {
+                            iter.MoveNext();
+                            string tcode = iter.Current;
+                            foreach ((string, Stack<string>) t in this.adaptee.teachers)
+                            {
+                                if (t.Item1 == tcode)
+                                {
+                                    var iters = t.Item2.GetEnumerator();
+                                    while (iters.MoveNext())
+                                    {
+                                        if (iters.Current == "Names")
+                                        {
+                                            iters.MoveNext();
+                                            int.TryParse(iters.Current, out tmp2);
+                                            if (tmp2 > 1)
+                                            {
+                                                teacher = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (!student) { continue; }
+                if (!teacher) { continue; }
+                iter = c.Item2.GetEnumerator();
+                Console.WriteLine("Code: " + c.Item1);
                 ReadEnumerator(iter);
             }
         }

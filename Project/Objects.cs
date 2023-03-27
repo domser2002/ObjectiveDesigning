@@ -22,6 +22,31 @@ namespace Project
             this.teachers = teachers;
             this.students = students;
         }
+        public void Select()
+        {
+            foreach(Class c in this.classes)
+            {
+                bool student = false;
+                bool teacher = false;
+                foreach(Student s in c.Students)
+                {
+                    if(s.Names.Count > 1)
+                    {
+                        student = true;
+                    }
+                }
+                if(!student) { continue; }
+                foreach(Teacher t in c.Teachers) 
+                {
+                    if (t.Names.Count > 1)
+                    {
+                        teacher = true;
+                    }
+                }
+                if(!teacher) { continue; }
+                c.Display();
+            }
+        }
         public void Display()
         {
             Console.WriteLine("FORMAT 0:");

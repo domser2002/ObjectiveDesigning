@@ -18,11 +18,8 @@ namespace Project
     }
     public interface IRepresentation
     {
-        //public Room[] rooms { get; set; }
-        //public Class[] classes { get; set; }
-        //public Teacher[] teachers { get; set; }
-        //public Student[] students { get; set; }
         public void Display();
+        public void Select();
     }
     public interface IRoom
     {
@@ -296,19 +293,21 @@ namespace Project
         {
             //first representation
             Objects first = ConstructFirst();
-            first.Display();
-
             //second representation
             Hashmap second = ConstructSecond();
-
             //third representation
             Stacks third=ConstructThird();
             //test
+            first.Display();
             HmAdapter a = new HmAdapter(second);
             a.Display();
-
             StAdapter st = new StAdapter(third);
             st.Display();
+            //select test
+            Console.Write("\n\n\n");
+            first.Select();
+            Console.Write("\n\n\n");
+            st.Select();
         }
     }
 }
