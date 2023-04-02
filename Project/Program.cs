@@ -8,14 +8,6 @@ using System.Threading.Tasks;
 
 namespace Project
 {
-    static class Extensions
-    {
-        public static void AddOrIgnore(this Dictionary<int, string> dictionary, int key, string value)
-        {
-            if (!dictionary.ContainsKey(key))
-                dictionary.Add(key, value);
-        }
-    }
     public interface IRepresentation
     {
         public void Display();
@@ -63,6 +55,19 @@ namespace Project
         public void Display();
 
     }
+    public interface IMyCollection<T>
+    {
+        public void AddObject(T obj);
+        public bool RemoveObject(T obj);
+        public IMyiterator<T> GetForwardIterator();
+        public IMyiterator<T> GetBackwardIterator();
+    }
+    public interface IMyiterator<T>
+    {
+        public T? Current { get; }
+        public bool MoveNext();
+    }
+
 
     public enum type { laboratory, tutorials, lecture, other };
     public enum rank { KiB, MiB, GiB, TiB };
@@ -292,22 +297,39 @@ namespace Project
         public static void Main()
         {
             //first representation
-            Objects first = ConstructFirst();
+            IRepresentation first = ConstructFirst();
             //second representation
             Hashmap second = ConstructSecond();
             //third representation
             Stacks third=ConstructThird();
             //test
             first.Display();
-            HmAdapter a = new HmAdapter(second);
+            IRepresentation a = new HmAdapter(second);
             a.Display();
-            StAdapter st = new StAdapter(third);
+            IRepresentation st = new StAdapter(third);
             st.Display();
             //select test
             Console.Write("\n\n\n");
             first.Select();
             Console.Write("\n\n\n");
             st.Select();
+
+            Vector<int> L = new Vector<int>();
+            L.AddObject(1);
+            L.AddObject(2);
+            L.AddObject(3);
+            L.AddObject(4);
+            Console.WriteLine(L.RemoveObject(4));
+            Console.WriteLine(L.RemoveObject(5));
+            var iter=L.GetForwardIterator();
+            Console.WriteLine(iter.Current);
+            iter.MoveNext();
+            Console.WriteLine(iter.Current);
+            var iter2=L.GetBackwardIterator();
+            Console.WriteLine(iter2.Current);
+            iter2.MoveNext();
+            Console.WriteLine(iter2.Current);
+            Console.WriteLine(L.Find());
         }
     }
 }
