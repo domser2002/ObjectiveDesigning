@@ -43,6 +43,34 @@ namespace Project
                 if (!iter.MoveNext()) break;
             }
         }
-
+        public static IRepresentation? Find(IMyiterator iter, Func<IRepresentation, bool> pred)
+        {
+            while (iter is not null && iter.Current is not null)
+            {
+                if (pred(iter.Current)) return iter.Current;
+                if (!iter.MoveNext()) break;
+            }
+            return null;
+        }
+        public static void ForEach(IMyiterator iterator,Action<IRepresentation?> func)
+        {
+            IMyiterator tmp=iterator;
+            while (tmp is not null && tmp.Current is not null)
+            {
+                func(tmp.Current);
+                if (!tmp.MoveNext()) break;
+            }
+        }
+        public static int CountIf(IMyiterator iterator, Func<IRepresentation,
+            bool> pred)
+        {
+            int count = 0;
+            while(iterator is not null && iterator.Current is not null)
+            {
+                if(pred(iterator.Current)) count++; 
+                if(!iterator.MoveNext()) break; 
+            }
+            return count;
+        }
     }
 }

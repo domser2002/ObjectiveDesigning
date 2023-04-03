@@ -150,7 +150,7 @@ namespace Project
             {
                 this.v = v;
                 this.reverse = reverse;
-                if(reverse)
+                if (reverse)
                 {
                     index = v.size - 1;
                 }
@@ -170,7 +170,7 @@ namespace Project
                 else
                 {
                     index++;
-                    if(index >= size) return false;
+                    if (index >= size) return false;
                 }
                 return true;
             }
@@ -207,6 +207,99 @@ namespace Project
         public IMyiterator GetBackwardIterator()
         {
             return new VectorIterator(this, true);
+        }
+    }
+    public class SortedArray
+    {
+        public class SortedArrayIterator : IMyiterator
+        {
+            public IRepresentation? Current
+            {
+                get
+                {
+                    return values[index];
+                }
+            }
+            private int index;
+            private int size;
+            private bool reverse;
+            private List<IRepresentation> values;
+            public SortedArrayIterator(SortedArray sArr, bool reverse)
+            {
+                this.reverse = reverse;
+                this.values = sArr.values;
+                this.size = values.Count;
+                if (reverse)
+                {
+                    index = this.size - 1;
+                }
+                else
+                {
+                    index = 0;
+                }
+            }
+            public bool MoveNext()
+            {
+                if (reverse)
+                {
+                    if (index < 1) return false;
+                    index--;
+                }
+                else
+                {
+                    if (index >= size - 1) return false;
+                    index++;
+                }
+                return true;
+            }
+        }
+
+        private List<IRepresentation> values;
+        private Func<IRepresentation, IRepresentation, int> comparator;
+        public void Insert(IRepresentation data)
+        {
+            values.Insert(0, data);
+            for (int i = 1; i < values.Count; i++)
+            {
+               if (comparator(values[i], values[i - 1]) != 1)
+               {
+                    IRepresentation tmp = values[i - 1];
+                    values[i] = data;
+                    values[i - 1] = tmp;
+               }
+            }
+        }
+        public void Delete(SortedArrayIterator iter)
+        {
+            if (iter is not null && iter.Current is not null)
+            {
+                IRepresentation todel = iter.Current;
+                int i = 0;
+                while (!Equals(todel, values[i]))
+                {
+                    i++;
+                }
+                while (i < values.Count - 2)
+                {
+                    IRepresentation tmp = values[i + 1];
+                    values[i + 1] = values[i];
+                    values[i] = tmp;
+                }
+                values.RemoveAt(values.Count - 1);
+            }
+        }
+        public SortedArray(Func<IRepresentation, IRepresentation, int> comparator)
+        {
+            values = new();
+            this.comparator = comparator;
+        }
+        public IMyiterator GetForwardIterator()
+        {
+            return new SortedArrayIterator(this,false);
+        }
+        public IMyiterator GetBackwardIterator()
+        {
+            return new SortedArrayIterator(this, true);
         }
     }
 }

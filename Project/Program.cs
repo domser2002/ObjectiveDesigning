@@ -314,20 +314,20 @@ namespace Project
             //Console.Write("\n\n\n");
             //st.Select();
 
-            Vector L = new();
-            L.AddObject(first);
-            L.AddObject(a);
-            L.AddObject(st);
-            var iter = L.GetForwardIterator();
-            Console.WriteLine(iter.Current);
-            iter.MoveNext();
-            Console.WriteLine(iter.Current);
-            var iter2 = L.GetBackwardIterator();
-            Console.WriteLine(iter2.Current);
-            iter2.MoveNext();
-            Console.WriteLine(iter2.Current);
-            Console.WriteLine(L.Find((IRepresentation arg1) => (arg1.Equals(1)), true));
-            L.Print((IRepresentation arg1) => (arg1.Equals(first)), true);
+            SortedArray L = new SortedArray((IRepresentation r1,IRepresentation r2) =>
+            {
+                if (r1.Equals(r2)) return 0;
+                if (r1.GetHashCode() > r2.GetHashCode()) return 1;
+                else return -1;
+            }
+            );
+            L.Insert(first);
+            L.Insert(a);
+            L.Insert(st);
+            var x=Extensions.Find(L.GetForwardIterator(), (IRepresentation arg1) => (arg1.GetHashCode().Equals(a.GetHashCode())));
+            x?.Display();
+            Console.WriteLine(Extensions.CountIf(L.GetForwardIterator(),
+                (IRepresentation arg1) => (arg1.GetHashCode().Equals(st.GetHashCode()))));
         }
     }
 }
