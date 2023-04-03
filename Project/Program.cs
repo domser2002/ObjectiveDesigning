@@ -55,16 +55,16 @@ namespace Project
         public void Display();
 
     }
-    public interface IMyCollection<T>
+    public interface IMyCollection
     {
-        public void AddObject(T obj);
-        public bool RemoveObject(T obj);
-        public IMyiterator<T> GetForwardIterator();
-        public IMyiterator<T> GetBackwardIterator();
+        public void AddObject(IRepresentation obj);
+        public bool RemoveObject(IRepresentation obj);
+        public IMyiterator GetForwardIterator();
+        public IMyiterator GetBackwardIterator();
     }
-    public interface IMyiterator<T>
+    public interface IMyiterator
     {
-        public T? Current { get; }
+        public IRepresentation? Current { get; }
         public bool MoveNext();
     }
 
@@ -296,40 +296,38 @@ namespace Project
         }
         public static void Main()
         {
-            //first representation
+            ////first representation
             IRepresentation first = ConstructFirst();
-            //second representation
+            ////second representation
             Hashmap second = ConstructSecond();
-            //third representation
+            ////third representation
             Stacks third=ConstructThird();
-            //test
-            first.Display();
+            ////test
+            //first.Display();
             IRepresentation a = new HmAdapter(second);
-            a.Display();
+            //a.Display();
             IRepresentation st = new StAdapter(third);
-            st.Display();
-            //select test
-            Console.Write("\n\n\n");
-            first.Select();
-            Console.Write("\n\n\n");
-            st.Select();
+            //st.Display();
+            ////select test
+            //Console.Write("\n\n\n");
+            //first.Select();
+            //Console.Write("\n\n\n");
+            //st.Select();
 
-            Vector<int> L = new Vector<int>();
-            L.AddObject(1);
-            L.AddObject(2);
-            L.AddObject(3);
-            L.AddObject(4);
-            Console.WriteLine(L.RemoveObject(4));
-            Console.WriteLine(L.RemoveObject(5));
-            var iter=L.GetForwardIterator();
+            Vector L = new();
+            L.AddObject(first);
+            L.AddObject(a);
+            L.AddObject(st);
+            var iter = L.GetForwardIterator();
             Console.WriteLine(iter.Current);
             iter.MoveNext();
             Console.WriteLine(iter.Current);
-            var iter2=L.GetBackwardIterator();
+            var iter2 = L.GetBackwardIterator();
             Console.WriteLine(iter2.Current);
             iter2.MoveNext();
             Console.WriteLine(iter2.Current);
-            Console.WriteLine(L.Find());
+            Console.WriteLine(L.Find((IRepresentation arg1) => (arg1.Equals(1)), true));
+            L.Print((IRepresentation arg1) => (arg1.Equals(first)), true);
         }
     }
 }

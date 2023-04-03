@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 namespace Project
 {
 
-    public class DoubleList<T> : IMyCollection<T>
+    public class DoubleList : IMyCollection
     {
         internal class node
         {
             public node? prev;
             public node? next;
-            public T? data;
+            public IRepresentation? data;
         }
-        public class DoubleListIterator : IMyiterator<T>
+        public class DoubleListIterator : IMyiterator
         {
-            public T? Current
+            public IRepresentation? Current
             {
                 get
                 {
@@ -27,7 +27,7 @@ namespace Project
             }
             private node? current;
             private bool reverse;
-            public DoubleListIterator(DoubleList<T> L, bool reverse)
+            public DoubleListIterator(DoubleList L, bool reverse)
             {
                 this.reverse = reverse;
                 if (reverse)
@@ -74,7 +74,7 @@ namespace Project
             head = null;
             tail = null;
         }
-        public void AddObject(T data)
+        public void AddObject(IRepresentation data)
         {
             node el = new node();
             el.data = data;
@@ -92,7 +92,7 @@ namespace Project
             }
             tail = el;
         }
-        public bool RemoveObject(T obj)
+        public bool RemoveObject(IRepresentation obj)
         {
             node? p = head;
             while (p is not null)
@@ -122,20 +122,20 @@ namespace Project
             }
             return false;
         }
-        public IMyiterator<T> GetForwardIterator()
+        public IMyiterator GetForwardIterator()
         {
             return new DoubleListIterator(this, false);
         }
-        public IMyiterator<T> GetBackwardIterator()
+        public IMyiterator GetBackwardIterator()
         {
             return new DoubleListIterator(this, true);
         }
     }
-    public class Vector<T> : IMyCollection<T>
+    public class Vector : IMyCollection
     {
-        public class VectorIterator : IMyiterator<T>
+        public class VectorIterator : IMyiterator
         {
-            public T? Current
+            public IRepresentation? Current
             {
                 get
                 {
@@ -145,8 +145,8 @@ namespace Project
             private bool reverse;
             private int index;
             private int size;
-            private readonly Vector<T> v;
-            public VectorIterator(Vector<T> v, bool reverse)
+            private readonly Vector v;
+            public VectorIterator(Vector v, bool reverse)
             {
                 this.v = v;
                 this.reverse = reverse;
@@ -175,23 +175,23 @@ namespace Project
                 return true;
             }
         }
-        private List<T> values;
+        private List<IRepresentation> values;
         private int size;
         public Vector()
         {
-            values = new List<T>();
+            values = new List<IRepresentation>();
             size = 0;
         }
-        private T At(int index)
+        private IRepresentation At(int index)
         {
             return values[index];
         }
-        public void AddObject(T data)
+        public void AddObject(IRepresentation data)
         {
             values.Add(data);
             size++;
         }
-        public bool RemoveObject(T obj)
+        public bool RemoveObject(IRepresentation obj)
         {
             if (values.Remove(obj))
             {
@@ -200,11 +200,11 @@ namespace Project
             }
             return false;
         }
-        public IMyiterator<T> GetForwardIterator()
+        public IMyiterator GetForwardIterator()
         {
             return new VectorIterator(this, false);
         }
-        public IMyiterator<T> GetBackwardIterator()
+        public IMyiterator GetBackwardIterator()
         {
             return new VectorIterator(this, true);
         }
