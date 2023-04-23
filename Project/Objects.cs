@@ -11,10 +11,10 @@ namespace Project
 {
     public class Objects : IRepresentation
     {
-        public Room[] rooms { get; set; }
-        public Class[] classes { get; set; }
-        public Teacher[] teachers { get; set; }
-        public Student[] students { get; set; }
+        public IRoom[] rooms { get; set; }
+        public IClass[] classes { get; set; }
+        public ITeacher[] teachers { get; set; }
+        public IStudent[] students { get; set; }
         public Objects(Room[] rooms, Class[] classes, Teacher[] teachers, Student[] students)
         {
             this.rooms = rooms;

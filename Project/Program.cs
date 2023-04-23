@@ -8,70 +8,8 @@ using System.Threading.Tasks;
 
 namespace Project
 {
-    public interface IRepresentation
-    {
-        public void Display();
-        public void Select();
-    }
-    public interface IRoom
-    {
-        //public int Number { get; }
-        //public type _Type { get; }
-        //public List<Class> Classes { get; }
-        //public void AddClass(Class c);
-        public void Display();
-    }
-    public interface IClass
-    {
-        //public string Name { get; }
-        //public string Code { get; }
-        //public int Duration { get; }
-        //public List<Teacher> Teachers { get; }
-        //public List<Student> Students { get; }
-        //public void AddStudent(Student s);
-        //public void AddTeacher(Teacher t);
-        public void Display();
-
-    }
-    public interface ITeacher
-    {
-        //public List<string> Names { get; }
-        //public string Surname { get; }
-        //public rank _Rank { get; }
-        //public string Code { get; }
-        //public List<Class> Classes { get; }
-        //public void AddClass(Class c);
-        public void Display();
-
-    }
-    public interface IStudent
-    {
-        //public List<string> Names { get; }
-        //public string Surname { get; }
-        //public int Semester { get; }
-        //public string Code { get; }
-        //public List<Class> Classes { get; }
-        //public void AddClass(Class c);
-        public void Display();
-
-    }
-    public interface IMyCollection
-    {
-        public void AddObject(IRepresentation obj);
-        public bool RemoveObject(IRepresentation obj);
-        public IMyiterator GetForwardIterator();
-        public IMyiterator GetBackwardIterator();
-    }
-    public interface IMyiterator
-    {
-        public IRepresentation? Current { get; }
-        public bool MoveNext();
-    }
-
-
     public enum type { laboratory, tutorials, lecture, other };
     public enum rank { KiB, MiB, GiB, TiB };
-
     public class Program
     {
         public static Objects ConstructFirst()
@@ -296,38 +234,59 @@ namespace Project
         }
         public static void Main()
         {
-            ////first representation
-            IRepresentation first = ConstructFirst();
-            ////second representation
-            Hashmap second = ConstructSecond();
-            ////third representation
-            Stacks third=ConstructThird();
-            ////test
-            //first.Display();
-            IRepresentation a = new HmAdapter(second);
-            //a.Display();
-            IRepresentation st = new StAdapter(third);
-            //st.Display();
-            ////select test
-            //Console.Write("\n\n\n");
-            //first.Select();
-            //Console.Write("\n\n\n");
-            //st.Select();
+            //////first representation
+            //IRepresentation first = ConstructFirst();
+            //////second representation
+            //Hashmap second = ConstructSecond();
+            //////third representation
+            //Stacks third=ConstructThird();
+            //////test
+            ////first.Display();
+            //IRepresentation a = new HmAdapter(second);
+            ////a.Display();
+            //IRepresentation st = new StAdapter(third);
+            ////st.Display();
+            //////select test
+            ////Console.Write("\n\n\n");
+            ////first.Select();
+            ////Console.Write("\n\n\n");
+            ////st.Select();
 
-            SortedArray L = new SortedArray((IRepresentation r1,IRepresentation r2) =>
+            //SortedArray L = new SortedArray((IRepresentation r1,IRepresentation r2) =>
+            //{
+            //    if (r1.Equals(r2)) return 0;
+            //    if (r1.GetHashCode() > r2.GetHashCode()) return 1;
+            //    else return -1;
+            //}
+            //);
+            //L.Insert(first);
+            //L.Insert(a);
+            //L.Insert(st);
+            //var x=Extensions.Find(L.GetForwardIterator(), (IRepresentation arg1) => (arg1.GetHashCode().Equals(a.GetHashCode())));
+            //x?.Display();
+            //Console.WriteLine(Extensions.CountIf(L.GetForwardIterator(),
+            //    (IRepresentation arg1) => (arg1.GetHashCode().Equals(st.GetHashCode()))));
+            Console.WriteLine("Possible commands:");
+            Console.WriteLine("list <name_of_the_class>");
+            Console.WriteLine("find <name_of_the_class> [<name_of_field> =|<|> value]");
+            Console.WriteLine("exit");
+            while (true)
             {
-                if (r1.Equals(r2)) return 0;
-                if (r1.GetHashCode() > r2.GetHashCode()) return 1;
-                else return -1;
+                Console.WriteLine("Type your command:");
+                string? s = Console.ReadLine();
+                if(s is not null)
+                {
+                    if(s=="exit")
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        s.Process();
+                    }
+                }
             }
-            );
-            L.Insert(first);
-            L.Insert(a);
-            L.Insert(st);
-            var x=Extensions.Find(L.GetForwardIterator(), (IRepresentation arg1) => (arg1.GetHashCode().Equals(a.GetHashCode())));
-            x?.Display();
-            Console.WriteLine(Extensions.CountIf(L.GetForwardIterator(),
-                (IRepresentation arg1) => (arg1.GetHashCode().Equals(st.GetHashCode()))));
+
         }
     }
 }

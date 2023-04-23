@@ -11,6 +11,53 @@ namespace Project
 {
     public class HmAdapter : IRepresentation
     {
+        public IRoom[] rooms { 
+            get
+            {
+                List<IRoom> rooms=new List<IRoom>();
+                foreach(Hashmap.Room room in this.adaptee.rooms)
+                {
+                    rooms.Add(new HmRoomAdapter(room));
+                }
+                return rooms.ToArray();
+            } 
+        }
+        public IClass[] classes
+        {
+            get
+            {
+                List<IClass> classes = new List<IClass>();
+                foreach (Hashmap.Class c in this.adaptee.classes)
+                {
+                    classes.Add(new HmClassAdapter(c));
+                }
+                return classes.ToArray();
+            }
+        }
+        public ITeacher[] teachers
+        {
+            get
+            {
+                List<ITeacher> teachers = new List<ITeacher>();
+                foreach (Hashmap.Teacher teacher in this.adaptee.teachers)
+                {
+                    teachers.Add(new HmTeacherAdapter(teacher));
+                }
+                return teachers.ToArray();
+            }
+        }
+        public IStudent[] students
+        {
+            get
+            {
+                List<IStudent> students = new List<IStudent>();
+                foreach (Hashmap.Student student in this.adaptee.students)
+                {
+                    students.Add(new HmStudentAdapter(student));
+                }
+                return students.ToArray();
+            }
+        }
         private readonly Hashmap adaptee;
         public HmAdapter(Hashmap adaptee)
         {
@@ -84,6 +131,8 @@ namespace Project
     public class HmRoomAdapter : IRoom
     {
         private Hashmap.Room adaptee;
+        public int Number => this.adaptee.Number;
+        public type _Type => this.adaptee._Type;
         public HmRoomAdapter(Hashmap.Room room)
         {
             this.adaptee = room;
@@ -171,6 +220,83 @@ namespace Project
 
     public class StAdapter : IRepresentation
     {
+        public IRoom[] rooms
+        {
+            get
+            {
+                List<IRoom> rooms = new List<IRoom>();
+                foreach ((int, Stack<string>) room in this.adaptee.rooms)
+                {
+                    IRoom tmp;
+                    int number = room.Item1;
+                    var iter = room.Item2.GetEnumerator();
+                    int test;
+                    type _type=type.tutorials;
+                    while (iter.MoveNext())
+                    {
+                        string t = iter.Current;
+                        if(int.TryParse(t, out test))
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            if(t=="Type")
+                            {
+                                iter.MoveNext();
+                                if(!Enum.TryParse<type>(iter.Current,out _type))
+                                {
+                                    throw new BadRepresentationException();
+                                }
+
+                            }
+                        }
+                    }
+                    tmp = new Room(number, _type);
+                    rooms.Add(tmp);
+                }
+                return rooms.ToArray();
+            }
+        }
+        public IClass[] classes {
+            get
+            {
+                List<IClass> classes = new List<IClass>();
+                foreach ((string, Stack<string>) c in this.adaptee.classes)
+                {
+                    IRoom tmp;
+                    string code = c.Item1;
+                    var iter = c.Item2.GetEnumerator();
+                    int test;
+                    type _type = type.tutorials;
+                    while (iter.MoveNext())
+                    {
+                        string t = iter.Current;
+                        if (int.TryParse(t, out test))
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            if (t == "Type")
+                            {
+                                iter.MoveNext();
+                                if (!Enum.TryParse<type>(iter.Current, out _type))
+                                {
+                                    throw new BadRepresentationException();
+                                }
+
+                            }
+                        }
+                    }
+                    tmp = new Class(code, _type);
+                    classes.Add(tmp);
+                }
+                return classes.ToArray();
+            }
+        }
+        public ITeacher[] teachers { get; }
+        public IStudent[] students { get; }
         private Stacks adaptee;
         public StAdapter(Stacks adaptee)
         {
