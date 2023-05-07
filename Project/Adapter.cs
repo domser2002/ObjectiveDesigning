@@ -184,7 +184,7 @@ namespace Project
         {
             get
             {
-                List<IStudent> students = new List<IStudent>();
+                List<IStudent> students = new();
                 foreach (Hashmap.Student student in this.adaptee.Students)
                 {
                     students.Add(new HmStudentAdapter(student));
@@ -329,6 +329,7 @@ namespace Project
                         switch(iter.Current)
                         {
                             case "Name":
+                                iter.MoveNext();
                                 if(!int.TryParse(iter.Current, out test) || test!=1)
                                 {
                                     throw new BadRepresentationException();
@@ -337,6 +338,7 @@ namespace Project
                                 name=iter.Current;
                                 break;
                             case "Duration":
+                                iter.MoveNext();
                                 if (!int.TryParse(iter.Current, out test) || test != 1)
                                 {
                                     throw new BadRepresentationException();
@@ -355,6 +357,7 @@ namespace Project
                                 }
                                 for (int i = 0; i < test; i++)
                                 {
+                                    iter.MoveNext();
                                     string teacher_code = iter.Current;
                                     teacher_codes.Add(teacher_code);
                                 }
@@ -367,11 +370,13 @@ namespace Project
                                 }
                                 for (int i = 0; i < test; i++)
                                 {
+                                    iter.MoveNext();
                                     string student_code = iter.Current;
                                     student_codes.Add(student_code);
                                 }
                                 break;
                             default:
+                                Console.WriteLine(iter.Current);
                                 throw new BadRepresentationException();
                         }
                     }
