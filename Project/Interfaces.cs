@@ -12,50 +12,37 @@ namespace Project
         public IClass[] classes { get; }
         public ITeacher[] teachers { get; }
         public IStudent[] students { get; }
-        public void Display();
-        public void Select();
     }
     public interface IRoom
     {
         public int Number { get; }
         public type _Type { get; }
-        //public List<Class> Classes { get; }
-        //public void AddClass(Class c);
-        //public void Display();
+        public List<IClass> Classes { get; }
     }
     public interface IClass
     {
-        //public string Name { get; }
-        //public string Code { get; }
-        //public int Duration { get; }
-        //public List<Teacher> Teachers { get; }
-        //public List<Student> Students { get; }
-        //public void AddStudent(Student s);
-        //public void AddTeacher(Teacher t);
-        public void Display();
+        public string Name { get; }
+        public string Code { get; }
+        public int Duration { get; }
+        public List<ITeacher> Teachers { get; }
+        public List<IStudent> Students { get; }
 
     }
     public interface ITeacher
     {
-        //public List<string> Names { get; }
-        //public string Surname { get; }
-        //public rank _Rank { get; }
-        //public string Code { get; }
-        //public List<Class> Classes { get; }
-        //public void AddClass(Class c);
-        public void Display();
-
+        public List<string> Names { get; }
+        public string Surname { get; }
+        public rank _Rank { get; }
+        public string Code { get; }
+        public List<IClass> Classes { get; }
     }
     public interface IStudent
     {
-        //public List<string> Names { get; }
-        //public string Surname { get; }
-        //public int Semester { get; }
-        //public string Code { get; }
-        //public List<Class> Classes { get; }
-        //public void AddClass(Class c);
-        public void Display();
-
+        public List<string> Names { get; }
+        public string Surname { get; }
+        public int Semester { get; }
+        public string Code { get; }
+        public List<IClass> Classes { get; }
     }
     public interface IMyCollection
     {

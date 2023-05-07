@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -63,196 +64,247 @@ namespace Project
         {
             this.adaptee = adaptee;
         }
-        public void Display()
-        {
-            Console.WriteLine("FORMAT 4:");
-            Console.WriteLine();
-            Console.WriteLine("Rooms:");
-            foreach (Hashmap.Room r in adaptee.rooms)
-            {
-                new HmRoomAdapter(r).Display();
-            }
-            Console.WriteLine();
-            Console.WriteLine("Classes:");
-            foreach (Hashmap.Class c in adaptee.classes)
-            {
-                new HmClassAdapter(c).Display();
-            }
-            Console.WriteLine();
-            Console.WriteLine("Teachers:");
-            foreach (Hashmap.Teacher t in adaptee.teachers)
-            {
-                new HmTeacherAdapter(t).Display();
-            }
-            Console.WriteLine();
-            Console.WriteLine("Students:");
-            foreach (Hashmap.Student s in adaptee.students)
-            {
-                new HmStudentAdapter(s).Display();
-            }
-        }
-        public void Select()
-        {
-
-        }
     }
     public class HmTeacherAdapter : ITeacher
     {
-        Hashmap.Teacher adaptee;
+        private readonly Hashmap.Teacher adaptee;
+        public List<string> Names
+        {
+            get
+            {
+                List<string> names = new List<string>();
+                string? tmp;
+                foreach (int name in this.adaptee.Names)
+                {
+                    bool v = Hashmap.Teacher.Map.TryGetValue(name, out tmp);
+                    if (v && tmp is not null)
+                        names.Add(tmp);
+                }
+                return names;
+            }
+        }
+        public string Surname
+        {
+            get
+            {
+                string? tmp;
+                Hashmap.Teacher.Map.TryGetValue(this.adaptee.Surname, out tmp);
+                return (tmp is not null) ? tmp : "";
+            }
+        }
+        public rank _Rank => this.adaptee._Rank;
+        public string Code
+        {
+            get
+            {
+                string? tmp;
+                Hashmap.Teacher.Map.TryGetValue(this.adaptee.Code, out tmp);
+                return (tmp is not null) ? tmp : "";
+            }
+        }
+        public List<IClass> Classes
+        {
+            get 
+            {
+                List<IClass> classes=new List<IClass>();
+                foreach(Hashmap.Class c in this.adaptee.Classes)
+                {
+                    classes.Add(new HmClassAdapter(c));
+                }
+                return classes;
+            }
+        }
         public HmTeacherAdapter(Hashmap.Teacher teacher)
         {
             this.adaptee = teacher;
         }
-        public void Display()
-        {
-            string tmp = "";
-            string? tmp2;
-            foreach (int name in this.adaptee.Names)
-            {
-                bool v = Hashmap.Teacher.Map.TryGetValue(name, out tmp2);
-                if (v && tmp2 is not null)
-                    tmp += tmp2 + " ";
-            }
-            Console.WriteLine("Names: " + tmp);
-            Hashmap.Teacher.Map.TryGetValue(this.adaptee.Surname, out tmp2);
-            Console.WriteLine("Surname: " + tmp2);
-            Console.WriteLine("Rank: " + this.adaptee._Rank);
-            Hashmap.Teacher.Map.TryGetValue(this.adaptee.Code, out tmp2);
-            Console.WriteLine("Code: " + tmp2);
-            string s = "";
-            foreach (Hashmap.Class c in this.adaptee.Classes)
-            {
-                Hashmap.Class.Map.TryGetValue(c.Code, out tmp2);
-                s += tmp2 + " ";
-            }
-            Console.WriteLine("Classes: " + s);
-        }
     }
     public class HmRoomAdapter : IRoom
     {
-        private Hashmap.Room adaptee;
+        private readonly Hashmap.Room adaptee;
         public int Number => this.adaptee.Number;
         public type _Type => this.adaptee._Type;
+        public List<IClass> Classes
+        {
+            get
+            {
+                List<IClass> classes = new List<IClass>();
+                foreach (Hashmap.Class c in this.adaptee.Classes)
+                {
+                    classes.Add(new HmClassAdapter(c));
+                }
+                return classes;
+            }
+        }
+
         public HmRoomAdapter(Hashmap.Room room)
         {
             this.adaptee = room;
         }
-        public void Display()
-        {
-            Console.WriteLine("Number: " + this.adaptee.Number);
-            Console.WriteLine("Type: " + this.adaptee._Type);
-            string s = "";
-            foreach (Hashmap.Class c in this.adaptee.Classes)
-            {
-                string? tmp;
-                bool v = Hashmap.Class.Map.TryGetValue(c.Code, out tmp);
-                if (v && tmp is not null)
-                {
-                    s += tmp + " ";
-                }
-            }
-            Console.WriteLine("Classes: " + s);
-        }
     }
     public class HmClassAdapter : IClass
     {
-        private Hashmap.Class adaptee;
+        private readonly Hashmap.Class adaptee;
         public HmClassAdapter(Hashmap.Class _class)
         {
             this.adaptee = _class;
         }
-        public void Display()
+        public string Name
         {
-            string? tmp;
-            Hashmap.Class.Map.TryGetValue(this.adaptee.Name, out tmp);
-            Console.WriteLine("Name: " + tmp);
-            Hashmap.Class.Map.TryGetValue(this.adaptee.Code, out tmp);
-            Console.WriteLine("Code: " + tmp);
-            Console.WriteLine("Duration: " + this.adaptee.Duration);
-            string s = "";
-            foreach (Hashmap.Teacher t in this.adaptee.Teachers)
+            get
             {
-                Hashmap.Teacher.Map.TryGetValue(t.Code, out tmp);
-                s += tmp + " ";
+                string? tmp;
+                Hashmap.Class.Map.TryGetValue(this.adaptee.Name, out tmp);
+                return (tmp is not null) ? tmp : "";
             }
-            Console.WriteLine("Teachers: " + s);
-            s = "";
-            foreach (Hashmap.Student st in this.adaptee.Students)
+        }
+        public string Code
+        {
+            get
             {
-                Hashmap.Student.Map.TryGetValue(st.Code, out tmp);
-                s += tmp + " ";
+                string? tmp;
+                Hashmap.Class.Map.TryGetValue(this.adaptee.Code, out tmp);
+                return (tmp is not null) ? tmp : "";
             }
-            Console.WriteLine("Students: " + s);
+        }
+        public int Duration => this.adaptee.Duration;
+        public List<ITeacher> Teachers
+        { 
+            get
+            {
+                List<ITeacher> teachers=new List<ITeacher>();
+                foreach(Hashmap.Teacher teacher in this.adaptee.Teachers)
+                {
+                    teachers.Add(new HmTeacherAdapter(teacher));
+                }
+                return teachers;
+            }
+        }
+        public List<IStudent> Students
+        {
+            get
+            {
+                List<IStudent> students = new List<IStudent>();
+                foreach (Hashmap.Student student in this.adaptee.Students)
+                {
+                    students.Add(new HmStudentAdapter(student));
+                }
+                return students;
+            }
         }
     }
     public class HmStudentAdapter : IStudent
     {
-        Hashmap.Student adaptee;
+        private readonly Hashmap.Student adaptee;
         public HmStudentAdapter(Hashmap.Student student)
         {
             this.adaptee = student;
         }
-        public void Display()
+        public List<string> Names
         {
-            string tmp = "";
-            string? tmp2;
-            foreach (int name in this.adaptee.Names)
+            get
             {
-                bool v = Hashmap.Student.Map.TryGetValue(name, out tmp2);
-                if (v && tmp2 is not null)
-                    tmp += tmp2 + " ";
+                List<string> names = new List<string>();
+                string? tmp;
+                foreach (int name in this.adaptee.Names)
+                {
+                    bool v = Hashmap.Student.Map.TryGetValue(name, out tmp);
+                    if (v && tmp is not null)
+                        names.Add(tmp);
+                }
+                return names;
             }
-            Console.WriteLine("Names: " + tmp);
-            Hashmap.Student.Map.TryGetValue(this.adaptee.Surname, out tmp2);
-            Console.WriteLine("Surname: " + tmp2);
-            Console.WriteLine("Semester: " + this.adaptee.Semester);
-            Hashmap.Student.Map.TryGetValue(this.adaptee.Code, out tmp2);
-            Console.WriteLine("Code: " + tmp2);
-            string s = "";
-            foreach (Hashmap.Class c in this.adaptee.Classes)
+        }
+        public string Surname
+        {
+            get
             {
-                Hashmap.Class.Map.TryGetValue(c.Code, out tmp2);
-                s += tmp2 + " ";
+                string? tmp;
+                Hashmap.Student.Map.TryGetValue(this.adaptee.Surname, out tmp);
+                return (tmp is not null) ? tmp : "";
             }
-            Console.WriteLine("Classes: " + s);
+        }
+        public List<IClass> Classes
+        {
+            get
+            {
+                List<IClass> classes = new List<IClass>();
+                foreach (Hashmap.Class c in this.adaptee.Classes)
+                {
+                    classes.Add(new HmClassAdapter(c));
+                }
+                return classes;
+            }
+        }
+        public int Semester => this.adaptee.Semester;
+        public string Code
+        {
+            get
+            {
+                string? tmp;
+                Hashmap.Teacher.Map.TryGetValue(this.adaptee.Code, out tmp);
+                return (tmp is not null) ? tmp : "";
+            }
         }
     }
 
     public class StAdapter : IRepresentation
     {
+        private readonly Stacks adaptee;
         public IRoom[] rooms
         {
             get
             {
                 List<IRoom> rooms = new List<IRoom>();
-                foreach ((int, Stack<string>) room in this.adaptee.rooms)
+                foreach ((int, Stack<string>) room in this.adaptee.Rooms)
                 {
-                    IRoom tmp;
+                    Room tmp;
                     int number = room.Item1;
                     var iter = room.Item2.GetEnumerator();
                     int test;
+                    List<string> class_codes=new List<string>();
                     type _type=type.tutorials;
                     while (iter.MoveNext())
                     {
-                        string t = iter.Current;
-                        if(int.TryParse(t, out test))
+                        switch(iter.Current)
                         {
-                            continue;
-                        }
-                        else
-                        {
-                            if(t=="Type")
-                            {
+                            case "Classes":
                                 iter.MoveNext();
-                                if(!Enum.TryParse<type>(iter.Current,out _type))
+                                if (!int.TryParse(iter.Current, out test))
                                 {
                                     throw new BadRepresentationException();
                                 }
-
-                            }
+                                for(int i = 0; i < test; i++)
+                                {
+                                    iter.MoveNext();
+                                    class_codes.Add(iter.Current);
+                                }
+                                break;
+                            case "Type":
+                                iter.MoveNext();
+                                if (!int.TryParse(iter.Current, out test))
+                                {
+                                    throw new BadRepresentationException();
+                                }
+                                if(test!=1)
+                                {
+                                    throw new BadRepresentationException();
+                                }
+                                iter.MoveNext();
+                                if (!Enum.TryParse(iter.Current,out _type))
+                                {
+                                    throw new BadRepresentationException();
+                                }
+                                break;
+                            default:
+                                throw new BadRepresentationException();
                         }
                     }
                     tmp = new Room(number, _type);
+                    foreach(string class_code in class_codes)
+                    {
+                        tmp.AddClass(new Class("", class_code, 0));
+                    }
                     rooms.Add(tmp);
                 }
                 return rooms.ToArray();
@@ -262,180 +314,234 @@ namespace Project
             get
             {
                 List<IClass> classes = new List<IClass>();
-                foreach ((string, Stack<string>) c in this.adaptee.classes)
+                foreach ((string, Stack<string>) c in this.adaptee.Classes)
                 {
-                    IRoom tmp;
+                    Class tmp;
                     string code = c.Item1;
                     var iter = c.Item2.GetEnumerator();
                     int test;
-                    type _type = type.tutorials;
+                    string name="";
+                    int duration=0;
+                    List<string> student_codes=new();
+                    List<string> teacher_codes=new();
                     while (iter.MoveNext())
                     {
-                        string t = iter.Current;
-                        if (int.TryParse(t, out test))
+                        switch(iter.Current)
                         {
-                            continue;
-                        }
-                        else
-                        {
-                            if (t == "Type")
-                            {
-                                iter.MoveNext();
-                                if (!Enum.TryParse<type>(iter.Current, out _type))
+                            case "Name":
+                                if(!int.TryParse(iter.Current, out test) || test!=1)
                                 {
                                     throw new BadRepresentationException();
                                 }
-
-                            }
+                                iter.MoveNext();
+                                name=iter.Current;
+                                break;
+                            case "Duration":
+                                if (!int.TryParse(iter.Current, out test) || test != 1)
+                                {
+                                    throw new BadRepresentationException();
+                                }
+                                iter.MoveNext();
+                                if(!int.TryParse(iter.Current,out duration))
+                                {
+                                    throw new BadRepresentationException();
+                                }
+                                break;
+                            case "Teachers":
+                                iter.MoveNext();
+                                if(!int.TryParse(iter.Current,out test))
+                                {
+                                    throw new BadRepresentationException();
+                                }
+                                for (int i = 0; i < test; i++)
+                                {
+                                    string teacher_code = iter.Current;
+                                    teacher_codes.Add(teacher_code);
+                                }
+                                break;
+                            case "Students":
+                                iter.MoveNext();
+                                if (!int.TryParse(iter.Current, out test))
+                                {
+                                    throw new BadRepresentationException();
+                                }
+                                for (int i = 0; i < test; i++)
+                                {
+                                    string student_code = iter.Current;
+                                    student_codes.Add(student_code);
+                                }
+                                break;
+                            default:
+                                throw new BadRepresentationException();
                         }
                     }
-                    tmp = new Class(code, _type);
+                    tmp = new Class(name,code,duration);
+                    foreach(string student_code in student_codes)
+                    {
+                        tmp.AddStudent(new Student(Array.Empty<string>(), "", 1, student_code));
+                    }
+                    foreach (string teacher_code in teacher_codes)
+                    {
+                        tmp.AddTeacher(new Teacher(Array.Empty<string>(), "", rank.KiB, teacher_code));
+                    }
                     classes.Add(tmp);
                 }
                 return classes.ToArray();
             }
         }
-        public ITeacher[] teachers { get; }
-        public IStudent[] students { get; }
-        private Stacks adaptee;
+        public ITeacher[] teachers { 
+            get 
+            {
+                List<ITeacher> teachers = new();
+                foreach((string,Stack<string>) teacher in this.adaptee.Teachers)
+                {
+                    Teacher tmp;
+                    int test;
+                    string code = teacher.Item1;
+                    var iter = teacher.Item2.GetEnumerator();
+                    List<string> names = new();
+                    string surname="";
+                    rank _rank=rank.KiB;
+                    List<string> class_codes = new();
+                    while (iter.MoveNext())
+                    {
+                        switch(iter.Current)
+                        {
+                            case "Names":
+                                iter.MoveNext();
+                                if(!int.TryParse(iter.Current,out test))
+                                {
+                                    throw new BadRepresentationException();
+                                }
+                                for(int i = 0; i < test;i++)
+                                {
+                                    iter.MoveNext();
+                                    names.Add(iter.Current);
+                                }
+                                break;
+                            case "Surname":
+                                iter.MoveNext();
+                                if (!int.TryParse(iter.Current, out test) || test!=1)
+                                {
+                                    throw new BadRepresentationException();
+                                }
+                                iter.MoveNext();
+                                surname = iter.Current;
+                                break;
+                            case "Rank":
+                                iter.MoveNext();
+                                if (!int.TryParse(iter.Current, out test) || test != 1)
+                                {
+                                    throw new BadRepresentationException();
+                                }
+                                iter.MoveNext();
+                                if(!Enum.TryParse(iter.Current, out _rank))
+                                {
+                                    throw new BadRepresentationException();
+                                }
+                                break;
+                            case "Classes":
+                                iter.MoveNext();
+                                if (!int.TryParse(iter.Current, out test))
+                                {
+                                    throw new BadRepresentationException();
+                                }
+                                for (int i = 0; i < test; i++)
+                                {
+                                    iter.MoveNext();
+                                    class_codes.Add(iter.Current);
+                                }
+                                break;
+                        }
+                        tmp = new Teacher(names.ToArray(),surname,_rank,code);
+                        foreach (string class_code in class_codes)
+                        {
+                            tmp.AddClass(new Class("", class_code, 0));
+                        }
+                        teachers.Add(tmp);
+                    }
+                }
+                return teachers.ToArray();
+            }
+        }
+        public IStudent[] students { 
+            get
+            {
+                List<IStudent> students = new();
+                foreach ((string, Stack<string>) student in this.adaptee.Students)
+                {
+                    Student tmp;
+                    int test;
+                    string code = student.Item1;
+                    var iter = student.Item2.GetEnumerator();
+                    List<string> names = new();
+                    string surname = "";
+                    int semester = 0;
+                    List<string> class_codes = new();
+                    while (iter.MoveNext())
+                    {
+                        switch (iter.Current)
+                        {
+                            case "Names":
+                                iter.MoveNext();
+                                if (!int.TryParse(iter.Current, out test))
+                                {
+                                    throw new BadRepresentationException();
+                                }
+                                for (int i = 0; i < test; i++)
+                                {
+                                    iter.MoveNext();
+                                    names.Add(iter.Current);
+                                }
+                                break;
+                            case "Surname":
+                                iter.MoveNext();
+                                if (!int.TryParse(iter.Current, out test) || test != 1)
+                                {
+                                    throw new BadRepresentationException();
+                                }
+                                iter.MoveNext();
+                                surname = iter.Current;
+                                break;
+                            case "Semester":
+                                iter.MoveNext();
+                                if (!int.TryParse(iter.Current, out test) || test != 1)
+                                {
+                                    throw new BadRepresentationException();
+                                }
+                                iter.MoveNext();
+                                if (!int.TryParse(iter.Current, out semester))
+                                {
+                                    throw new BadRepresentationException();
+                                }
+                                break;
+                            case "Classes":
+                                iter.MoveNext();
+                                if (!int.TryParse(iter.Current, out test))
+                                {
+                                    throw new BadRepresentationException();
+                                }
+                                for (int i = 0; i < test; i++)
+                                {
+                                    iter.MoveNext();
+                                    class_codes.Add(iter.Current);
+                                }
+                                break;
+                        }
+                        tmp = new Student(names.ToArray(), surname, semester, code);
+                        foreach (string class_code in class_codes)
+                        {
+                            tmp.AddClass(new Class("", class_code, 0));
+                        }
+                        students.Add(tmp);
+                    }
+                }
+                return students.ToArray();
+            }
+        }
         public StAdapter(Stacks adaptee)
         {
             this.adaptee = adaptee;
-        }
-        private static void ReadEnumerator(IEnumerator<string> iter)
-        {
-            string final = "";
-            int test;
-            string s = "";
-            while (iter.MoveNext())
-            {
-                string tmp = iter.Current;
-                if (int.TryParse(tmp, out test))
-                {
-                    for (int i = 0; i < test; i++)
-                    {
-                        iter.MoveNext();
-                        s += iter.Current + " ";
-                    }
-                    final = s + "\n" + final;
-                    s = "";
-                }
-                else
-                {
-                    s += tmp + ": ";
-                }
-            }
-            Console.Write(final);
-        }
-        public void Display()
-        {
-            Console.WriteLine("\nFORMAT 8:\n");
-            Console.WriteLine("Rooms:");
-            foreach ((int, Stack<string>) room in this.adaptee.rooms)
-            {
-                Console.WriteLine("Number: " + room.Item1);
-                var iter = room.Item2.GetEnumerator();
-                ReadEnumerator(iter);
-            }
-            Console.WriteLine("Classes:");
-            foreach ((string, Stack<string>) c in this.adaptee.classes)
-            {
-                Console.WriteLine("Code: " + c.Item1);
-                var iter = c.Item2.GetEnumerator();
-                ReadEnumerator(iter);
-            }
-            Console.WriteLine("Teachers:");
-            foreach ((string, Stack<string>) teacher in this.adaptee.teachers)
-            {
-                Console.WriteLine("Code: " + teacher.Item1);
-                var iter = teacher.Item2.GetEnumerator();
-                ReadEnumerator(iter);
-            }
-            Console.WriteLine("Students:");
-            foreach ((string, Stack<string>) student in this.adaptee.students)
-            {
-                Console.WriteLine("Code: " + student.Item1);
-                var iter = student.Item2.GetEnumerator();
-                ReadEnumerator(iter);
-            }
-        }
-        public void Select()
-        {
-            foreach ((string, Stack<string>) c in this.adaptee.classes)
-            {
-                bool student = false;
-                bool teacher = false;
-                int tmp, tmp2;
-                var iter = c.Item2.GetEnumerator();
-                while (iter.MoveNext())
-                {
-                    if (iter.Current == "Students")
-                    {
-                        iter.MoveNext();
-                        int.TryParse(iter.Current, out tmp);
-                        for (int i = 0; i < tmp; i++)
-                        {
-                            iter.MoveNext();
-                            string scode = iter.Current;
-                            foreach ((string, Stack<string>) s in this.adaptee.students)
-                            {
-                                if (s.Item1 == scode)
-                                {
-                                    var iters = s.Item2.GetEnumerator();
-                                    while (iters.MoveNext())
-                                    {
-                                        if (iters.Current == "Names")
-                                        {
-                                            iters.MoveNext();
-                                            int.TryParse(iters.Current, out tmp2);
-                                            if (tmp2 > 1)
-                                            {
-                                                student = true;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if (iter.Current == "Teachers")
-                    {
-                        iter.MoveNext();
-                        int.TryParse(iter.Current, out tmp);
-                        for (int i = 0; i < tmp; i++)
-                        {
-                            iter.MoveNext();
-                            string tcode = iter.Current;
-                            foreach ((string, Stack<string>) t in this.adaptee.teachers)
-                            {
-                                if (t.Item1 == tcode)
-                                {
-                                    var iters = t.Item2.GetEnumerator();
-                                    while (iters.MoveNext())
-                                    {
-                                        if (iters.Current == "Names")
-                                        {
-                                            iters.MoveNext();
-                                            int.TryParse(iters.Current, out tmp2);
-                                            if (tmp2 > 1)
-                                            {
-                                                teacher = true;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                if (!student) { continue; }
-                if (!teacher) { continue; }
-                iter = c.Item2.GetEnumerator();
-                Console.WriteLine("Code: " + c.Item1);
-                ReadEnumerator(iter);
-            }
         }
     }
 }

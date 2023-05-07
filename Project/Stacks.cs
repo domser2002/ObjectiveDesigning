@@ -9,10 +9,14 @@ namespace Project
 {
     public class Stacks
     {
-        public List<(int,Stack<string>)> rooms;
-        public List<(string, Stack<string>)> classes;
-        public List<(string, Stack<string>)> teachers;
-        public List<(string, Stack<string>)> students;
+        private List<(int, Stack<string>)> rooms;
+        public List<(int, Stack<string>)> Rooms => this.rooms;
+        private List<(string, Stack<string>)> classes;
+        public List<(string, Stack<string>)> Classes => this.classes;
+        private List<(string, Stack<string>)> teachers;
+        public List<(string, Stack<string>)> Teachers => this.teachers;
+        private List<(string, Stack<string>)> students;
+        public List<(string, Stack<string>)> Students => this.students;
         public Stacks()
         {
             this.rooms=new List<(int, Stack<string>)>();
@@ -106,5 +110,9 @@ namespace Project
             student.Item2.Push("Classes");
             this.students.Add(student);
         }
+        //public class Room
+        //{
+        //    (int, Stack<string>) room;
+        //}
     }
 }
