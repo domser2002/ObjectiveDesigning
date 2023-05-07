@@ -26,22 +26,23 @@ namespace Project
             Console.WriteLine("list <name_of_the_class>");
             Console.WriteLine("find <name_of_the_class> [<name_of_field> =|<|> value]");
             Console.WriteLine("exit");
-            //while (true)
-            //{
-            //    Console.WriteLine("Type your command:");
-            //    string? s = Console.ReadLine();
-            //    if (s is not null)
-            //    {
-            //        if (s == "exit")
-            //        {
-            //            break;
-            //        }
-            //        else
-            //        {
-            //            s.Process();
-            //        }
-            //    }
-            //}
+            Processor p= new Processor();
+            while (true)
+            {
+                Console.WriteLine("Type your command:");
+                string? s = Console.ReadLine();
+                if (s is not null)
+                {
+                    //if (s == "exit")
+                    //{
+                    //    break;
+                    //}
+                    //else
+                    //{
+                        p.Process(s);
+                    //}
+                }
+            }
         }
     }
 }

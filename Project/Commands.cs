@@ -1,24 +1,57 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-//namespace Project
-//{
-//    public static class Commands
-//    {
-//        public static void find()
-//        {
+namespace Project
+{
+    public class NotFoundCommand : IMyCommand
+    {
+        public string CommandName { get; set; }
+        public NotFoundCommand(string name) 
+        {
+            this.CommandName = name;
+        }
+        public void Execute()
+        {
+            Console.WriteLine("Couldn't find command: " + CommandName);
+        }
+    }
+    public class find : IMyCommand
+    {
+        public string CommandName
+        {
+            get
+            { return "find"; }
+        }
+        public void Execute()
+        {
 
-//        }
-//        public static void list()
-//        {
+        }
+    }
+    public class list : IMyCommand
+    {
+        public string CommandName
+        {
+            get
+            { return "list"; }
+        }
+        public void Execute()
+        {
 
-//        }
-//        public static void exit()
-//        {
-
-//        }
-//    }
-//}
+        }
+    }
+    public class exit : IMyCommand
+    {
+        public string CommandName
+        {
+            get
+            { return "exit"; }
+        }
+        public void Execute()
+        {
+            System.Environment.Exit(0);
+        }
+    }
+}

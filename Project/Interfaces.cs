@@ -56,4 +56,9 @@ namespace Project
         public IRepresentation? Current { get; }
         public bool MoveNext();
     }
+    public interface IMyCommand
+    {
+        string CommandName { get; }
+        void Execute();
+    }
 }

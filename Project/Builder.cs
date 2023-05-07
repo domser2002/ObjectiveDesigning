@@ -1,36 +1,39 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using System.Windows.Input;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
-//namespace Project
-//{
-//    public interface ICommand
-//    {
-//        string CommandName { get; }
-//        void Execute();
-//    }
-//    public class CommandFactory
-//    {
-//        private readonly IEnumerable<ICommand> commands = new ICommand[]
-//        {
-//            new Commands.find(),new Commands.list(),new Commands.exit()
-//        };
-//        public ICommand CreateCommand(string s)
-//        {
-//            var command=commands.FirstOrDefault(c => c.CommandName == s);
-//            return command;
-//        }
-//    }
+namespace Project
+{
+    public class Processor
+    {
+        private CommandFactory _commandFactory;
+        public Processor()
+        {
+            _commandFactory = new();
+        }
+        public void Process(string arg)
+        {
+            var command=_commandFactory.CreateCommand(arg);
+            command.Execute();
+        }
+    }
+    public class CommandFactory
+    {
+        private readonly IEnumerable<IMyCommand> commands = new IMyCommand[]
+        {
+            new find(),new list(),new exit()
+        };
+        public IMyCommand CreateCommand(string arg)
+        {
+            string[] args = arg.Split(' ');
+            string commandName = args[0];
+            var tmp = commands.FirstOrDefault(c => c.CommandName == commandName);
+            var command=tmp ?? new NotFoundCommand { CommandName=commandName};
+            return command;
+        }
+    }
 
-//    public static class Builder
-//    {
-//        public static void Process(this string s)
-//        {
-//            CommandFactory commandFactory = new CommandFactory();
-//            var command = commandFactory.CreateCommand(s);
-//        }
-//    }
-//}
+}
