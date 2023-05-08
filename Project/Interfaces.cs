@@ -58,7 +58,8 @@ namespace Project
     }
     public interface IMyCommand
     {
-        string CommandName { get; }
+        string[] Arguments { get; set; }
+        string? CommandName { get; }
         void Execute();
     }
 }

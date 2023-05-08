@@ -12,14 +12,14 @@ namespace Project
     public enum rank { KiB, MiB, GiB, TiB };
     public class Program
     {
+        //first representation
+        public static Objects first = ConstructData.ConstructFirst();
+        //second representation
+        public static Hashmap second = ConstructData.ConstructSecond();
+        //third representation
+        public static Stacks third = ConstructData.ConstructThird();
         public static void Main()
         {
-            //first representation
-            Objects first = ConstructData.ConstructFirst();
-            //second representation
-            Hashmap second = ConstructData.ConstructSecond();
-            //third representation
-            Stacks third = ConstructData.ConstructThird();
             //TestFunctionalities.TestAdapter(first,second,third);
             //TestFunctionalities.TestIterator(first, second, third);
             Console.WriteLine("Possible commands:");

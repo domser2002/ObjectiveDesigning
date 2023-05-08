@@ -24,14 +24,15 @@ namespace Project
     {
         private readonly IEnumerable<IMyCommand> commands = new IMyCommand[]
         {
-            new find(),new list(),new exit()
+            new find(),new list(),new exit(), new add()
         };
         public IMyCommand CreateCommand(string arg)
         {
             string[] args = arg.Split(' ');
             string commandName = args[0];
             var tmp = commands.FirstOrDefault(c => c.CommandName == commandName);
-            var command=tmp ?? new NotFoundCommand { CommandName=commandName};
+            var command=tmp ?? new NotFoundCommand();
+            command.Arguments = args;
             return command;
         }
     }

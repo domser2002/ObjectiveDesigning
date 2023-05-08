@@ -22,6 +22,30 @@ namespace Project
             this.teachers = teachers;
             this.students = students;
         }
+        public void AddStudent(Student s)
+        {
+            var tmp = this.students.ToList();
+            tmp.Add(s);
+            this.students=tmp.ToArray();
+        }
+        public void AddTeacher(Teacher t)
+        {
+            var tmp = this.teachers.ToList();
+            tmp.Add(t);
+            this.teachers = tmp.ToArray();
+        }
+        public void AddClass(Class c)
+        {
+            var tmp = this.classes.ToList();
+            tmp.Add(c);
+            this.classes = tmp.ToArray();
+        }
+        public void AddRoom(Room r)
+        {
+            var tmp = this.rooms.ToList();
+            tmp.Add(r);
+            this.rooms = tmp.ToArray();
+        }
         //public void Select()
         //{
         //    foreach (Class c in this.classes)
