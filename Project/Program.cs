@@ -20,7 +20,7 @@ namespace Project
         public static Stacks third = ConstructData.ConstructThird();
         public static void Main()
         {
-            //TestFunctionalities.TestAdapter(first,second,third);
+            TestFunctionalities.TestAdapter(first,second,third);
             //TestFunctionalities.TestIterator(first, second, third);
             Console.WriteLine("Possible commands:");
             Console.WriteLine("list <name_of_the_class>");

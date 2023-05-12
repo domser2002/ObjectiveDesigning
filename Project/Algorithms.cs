@@ -11,17 +11,13 @@ namespace Project
     {
         public static void Display(this IRoom room)
         {
+            Console.WriteLine();
             Console.WriteLine("Number: " + room.Number);
             Console.WriteLine("Type: " + room._Type);
-            string s = "";
-            foreach (IClass c in room.Classes)
-            {
-                s += c.Code + " ";
-            }
-            Console.WriteLine("Classes: " + s);
         }
         public static void Display(this ITeacher teacher)
         {
+            Console.WriteLine();
             string tmp = "";
             foreach (string name in teacher.Names)
             {
@@ -31,33 +27,17 @@ namespace Project
             Console.WriteLine("Surname: " + teacher.Surname);
             Console.WriteLine("Rank: " + teacher._Rank);
             Console.WriteLine("Code: " + teacher.Code);
-            string s = "";
-            foreach (IClass c in teacher.Classes)
-            {
-                s += c.Code + " ";
-            }
-            Console.WriteLine("Classes: " + s);
         }
         public static void Display(this IClass c)
         {
+            Console.WriteLine();
             Console.WriteLine("Name: " + c.Name);
             Console.WriteLine("Code: " + c.Code);
             Console.WriteLine("Duration: " + c.Duration);
-            string tmp = "";
-            foreach (IStudent s in c.Students)
-            {
-                tmp += s.Code + " ";
-            }
-            Console.WriteLine("Students: " + tmp);
-            tmp = "";
-            foreach (ITeacher t in c.Teachers)
-            {
-                tmp += t.Code + " ";
-            }
-            Console.WriteLine("Teachers: " + tmp);
         }
         public static void Display(this IStudent student)
         {
+            Console.WriteLine();
             string tmp = "";
             foreach (string name in student.Names)
             {
@@ -67,30 +47,28 @@ namespace Project
             Console.WriteLine("Surname: " + student.Surname);
             Console.WriteLine("Semester: " + student.Semester);
             Console.WriteLine("Code: " + student.Code);
-            string s = "";
-            foreach (IClass c in student.Classes)
-            {
-                s += c.Code + " ";
-            }
-            Console.WriteLine("Classes: " + s);
         }
         public static void Display(this IRepresentation representation)
         {
+            Console.WriteLine();
             Console.WriteLine("Rooms:");
             foreach(IRoom room in representation.rooms)
             {
                 room.Display();
             }
+            Console.WriteLine();
             Console.WriteLine("Classes:");
             foreach(IClass c in representation.classes)
             {
                 c.Display();
             }
+            Console.WriteLine();
             Console.WriteLine("Students:");
             foreach(IStudent student in representation.students)
             {
                 student.Display();
             }
+            Console.WriteLine();
             Console.WriteLine("Teachers:");
             foreach(ITeacher teacher in representation.teachers)
             {
@@ -108,6 +86,7 @@ namespace Project
                     if (s.Names.Count > 1)
                     {
                         student = true;
+                        break;
                     }
                 }
                 if (!student) { continue; }
@@ -116,6 +95,7 @@ namespace Project
                     if (t.Names.Count > 1)
                     {
                         teacher = true;
+                        break;
                     }
                 }
                 if (!teacher) { continue; }
