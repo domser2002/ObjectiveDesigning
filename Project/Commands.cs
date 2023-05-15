@@ -52,7 +52,7 @@ namespace Project
             switch (Arguments[1].ToLower())
             {
                 case "students":
-                    foreach (Student s in Program.first.students)
+                    foreach (Student s in Program.first.Students)
                     {
                         bool print = true;
                         foreach((string,string) requirment in requirments)
@@ -92,7 +92,7 @@ namespace Project
                     }
                     break;
                 case "teachers":
-                    foreach (Teacher t in Program.first.teachers)
+                    foreach (Teacher t in Program.first.Teachers)
                     {
                         bool print = true;
                         foreach((string,string) requirment in requirments)
@@ -132,7 +132,7 @@ namespace Project
                     }
                     break;
                 case "classes":
-                    foreach (Class c in Program.first.classes)
+                    foreach (Class c in Program.first.Classes)
                     {
                         bool print = true;
                         foreach((string,string) requirment in requirments)
@@ -166,7 +166,7 @@ namespace Project
                     }
                     break;
                 case "rooms":
-                    foreach (Room r in Program.first.rooms)
+                    foreach (Room r in Program.first.Rooms)
                     {
                         bool print = true;
                         foreach((string,string) requirment in requirments)
@@ -219,7 +219,7 @@ namespace Project
             switch(Arguments[1].ToLower())
             {
                 case "students":
-                    foreach(Student s in Program.first.students)
+                    foreach(Student s in Program.first.Students)
                     {
                         s.Display();
                     }
@@ -230,19 +230,19 @@ namespace Project
                     //}
                     break;
                 case "teachers":
-                    foreach (Teacher t in Program.first.teachers)
+                    foreach (Teacher t in Program.first.Teachers)
                     {
                         t.Display();
                     }
                     break;
                 case "classes":
-                    foreach (Class c in Program.first.classes)
+                    foreach (Class c in Program.first.Classes)
                     {
                         c.Display();
                     }
                     break;
                 case "rooms":
-                    foreach (Room r in Program.first.rooms)
+                    foreach (Room r in Program.first.Rooms)
                     {
                         r.Display();
                     }

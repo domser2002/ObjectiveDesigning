@@ -8,7 +8,7 @@ namespace Project
 {
     public class HmAdapter : IRepresentation
     {
-        public IRoom[] rooms
+        public IRoom[] Rooms
         {
             get
             {
@@ -20,7 +20,7 @@ namespace Project
                 return rooms.ToArray();
             }
         }
-        public IClass[] classes
+        public IClass[] Classes
         {
             get
             {
@@ -32,7 +32,7 @@ namespace Project
                 return classes.ToArray();
             }
         }
-        public ITeacher[] teachers
+        public ITeacher[] Teachers
         {
             get
             {
@@ -44,7 +44,7 @@ namespace Project
                 return teachers.ToArray();
             }
         }
-        public IStudent[] students
+        public IStudent[] Students
         {
             get
             {
@@ -115,6 +115,7 @@ namespace Project
         {
             this.adaptee = teacher;
         }
+        public void Display() => Extensions.Display(this);
     }
     public class HmRoomAdapter : IRoom
     {
@@ -138,6 +139,7 @@ namespace Project
         {
             this.adaptee = room;
         }
+        public void Display() => Extensions.Display(this);
     }
     public class HmClassAdapter : IClass
     {
@@ -189,6 +191,7 @@ namespace Project
                 return students;
             }
         }
+        public void Display() => Extensions.Display(this);
     }
     public class HmStudentAdapter : IStudent
     {
@@ -243,5 +246,6 @@ namespace Project
                 return (tmp is not null) ? tmp : "";
             }
         }
+        public void Display() => Extensions.Display(this);
     }
 }

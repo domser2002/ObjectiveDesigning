@@ -20,8 +20,6 @@ namespace Project
         public static Stacks third = ConstructData.ConstructThird();
         public static void Main()
         {
-            TestFunctionalities.TestAdapter(first,second,third);
-            //TestFunctionalities.TestIterator(first, second, third);
             Console.WriteLine("Possible commands:");
             Console.WriteLine("list <name_of_the_class>");
             Console.WriteLine("find <name_of_the_class> [<name_of_field> =|<|> value]");
@@ -33,14 +31,18 @@ namespace Project
                 string? s = Console.ReadLine();
                 if (s is not null)
                 {
-                    //if (s == "exit")
-                    //{
-                    //    break;
-                    //}
-                    //else
-                    //{
+                    if (s.ToLower() == "test adapter")
+                    {
+                        TestFunctionalities.TestAdapter(first, second, third);
+                    }
+                    else if (s.ToLower() == "test iterator")
+                    {
+                        TestFunctionalities.TestIterator(first, second, third);
+                    }
+                    else
+                    {
                         p.Process(s);
-                    //}
+                    }
                 }
             }
         }

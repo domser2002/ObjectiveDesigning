@@ -11,40 +11,40 @@ namespace Project
 {
     public class Objects : IRepresentation
     {
-        public IRoom[] rooms { get; set; }
-        public IClass[] classes { get; set; }
-        public ITeacher[] teachers { get; set; }
-        public IStudent[] students { get; set; }
+        public IRoom[] Rooms { get; set; }
+        public IClass[] Classes { get; set; }
+        public ITeacher[] Teachers { get; set; }
+        public IStudent[] Students { get; set; }
         public Objects(Room[] rooms, Class[] classes, Teacher[] teachers, Student[] students)
         {
-            this.rooms = rooms;
-            this.classes = classes;
-            this.teachers = teachers;
-            this.students = students;
+            this.Rooms = rooms;
+            this.Classes = classes;
+            this.Teachers = teachers;
+            this.Students = students;
         }
         public void AddStudent(Student s)
         {
-            var tmp = this.students.ToList();
+            var tmp = this.Students.ToList();
             tmp.Add(s);
-            this.students=tmp.ToArray();
+            this.Students=tmp.ToArray();
         }
         public void AddTeacher(Teacher t)
         {
-            var tmp = this.teachers.ToList();
+            var tmp = this.Teachers.ToList();
             tmp.Add(t);
-            this.teachers = tmp.ToArray();
+            this.Teachers = tmp.ToArray();
         }
         public void AddClass(Class c)
         {
-            var tmp = this.classes.ToList();
+            var tmp = this.Classes.ToList();
             tmp.Add(c);
-            this.classes = tmp.ToArray();
+            this.Classes = tmp.ToArray();
         }
         public void AddRoom(Room r)
         {
-            var tmp = this.rooms.ToList();
+            var tmp = this.Rooms.ToList();
             tmp.Add(r);
-            this.rooms = tmp.ToArray();
+            this.Rooms = tmp.ToArray();
         }
         //public void Select()
         //{
@@ -119,6 +119,7 @@ namespace Project
         {
             this.classes.Add(c);
         }
+        public void Display() => Extensions.Display(this); 
     }
     public class Class : IClass
     {
@@ -148,6 +149,7 @@ namespace Project
         {
             this.teachers.Add(t);
         }
+        public void Display() => Extensions.Display(this);
     }
     public class Teacher : ITeacher
     {
@@ -177,6 +179,7 @@ namespace Project
         {
             this.classes.Add(c);
         }
+        public void Display() => Extensions.Display(this);
     }
     public class Student : IStudent
     {
@@ -206,5 +209,6 @@ namespace Project
         {
             this.classes.Add(c);
         }
+        public void Display() => Extensions.Display(this);
     }
 }

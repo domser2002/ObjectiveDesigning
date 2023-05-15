@@ -29,22 +29,33 @@ namespace Project
         }
         public static void TestIterator(Objects first, Hashmap second, Stacks third)
         {
-            IRepresentation a = new HmAdapter(second);
-            IRepresentation st = new StAdapter(third);
-            SortedArray L = new((IRepresentation r1, IRepresentation r2) =>
+            SortedArray L = new((IObject obj1, IObject obj2) =>
             {
-                if (r1.Equals(r2)) return 0;
-                if (r1.GetHashCode() > r2.GetHashCode()) return 1;
-                else return -1;
+                if (obj1.GetType() != obj2.GetType()) return 0;
+                return obj1.GetHashCode().CompareTo(obj2.GetHashCode());
             }
             );
-            L.Insert(first);
-            L.Insert(a);
-            L.Insert(st);
-            var x = Extensions.Find(L.GetForwardIterator(), (IRepresentation arg1) => (arg1.GetHashCode().Equals(a.GetHashCode())));
-            x?.Display();
-            Console.WriteLine(Extensions.CountIf(L.GetForwardIterator(),
-                (IRepresentation arg1) => (arg1.GetHashCode().Equals(st.GetHashCode()))));
+            IObject? a = null;
+            foreach(Student s in first.Students)
+            {
+                L.Insert(s);
+            }
+            foreach (Room r in first.Rooms)
+            {
+                L.Insert(r);
+            }
+            foreach (Teacher t in first.Teachers)
+            {
+                L.Insert(t);
+            }
+            foreach (Class c in first.Classes)
+            {
+                L.Insert(c);
+            }
+            //var x = Extensions.Find(L, (IObject arg1) => (arg1.GetHashCode().Equals(a.GetHashCode())),true);
+            //x?.Display();
+            //Console.WriteLine(Extensions.CountIf(L.GetForwardIterator(),
+            //    (IRepresentation arg1) => (arg1.GetHashCode().Equals(st.GetHashCode()))));
         }
     }
 }

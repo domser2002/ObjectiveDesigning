@@ -8,18 +8,18 @@ namespace Project
 {
     public interface IRepresentation
     {
-        public IRoom[] rooms { get; }
-        public IClass[] classes { get; }
-        public ITeacher[] teachers { get; }
-        public IStudent[] students { get; }
+        public IRoom[] Rooms { get; }
+        public IClass[] Classes { get; }
+        public ITeacher[] Teachers { get; }
+        public IStudent[] Students { get; }
     }
-    public interface IRoom
+    public interface IRoom : IObject
     {
         public int Number { get; }
         public type _Type { get; }
         public List<IClass> Classes { get; }
     }
-    public interface IClass
+    public interface IClass : IObject
     {
         public string Name { get; }
         public string Code { get; }
@@ -28,7 +28,7 @@ namespace Project
         public List<IStudent> Students { get; }
 
     }
-    public interface ITeacher
+    public interface ITeacher : IObject
     {
         public List<string> Names { get; }
         public string Surname { get; }
@@ -36,7 +36,7 @@ namespace Project
         public string Code { get; }
         public List<IClass> Classes { get; }
     }
-    public interface IStudent
+    public interface IStudent : IObject
     {
         public List<string> Names { get; }
         public string Surname { get; }
@@ -44,16 +44,20 @@ namespace Project
         public string Code { get; }
         public List<IClass> Classes { get; }
     }
+    public interface IObject
+    {
+        public void Display();
+    }
     public interface IMyCollection
     {
-        public void AddObject(IRepresentation obj);
-        public bool RemoveObject(IRepresentation obj);
+        public void AddObject(IObject obj);
+        public bool RemoveObject(IObject obj);
         public IMyiterator GetForwardIterator();
         public IMyiterator GetBackwardIterator();
     }
     public interface IMyiterator
     {
-        public IRepresentation? Current { get; }
+        public IObject? Current { get; set; }
         public bool MoveNext();
     }
     public interface IMyCommand

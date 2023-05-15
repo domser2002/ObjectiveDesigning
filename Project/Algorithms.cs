@@ -52,32 +52,32 @@ namespace Project
         {
             Console.WriteLine();
             Console.WriteLine("Rooms:");
-            foreach(IRoom room in representation.rooms)
+            foreach(IRoom room in representation.Rooms)
             {
                 room.Display();
             }
             Console.WriteLine();
             Console.WriteLine("Classes:");
-            foreach(IClass c in representation.classes)
+            foreach(IClass c in representation.Classes)
             {
                 c.Display();
             }
             Console.WriteLine();
             Console.WriteLine("Students:");
-            foreach(IStudent student in representation.students)
+            foreach(IStudent student in representation.Students)
             {
                 student.Display();
             }
             Console.WriteLine();
             Console.WriteLine("Teachers:");
-            foreach(ITeacher teacher in representation.teachers)
+            foreach(ITeacher teacher in representation.Teachers)
             {
                 teacher.Display();
             }
         }
         public static void Select(this IRepresentation representation)
         {
-            foreach (IClass c in representation.classes)
+            foreach (IClass c in representation.Classes)
             {
                 bool student = false;
                 bool teacher = false;
@@ -107,14 +107,11 @@ namespace Project
             if (!dictionary.ContainsKey(key))
                 dictionary.Add(key, value);
         }
-        public static IRepresentation? Find(this IMyCollection collection,Func<IRepresentation,
+        public static IObject? Find(this IMyCollection collection,Func<IObject,
             bool> pred,bool frombeginning)
         {
-            IMyiterator iter;
-            if(frombeginning)
-                iter=collection.GetForwardIterator();
-            else
-                iter=collection.GetBackwardIterator();
+            IMyiterator iter=frombeginning?collection.GetForwardIterator():
+                collection.GetBackwardIterator();
             while(iter is not null && iter.Current is not null)
             {
                 if(pred(iter.Current)) return iter.Current;
@@ -122,14 +119,11 @@ namespace Project
             }
             return null;
         }
-        public static void Print(this IMyCollection collection, Func<IRepresentation,
+        public static void Print(this IMyCollection collection, Func<IObject,
             bool> pred, bool frombeginning)
         {
-            IMyiterator iter;
-            if (frombeginning)
-                iter = collection.GetForwardIterator();
-            else
-                iter = collection.GetBackwardIterator();
+            IMyiterator iter = frombeginning ? collection.GetForwardIterator() :
+                collection.GetBackwardIterator();
             while (iter is not null && iter.Current is not null)
             {
                 if (pred(iter.Current))
@@ -137,25 +131,18 @@ namespace Project
                 if (!iter.MoveNext()) break;
             }
         }
-        public static IRepresentation? Find(IMyiterator iter, Func<IRepresentation, bool> pred)
+        public static void ForEach(IMyiterator iterator,Action<IObject?> func)
         {
-            while (iter is not null && iter.Current is not null)
+            //IMyiterator tmp=iterator;
+            while (iterator is not null && iterator.Current is not null)
             {
-                if (pred(iter.Current)) return iter.Current;
-                if (!iter.MoveNext()) break;
-            }
-            return null;
-        }
-        public static void ForEach(IMyiterator iterator,Action<IRepresentation?> func)
-        {
-            IMyiterator tmp=iterator;
-            while (tmp is not null && tmp.Current is not null)
-            {
-                func(tmp.Current);
-                if (!tmp.MoveNext()) break;
+                IObject tmp=iterator.Current;
+                func(iterator.Current);
+                iterator.Current = tmp;
+                if (!iterator.MoveNext()) break;
             }
         }
-        public static int CountIf(IMyiterator iterator, Func<IRepresentation,
+        public static int CountIf(IMyiterator iterator, Func<IObject,
             bool> pred)
         {
             int count = 0;

@@ -13,7 +13,7 @@ namespace Project
     public class StAdapter : IRepresentation
     {
         private readonly Stacks adaptee;
-        public IRoom[] rooms
+        public IRoom[] Rooms
         {
             get
             {
@@ -72,7 +72,7 @@ namespace Project
                 return rooms.ToArray();
             }
         }
-        public IClass[] classes {
+        public IClass[] Classes {
             get
             {
                 List<IClass> classes = new List<IClass>();
@@ -156,7 +156,7 @@ namespace Project
                 return classes.ToArray();
             }
         }
-        public ITeacher[] teachers { 
+        public ITeacher[] Teachers { 
             get 
             {
                 List<ITeacher> teachers = new();
@@ -231,7 +231,7 @@ namespace Project
                 return teachers.ToArray();
             }
         }
-        public IStudent[] students { 
+        public IStudent[] Students { 
             get
             {
                 List<IStudent> students = new();
