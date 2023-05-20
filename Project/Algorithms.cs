@@ -13,7 +13,7 @@ namespace Project
         {
             Console.WriteLine();
             Console.WriteLine("Number: " + room.Number);
-            Console.WriteLine("Type: " + room._Type);
+            Console.WriteLine("Type: " + room.Type);
         }
         public static void Display(this ITeacher teacher)
         {
@@ -25,7 +25,7 @@ namespace Project
             }
             Console.WriteLine("Names: " + tmp);
             Console.WriteLine("Surname: " + teacher.Surname);
-            Console.WriteLine("Rank: " + teacher._Rank);
+            Console.WriteLine("Rank: " + teacher.Rank);
             Console.WriteLine("Code: " + teacher.Code);
         }
         public static void Display(this IClass c)
@@ -102,7 +102,7 @@ namespace Project
                 c.Display();
             }
         }
-        public static void AddOrIgnore(this Dictionary<int, string> dictionary, int key, string value)
+        public static void AddOrIgnore<T1,T2>(this Dictionary<T1, T2> dictionary, T1 key, T2 value) where T1 : notnull
         {
             if (!dictionary.ContainsKey(key))
                 dictionary.Add(key, value);

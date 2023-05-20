@@ -24,7 +24,7 @@ namespace Project
             this.teachers=new List<(string, Stack<string>)>();
             this.students=new List<(string, Stack<string>)>();
         }
-        public void AddRoom(int number, type _type, string[] class_codes)
+        public void AddRoom(int number, Type _type, string[] class_codes)
         {
             (int, Stack<string>) room;
             room.Item1 = number;
@@ -60,7 +60,7 @@ namespace Project
             c.Item2.Push("Students");
             this.classes.Add(c);
         }
-        public void AddTeacher(string[] names, string surname, rank _rank, string code, string[] class_codes)
+        public void AddTeacher(string[] names, string surname, Rank _rank, string code, string[] class_codes)
         {
             (string,Stack<string>) teacher;
             teacher.Item1 = code;

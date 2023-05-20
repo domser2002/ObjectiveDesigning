@@ -11,20 +11,20 @@ namespace Project
     {
         public string[] Arguments { get; set; }
         public string? CommandName => (Arguments.Length > 0) ? Arguments[0] : null;
-        public NotFoundCommand() 
+        public NotFoundCommand()
         {
-            Arguments=Array.Empty<string>();
+            Arguments = Array.Empty<string>();
         }
         public void Execute()
         {
             Console.WriteLine("Couldn't find command: " + CommandName);
         }
     }
-    public class find : IMyCommand
+    public class Find : IMyCommand
     {
         public string[] Arguments { get; set; }
         public string? CommandName => "find";
-        public find()
+        public Find()
         {
             Arguments = Array.Empty<string>();
         }
@@ -35,229 +35,104 @@ namespace Project
                 Console.WriteLine("Incorrect arguments");
                 return;
             }
-            List<(string,string)> requirments = new();
-            for (int i=2;i<Arguments.Length;i++)
+            List<(string, string, string)> requirments = new();
+            for (int i = 2; i < Arguments.Length; i += 3)
             {
-                string requirment = Arguments[i];
-                string[] sub=requirment.Split('=');
-                if (sub.Length != 2) 
+                if (i + 2 >= Arguments.Length)
                 {
                     Console.WriteLine("Incorrect arguments");
                     return;
                 }
-                string name_of_field = sub[0];
-                string value = sub[1];
-                requirments.Add((name_of_field,value));
+                string name_of_field = Arguments[i];
+                string op = Arguments[i + 1];
+                string value = Arguments[i + 2];
+                requirments.Add((name_of_field, op, value));
             }
-            switch (Arguments[1].ToLower())
+            string className = Arguments[1].ToLower();
+            CommandFactory.argumentParser.TryGetValue(className, out IObject[]? collection);
+            if (collection is not null)
             {
-                case "students":
-                    foreach (Student s in Program.first.Students)
+                foreach (IObject o in collection)
+                {
+                    bool print = true;
+                    foreach ((string, string, string) requirment in requirments)
                     {
-                        bool print = true;
-                        foreach((string,string) requirment in requirments)
+                        o.Properties.TryGetValue(requirment.Item1.ToLower(), out object? obj);
+                        if (obj is not null)
                         {
-                            switch(requirment.Item1.ToLower())
+                            switch (requirment.Item2)
                             {
-                                case "surname":
-                                    if(s.Surname!=requirment.Item2)
+                                case "=":
+                                    if (obj.ToString() != requirment.Item3)
                                     {
                                         print = false;
                                     }
                                     break;
-                                case "names":
-                                    if(!s.Names.Contains(requirment.Item2)) 
+                                case ">":
+                                    if (int.TryParse(obj.ToString(), out int t1) && int.TryParse(requirment.Item3, out int t2))
+                                    {
+                                        if (t1 <= t2)
+                                            print = false;
+                                    }
+                                    else if (String.Compare(obj.ToString(), requirment.Item3) <= 0)
                                     {
                                         print = false;
                                     }
                                     break;
-                                case "semester":
-                                    int sem;
-                                    int.TryParse(requirment.Item2, out sem);
-                                    if(sem!=s.Semester)
+                                case "<":
+                                    if (int.TryParse(obj.ToString(), out int t3) && int.TryParse(requirment.Item3, out int t4))
                                     {
-                                        print = false;
+                                        if (t3 >= t4)
+                                            print = false;
                                     }
-                                    break;
-                                case "code":
-                                    if(s.Code!=requirment.Item1)
+                                    else if (String.Compare(obj.ToString(), requirment.Item3) >= 0)
                                     {
                                         print = false;
                                     }
                                     break;
                             }
                         }
-                        if(print)
-                            s.Display();
                     }
-                    break;
-                case "teachers":
-                    foreach (Teacher t in Program.first.Teachers)
-                    {
-                        bool print = true;
-                        foreach((string,string) requirment in requirments)
-                        {
-                            switch (requirment.Item1.ToLower())
-                            {
-                                case "surname":
-                                    if (t.Surname != requirment.Item2)
-                                    {
-                                        print = false;
-                                    }
-                                    break;
-                                case "names":
-                                    if (!t.Names.Contains(requirment.Item2))
-                                    {
-                                        print = false;
-                                    }
-                                    break;
-                                case "rank":
-                                    rank sem;
-                                    Enum.TryParse(requirment.Item2, out sem);
-                                    if (sem != t._Rank)
-                                    {
-                                        print = false;
-                                    }
-                                    break;
-                                case "code":
-                                    if (t.Code != requirment.Item1)
-                                    {
-                                        print = false;
-                                    }
-                                    break;
-                            }
-                        }
-                        if (print)
-                            t.Display();
-                    }
-                    break;
-                case "classes":
-                    foreach (Class c in Program.first.Classes)
-                    {
-                        bool print = true;
-                        foreach((string,string) requirment in requirments)
-                        {
-                            switch (requirment.Item1.ToLower())
-                            {
-                                case "Name":
-                                    if(c.Name != requirment.Item2)
-                                    {
-                                        print = false;  
-                                    }
-                                    break;
-                                case "Code":
-                                    if (c.Code != requirment.Item2)
-                                    {
-                                        print = false;
-                                    }
-                                    break;
-                                case "Duration":
-                                    int duration;
-                                    int.TryParse(requirment.Item2, out duration);
-                                    if(c.Duration!= duration)
-                                    {
-                                        print = false;
-                                    }
-                                    break;
-                            }
-                        }
-                        if(print)
-                            c.Display();
-                    }
-                    break;
-                case "rooms":
-                    foreach (Room r in Program.first.Rooms)
-                    {
-                        bool print = true;
-                        foreach((string,string) requirment in requirments)
-                        {
-                            switch (requirment.Item1.ToLower())
-                            {
-                                case "number":
-                                    int number;
-                                    int.TryParse(requirment.Item2, out number);
-                                    if(r.Number != number)
-                                    {
-                                        print = false;
-                                    }
-                                    break;
-                                case "type":
-                                    type _type;
-                                    Enum.TryParse(requirment.Item2,out _type);
-                                    if(r._Type!=_type)
-                                    {
-                                        print = false;
-                                    }
-                                    break;
-                            }
-                        }
-                        if(print)
-                            r.Display();
-                    }
-                    break;
-                default:
-                    Console.WriteLine("Incorrect arguments");
-                    break;
+                    if (print)
+                        o.Display();
+                }
             }
         }
     }
-    public class list : IMyCommand
+    public class List : IMyCommand
     {
         public string[] Arguments { get; set; }
         public string? CommandName => "list";
-        public list()
+        public List()
         {
             Arguments = Array.Empty<string>();
         }
         public void Execute()
         {
-            if(Arguments.Length != 2 || Arguments[1] is null) 
+            if (Arguments.Length != 2 || Arguments[1] is null)
             {
                 Console.WriteLine("Incorrect arguments");
                 return;
             }
-            switch(Arguments[1].ToLower())
+            CommandFactory.argumentParser.TryGetValue(Arguments[1].ToLower(), out IObject[]? collection);
+            if (collection is not null)
             {
-                case "students":
-                    foreach(Student s in Program.first.Students)
-                    {
-                        s.Display();
-                    }
-                    //foreach(Student s in new StAdapter(Program.third).students)
-                    //{
-                    //    if (!Program.first.students.Contains(s))
-                    //        s.Display();
-                    //}
-                    break;
-                case "teachers":
-                    foreach (Teacher t in Program.first.Teachers)
-                    {
-                        t.Display();
-                    }
-                    break;
-                case "classes":
-                    foreach (Class c in Program.first.Classes)
-                    {
-                        c.Display();
-                    }
-                    break;
-                case "rooms":
-                    foreach (Room r in Program.first.Rooms)
-                    {
-                        r.Display();
-                    }
-                    break;
-                default:
-                    Console.WriteLine("Incorrect arguments");
-                    break;
+                foreach (IObject o in collection)
+                {
+                    o.Display();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Incorrect arguments");
             }
         }
     }
-    public class exit : IMyCommand
+    public class Exit : IMyCommand
     {
         public string[] Arguments { get; set; }
         public string? CommandName => "exit";
-        public exit()
+        public Exit()
         {
             Arguments = Array.Empty<string>();
         }
@@ -266,11 +141,11 @@ namespace Project
             System.Environment.Exit(0);
         }
     }
-    public class add : IMyCommand
+    public class Add : IMyCommand
     {
         public string[] Arguments { get; set; }
         public string? CommandName => "add";
-        public add()
+        public Add()
         {
             Arguments = Array.Empty<string>();
         }
@@ -284,20 +159,20 @@ namespace Project
             switch (Arguments[1].ToLower())
             {
                 case "student":
-                        Console.Write("Names=");
-                        string tosub = Console.ReadLine()??"";
-                        string[] names = tosub.Split(' ');
-                        Console.Write("Surname=");
-                        string surname=Console.ReadLine()??"";
-                        Console.Write("Semester=");
-                        int.TryParse(Console.ReadLine(), out int semester);
-                        Console.Write("Code=");
-                        string code = Console.ReadLine()??"";
-                        Student s = new Student(names, surname, semester, code);
-                    if (Arguments[2]=="base")
+                    Console.Write("Names=");
+                    string tosub = Console.ReadLine() ?? "";
+                    string[] names = tosub.Split(' ');
+                    Console.Write("Surname=");
+                    string surname = Console.ReadLine() ?? "";
+                    Console.Write("Semester=");
+                    int.TryParse(Console.ReadLine(), out int semester);
+                    Console.Write("Code=");
+                    string code = Console.ReadLine() ?? "";
+                    Student s = new Student(names, surname, semester, code);
+                    if (Arguments[2] == "base")
                         Program.first.AddStudent(s);
                     if (Arguments[2] == "secondary")
-                        Program.third.AddStudent(names, surname, semester, code,Array.Empty<string>());
+                        Program.third.AddStudent(names, surname, semester, code, Array.Empty<string>());
                     break;
                 case "teacher":
                     Console.Write("Names=");
@@ -306,11 +181,11 @@ namespace Project
                     Console.Write("Surname=");
                     surname = Console.ReadLine() ?? "";
                     Console.Write("Rank=");
-                    Enum.TryParse(Console.ReadLine(), out rank _rank);
+                    Enum.TryParse(Console.ReadLine(), out Rank _rank);
                     Console.Write("Code=");
                     code = Console.ReadLine() ?? "";
-                    Teacher t =  new Teacher(names, surname, _rank, code);
-                    if (Arguments[2]=="base")
+                    Teacher t = new Teacher(names, surname, _rank, code);
+                    if (Arguments[2] == "base")
                         Program.first.AddTeacher(t);
                     if (Arguments[2] == "secondary")
                         Program.third.AddTeacher(names, surname, _rank, code, Array.Empty<string>());
@@ -323,7 +198,7 @@ namespace Project
                     Console.Write("Duration=");
                     int.TryParse(Console.ReadLine(), out int duration);
                     Class c = new Class(name, code, duration);
-                    if (Arguments[2]=="base")
+                    if (Arguments[2] == "base")
                         Program.first.AddClass(c);
                     if (Arguments[2] == "secondary")
                         Program.third.AddClass(name, code, duration, Array.Empty<string>(), Array.Empty<string>());
@@ -332,9 +207,9 @@ namespace Project
                     Console.Write("Number=");
                     int.TryParse(Console.ReadLine(), out int number);
                     Console.Write("Type=");
-                    Enum.TryParse(Console.ReadLine(), out type _type);
+                    Enum.TryParse(Console.ReadLine(), out Type _type);
                     Room r = new Room(number, _type);
-                    if (Arguments[2]=="base")
+                    if (Arguments[2] == "base")
                         Program.first.AddRoom(r);
                     if (Arguments[2] == "secondary")
                         Program.third.AddRoom(number, _type, Array.Empty<string>());

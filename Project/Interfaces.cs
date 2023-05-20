@@ -16,7 +16,7 @@ namespace Project
     public interface IRoom : IObject
     {
         public int Number { get; }
-        public type _Type { get; }
+        public Type Type { get; }
         public List<IClass> Classes { get; }
     }
     public interface IClass : IObject
@@ -32,7 +32,7 @@ namespace Project
     {
         public List<string> Names { get; }
         public string Surname { get; }
-        public rank _Rank { get; }
+        public Rank Rank { get; }
         public string Code { get; }
         public List<IClass> Classes { get; }
     }
@@ -47,6 +47,7 @@ namespace Project
     public interface IObject
     {
         public void Display();
+        public Dictionary<string, object> Properties { get; }
     }
     public interface IMyCollection
     {

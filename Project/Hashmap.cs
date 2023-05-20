@@ -25,11 +25,11 @@ namespace Project
         {
             private int number;
             public int Number { get => this.number; }
-            private type _type;
-            public type _Type { get => this._type; }
+            private Type _type;
+            public Type _Type { get => this._type; }
             private List<Hashmap.Class> classes;
             public List<Hashmap.Class> Classes { get => this.classes; }
-            public Room(int number, type _type)
+            public Room(int number, Type _type)
             {
                 this.number = number;
                 this._type = _type;
@@ -79,13 +79,13 @@ namespace Project
             public List<int> Names { get => this.names; }
             private int surname;
             public int Surname { get => this.surname; }
-            private rank _rank;
-            public rank _Rank { get => this._rank; }
+            private Rank _rank;
+            public Rank _Rank { get => this._rank; }
             private int code;
             public int Code { get => this.code; }
             private List<Hashmap.Class> classes;
             public List<Hashmap.Class> Classes { get => this.classes; }
-            public Teacher(string[] names, string surname, rank _rank, string code)
+            public Teacher(string[] names, string surname, Rank _rank, string code)
             {
                 this.names = new List<int>();
                 foreach (string name in names)

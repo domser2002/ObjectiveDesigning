@@ -7,24 +7,13 @@ using System.Windows.Input;
 
 namespace Project
 {
-    public class Processor
-    {
-        private CommandFactory _commandFactory;
-        public Processor()
-        {
-            _commandFactory = new();
-        }
-        public void Process(string arg)
-        {
-            var command=_commandFactory.CreateCommand(arg);
-            command.Execute();
-        }
-    }
     public class CommandFactory
     {
+        public static Dictionary<string, IObject[]> argumentParser = new();
+        //public static Dictionary<string,string> fieldinclass=new();
         private readonly IEnumerable<IMyCommand> commands = new IMyCommand[]
         {
-            new find(),new list(),new exit(), new add()
+            new Find(),new List(),new Exit(), new Add()
         };
         public IMyCommand CreateCommand(string arg)
         {

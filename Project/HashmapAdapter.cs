@@ -64,16 +64,16 @@ namespace Project
     }
     public class HmTeacherAdapter : ITeacher
     {
+        public Dictionary<string,object> Properties { get; }
         private readonly Hashmap.Teacher adaptee;
         public List<string> Names
         {
             get
             {
-                List<string> names = new List<string>();
-                string? tmp;
+                List<string> names = new();
                 foreach (int name in this.adaptee.Names)
                 {
-                    bool v = Hashmap.Teacher.Map.TryGetValue(name, out tmp);
+                    bool v = Hashmap.Teacher.Map.TryGetValue(name, out string? tmp);
                     if (v && tmp is not null)
                         names.Add(tmp);
                 }
@@ -84,18 +84,16 @@ namespace Project
         {
             get
             {
-                string? tmp;
-                Hashmap.Teacher.Map.TryGetValue(this.adaptee.Surname, out tmp);
+                Hashmap.Teacher.Map.TryGetValue(this.adaptee.Surname, out string? tmp);
                 return (tmp is not null) ? tmp : "";
             }
         }
-        public rank _Rank => this.adaptee._Rank;
+        public Rank Rank => this.adaptee._Rank;
         public string Code
         {
             get
             {
-                string? tmp;
-                Hashmap.Teacher.Map.TryGetValue(this.adaptee.Code, out tmp);
+                Hashmap.Teacher.Map.TryGetValue(this.adaptee.Code, out string? tmp);
                 return (tmp is not null) ? tmp : "";
             }
         }
@@ -103,7 +101,7 @@ namespace Project
         {
             get
             {
-                List<IClass> classes = new List<IClass>();
+                List<IClass> classes = new();
                 foreach (Hashmap.Class c in this.adaptee.Classes)
                 {
                     classes.Add(new HmClassAdapter(c));
@@ -113,15 +111,21 @@ namespace Project
         }
         public HmTeacherAdapter(Hashmap.Teacher teacher)
         {
+            Properties = new();
+            Properties.AddOrIgnore("name", this.Names);
+            Properties.AddOrIgnore("surname", this.Surname);
+            Properties.AddOrIgnore("rank", this.Rank);
+            Properties.AddOrIgnore("code", this.Code);
             this.adaptee = teacher;
         }
         public void Display() => Extensions.Display(this);
     }
     public class HmRoomAdapter : IRoom
     {
+        public Dictionary<string, object> Properties { get; }
         private readonly Hashmap.Room adaptee;
         public int Number => this.adaptee.Number;
-        public type _Type => this.adaptee._Type;
+        public Type Type => this.adaptee._Type;
         public List<IClass> Classes
         {
             get
@@ -137,15 +141,23 @@ namespace Project
 
         public HmRoomAdapter(Hashmap.Room room)
         {
+            Properties = new();
+            Properties.AddOrIgnore("number", this.Number);
+            Properties.AddOrIgnore("type", this.Type);
             this.adaptee = room;
         }
         public void Display() => Extensions.Display(this);
     }
     public class HmClassAdapter : IClass
     {
+        public Dictionary<string, object> Properties { get; }
         private readonly Hashmap.Class adaptee;
         public HmClassAdapter(Hashmap.Class _class)
         {
+            Properties = new();
+            Properties.AddOrIgnore("name", this.Name);
+            Properties.AddOrIgnore("code", this.Code);
+            Properties.AddOrIgnore("duration", this.Duration);
             this.adaptee = _class;
         }
         public string Name
@@ -195,9 +207,15 @@ namespace Project
     }
     public class HmStudentAdapter : IStudent
     {
+        public Dictionary<string,object> Properties { get; }
         private readonly Hashmap.Student adaptee;
         public HmStudentAdapter(Hashmap.Student student)
         {
+            Properties = new();
+            Properties.AddOrIgnore("name", this.Names);
+            Properties.AddOrIgnore("surname", this.Surname);
+            Properties.AddOrIgnore("semester", this.Semester);
+            Properties.AddOrIgnore("code", this.Code);
             this.adaptee = student;
         }
         public List<string> Names
@@ -219,8 +237,7 @@ namespace Project
         {
             get
             {
-                string? tmp;
-                Hashmap.Student.Map.TryGetValue(this.adaptee.Surname, out tmp);
+                Hashmap.Student.Map.TryGetValue(this.adaptee.Surname, out string? tmp);
                 return (tmp is not null) ? tmp : "";
             }
         }
@@ -241,8 +258,7 @@ namespace Project
         {
             get
             {
-                string? tmp;
-                Hashmap.Student.Map.TryGetValue(this.adaptee.Code, out tmp);
+                Hashmap.Student.Map.TryGetValue(this.adaptee.Code, out string? tmp);
                 return (tmp is not null) ? tmp : "";
             }
         }

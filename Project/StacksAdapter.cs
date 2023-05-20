@@ -25,7 +25,7 @@ namespace Project
                     var iter = room.Item2.GetEnumerator();
                     int test;
                     List<string> class_codes=new List<string>();
-                    type _type=type.tutorials;
+                    Type _type=Type.tutorials;
                     while (iter.MoveNext())
                     {
                         switch(iter.Current)
@@ -149,7 +149,7 @@ namespace Project
                     }
                     foreach (string teacher_code in teacher_codes)
                     {
-                        tmp.AddTeacher(new Teacher(Array.Empty<string>(), "", rank.KiB, teacher_code));
+                        tmp.AddTeacher(new Teacher(Array.Empty<string>(), "", Rank.KiB, teacher_code));
                     }
                     classes.Add(tmp);
                 }
@@ -168,7 +168,7 @@ namespace Project
                     var iter = teacher.Item2.GetEnumerator();
                     List<string> names = new();
                     string surname="";
-                    rank _rank=rank.KiB;
+                    Rank _rank=Rank.KiB;
                     List<string> class_codes = new();
                     while (iter.MoveNext())
                     {

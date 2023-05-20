@@ -14,24 +14,24 @@ namespace Project
             Class[] first_classes = new Class[4];
             Student[] first_students = new Student[5];
             Teacher[] first_teachers = new Teacher[5];
-            first_roooms[0] = new Room(107, type.lecture);
-            first_roooms[1] = new Room(204, type.tutorials);
-            first_roooms[2] = new Room(21, type.lecture);
-            first_roooms[3] = new Room(123, type.laboratory);
-            first_roooms[4] = new Room(404, type.lecture);
-            first_roooms[5] = new Room(504, type.tutorials);
-            first_roooms[6] = new Room(73, type.laboratory);
+            first_roooms[0] = new Room(107, Type.lecture);
+            first_roooms[1] = new Room(204, Type.tutorials);
+            first_roooms[2] = new Room(21, Type.lecture);
+            first_roooms[3] = new Room(123, Type.laboratory);
+            first_roooms[4] = new Room(404, Type.lecture);
+            first_roooms[5] = new Room(504, Type.tutorials);
+            first_roooms[6] = new Room(73, Type.laboratory);
 
             first_classes[0] = new Class("Diabolical Mathematics 2", "MD2", 2);
             first_classes[1] = new Class("Routers Descriptions", "RD", 1);
             first_classes[2] = new Class("Introduction to cables", "WDK", 5);
             first_classes[3] = new Class("Diabolical Mathematics 2", "MD2", 2);
 
-            first_teachers[0] = new Teacher(new string[] { "Tomas" }, "Cherrmann", rank.MiB, "P1");
-            first_teachers[1] = new Teacher(new string[] { "Jon" }, "Tron", rank.TiB, "P2");
-            first_teachers[2] = new Teacher(new string[] { "William", "Joseph" }, "Blazkowicz", rank.GiB, "P3");
-            first_teachers[3] = new Teacher(new string[] { "Arkadiusz", "Amadeusz" }, "Kamiński", rank.KiB, "P4");
-            first_teachers[4] = new Teacher(new string[] { "Cooking" }, "Mama", rank.GiB, "P5");
+            first_teachers[0] = new Teacher(new string[] { "Tomas" }, "Cherrmann", Rank.MiB, "P1");
+            first_teachers[1] = new Teacher(new string[] { "Jon" }, "Tron", Rank.TiB, "P2");
+            first_teachers[2] = new Teacher(new string[] { "William", "Joseph" }, "Blazkowicz", Rank.GiB, "P3");
+            first_teachers[3] = new Teacher(new string[] { "Arkadiusz", "Amadeusz" }, "Kamiński", Rank.KiB, "P4");
+            first_teachers[4] = new Teacher(new string[] { "Cooking" }, "Mama", Rank.GiB, "P5");
 
             first_students[0] = new Student(new string[] { "Robert" }, "Kielbica", 3, "S1");
             first_students[1] = new Student(new string[] { "Archibald", "Agapios" }, "Linux", 7, "S2");
@@ -103,24 +103,24 @@ namespace Project
             Hashmap.Class[] second_classes = new Hashmap.Class[4];
             Hashmap.Student[] second_students = new Hashmap.Student[5];
             Hashmap.Teacher[] second_teachers = new Hashmap.Teacher[5];
-            second_roooms[0] = new Hashmap.Room(107, type.lecture);
-            second_roooms[1] = new Hashmap.Room(204, type.tutorials);
-            second_roooms[2] = new Hashmap.Room(21, type.lecture);
-            second_roooms[3] = new Hashmap.Room(123, type.laboratory);
-            second_roooms[4] = new Hashmap.Room(404, type.lecture);
-            second_roooms[5] = new Hashmap.Room(504, type.tutorials);
-            second_roooms[6] = new Hashmap.Room(73, type.laboratory);
+            second_roooms[0] = new Hashmap.Room(107, Type.lecture);
+            second_roooms[1] = new Hashmap.Room(204, Type.tutorials);
+            second_roooms[2] = new Hashmap.Room(21, Type.lecture);
+            second_roooms[3] = new Hashmap.Room(123, Type.laboratory);
+            second_roooms[4] = new Hashmap.Room(404, Type.lecture);
+            second_roooms[5] = new Hashmap.Room(504, Type.tutorials);
+            second_roooms[6] = new Hashmap.Room(73, Type.laboratory);
 
             second_classes[0] = new Hashmap.Class("Diabolical Mathematics 2", "MD2", 2);
             second_classes[1] = new Hashmap.Class("Routers Descriptions", "RD", 1);
             second_classes[2] = new Hashmap.Class("Introduction to cables", "WDK", 5);
             second_classes[3] = new Hashmap.Class("Diabolical Mathematics 2", "MD2", 2);
 
-            second_teachers[0] = new Hashmap.Teacher(new string[] { "Tomas" }, "Cherrmann", rank.MiB, "P1");
-            second_teachers[1] = new Hashmap.Teacher(new string[] { "Jon" }, "Tron", rank.TiB, "P2");
-            second_teachers[2] = new Hashmap.Teacher(new string[] { "William", "Joseph" }, "Blazkowicz", rank.GiB, "P3");
-            second_teachers[3] = new Hashmap.Teacher(new string[] { "Arkadiusz", "Amadeusz" }, "Kamiński", rank.KiB, "P4");
-            second_teachers[4] = new Hashmap.Teacher(new string[] { "Cooking" }, "Mama", rank.GiB, "P5");
+            second_teachers[0] = new Hashmap.Teacher(new string[] { "Tomas" }, "Cherrmann", Rank.MiB, "P1");
+            second_teachers[1] = new Hashmap.Teacher(new string[] { "Jon" }, "Tron", Rank.TiB, "P2");
+            second_teachers[2] = new Hashmap.Teacher(new string[] { "William", "Joseph" }, "Blazkowicz", Rank.GiB, "P3");
+            second_teachers[3] = new Hashmap.Teacher(new string[] { "Arkadiusz", "Amadeusz" }, "Kamiński", Rank.KiB, "P4");
+            second_teachers[4] = new Hashmap.Teacher(new string[] { "Cooking" }, "Mama", Rank.GiB, "P5");
 
             second_students[0] = new Hashmap.Student(new string[] { "Robert" }, "Kielbica", 3, "S1");
             second_students[1] = new Hashmap.Student(new string[] { "Archibald", "Agapios" }, "Linux", 7, "S2");
@@ -189,13 +189,13 @@ namespace Project
         {
             Stacks third = new Stacks();
             //rooms
-            third.AddRoom(107, type.lecture, new string[] { "MD2", "RD", "WDK", "AC3" });
-            third.AddRoom(204, type.tutorials, new string[] { "WDK", "AC3" });
-            third.AddRoom(21, type.lecture, new string[] { "RD" });
-            third.AddRoom(123, type.laboratory, new string[] { "RD", "WDK" });
-            third.AddRoom(404, type.lecture, new string[] { "MD2", "WDK", "RD" });
-            third.AddRoom(504, type.tutorials, new string[] { "MD2" });
-            third.AddRoom(73, type.laboratory, new string[] { "AC3" });
+            third.AddRoom(107, Type.lecture, new string[] { "MD2", "RD", "WDK", "AC3" });
+            third.AddRoom(204, Type.tutorials, new string[] { "WDK", "AC3" });
+            third.AddRoom(21, Type.lecture, new string[] { "RD" });
+            third.AddRoom(123, Type.laboratory, new string[] { "RD", "WDK" });
+            third.AddRoom(404, Type.lecture, new string[] { "MD2", "WDK", "RD" });
+            third.AddRoom(504, Type.tutorials, new string[] { "MD2" });
+            third.AddRoom(73, Type.laboratory, new string[] { "AC3" });
             //classes
             third.AddClass("Diabolical Mathematics 2", "MD2", 2,
                 new string[] { "P2" }, new string[] { "S1", "S2", "S5" });
@@ -205,15 +205,15 @@ namespace Project
                 new string[] { "P4", "P3" }, new string[] { "S1", "S2", "S3", "S4", "S5" });
             third.AddClass("Diabolical Mathematics 2", "MD2", 2, new string[] { "P5", "P1" }, new string[] { "S2", "S4", "S5" });
             //teachers
-            third.AddTeacher(new string[] { "Tomas" }, "Cherrmann", rank.MiB,
+            third.AddTeacher(new string[] { "Tomas" }, "Cherrmann", Rank.MiB,
                 "P1", new string[] { "AC3" });
-            third.AddTeacher(new string[] { "Jon" }, "Tron", rank.TiB,
+            third.AddTeacher(new string[] { "Jon" }, "Tron", Rank.TiB,
                 "P2", new string[] { "MD2" });
-            third.AddTeacher(new string[] { "William", "Joseph" }, "Blazkowicz", rank.GiB,
+            third.AddTeacher(new string[] { "William", "Joseph" }, "Blazkowicz", Rank.GiB,
                 "P3", new string[] { "RD", "WDK" });
-            third.AddTeacher(new string[] { "Arkadiusz", "Amadeusz" }, "Kamiński", rank.KiB,
+            third.AddTeacher(new string[] { "Arkadiusz", "Amadeusz" }, "Kamiński", Rank.KiB,
                 "P4", new string[] { "WDK" });
-            third.AddTeacher(new string[] { "Cooking" }, "Mama", rank.GiB,
+            third.AddTeacher(new string[] { "Cooking" }, "Mama", Rank.GiB,
                 "P5", new string[] { "AC3" });
             //students
             third.AddStudent(new string[] { "Robert" }, "Kielbica", 3,

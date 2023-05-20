@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Project
 {
-    public enum type { laboratory, tutorials, lecture, other };
-    public enum rank { KiB, MiB, GiB, TiB };
+    public enum Type { laboratory, tutorials, lecture, other };
+    public enum Rank { KiB, MiB, GiB, TiB };
     public class Program
     {
         //first representation
@@ -24,7 +24,7 @@ namespace Project
             Console.WriteLine("list <name_of_the_class>");
             Console.WriteLine("find <name_of_the_class> [<name_of_field> =|<|> value]");
             Console.WriteLine("exit");
-            Processor p= new Processor();
+            Processor p= new();
             while (true)
             {
                 Console.WriteLine("Type your command:");

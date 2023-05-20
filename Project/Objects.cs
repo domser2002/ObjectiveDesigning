@@ -46,73 +46,23 @@ namespace Project
             tmp.Add(r);
             this.Rooms = tmp.ToArray();
         }
-        //public void Select()
-        //{
-        //    foreach (Class c in this.classes)
-        //    {
-        //        bool student = false;
-        //        bool teacher = false;
-        //        foreach (Student s in c.Students)
-        //        {
-        //            if (s.Names.Count > 1)
-        //            {
-        //                student = true;
-        //            }
-        //        }
-        //        if (!student) { continue; }
-        //        foreach (Teacher t in c.Teachers)
-        //        {
-        //            if (t.Names.Count > 1)
-        //            {
-        //                teacher = true;
-        //            }
-        //        }
-        //        if (!teacher) { continue; }
-        //        c.Display();
-        //    }
-        //}
-        //public void Display()
-        //{
-        //    Console.WriteLine("FORMAT 0:");
-        //    Console.WriteLine();
-        //    Console.WriteLine("Rooms:");
-        //    foreach(Room r in rooms)
-        //    {
-        //        r.Display();
-        //    }
-        //    Console.WriteLine();
-        //    Console.WriteLine("Classes:");
-        //    foreach (Class c in classes)
-        //    {
-        //        c.Display();
-        //    }
-        //    Console.WriteLine();
-        //    Console.WriteLine("Teachers:");
-        //    foreach (Teacher t in teachers)
-        //    {
-        //        t.Display();
-        //    }
-        //    Console.WriteLine();
-        //    Console.WriteLine("Students:");
-        //    foreach (Student s in students)
-        //    {
-        //        s.Display();
-        //    }
-        //    Console.WriteLine();
-        //}
     }
     public class Room : IRoom
     {
-        private int number;
+        public Dictionary<string, object> Properties { get; }
+        private readonly int number;
         public int Number { get => this.number; }
-        private type _type;
-        public type _Type { get => this._type; }
-        private List<IClass> classes;
+        private readonly Type type;
+        public Type Type { get => this.type; }
+        private readonly List<IClass> classes;
         public List<IClass> Classes { get => this.classes; }
-        public Room(int number, type _type)
+        public Room(int number, Type type)
         {
+            Properties = new();
             this.number = number;
-            this._type = _type;
+            Properties.AddOrIgnore("number", this.number);
+            this.type = type;
+            Properties.AddOrIgnore("type", this.type);
             this.classes = new List<IClass>();
         }
         public void AddClass(Class c)
@@ -123,21 +73,26 @@ namespace Project
     }
     public class Class : IClass
     {
-        private string name;
+        public Dictionary<string, object> Properties { get;  }
+        private readonly string name;
         public string Name { get => this.name; }
-        private string code;
+        private readonly string code;
         public string Code { get => this.code; }
-        private int duration;
+        private readonly int duration;
         public int Duration { get => this.duration; }
-        private List<ITeacher> teachers;
+        private readonly List<ITeacher> teachers;
         public List<ITeacher> Teachers { get => this.teachers; }
-        private List<IStudent> students;
+        private readonly List<IStudent> students;
         public List<IStudent> Students { get => this.students; }
         public Class(string name, string code, int duration)
         {
+            Properties = new();
             this.name = name;
+            Properties.AddOrIgnore("name", this.name);
             this.code = code;
+            Properties.AddOrIgnore("code",this.code);
             this.duration = duration;
+            Properties.AddOrIgnore("duration", this.duration);
             this.teachers = new List<ITeacher>();
             this.students = new List<IStudent>();
         }
@@ -153,26 +108,32 @@ namespace Project
     }
     public class Teacher : ITeacher
     {
-        private List<string> names;
+        public Dictionary<string, object> Properties { get; }
+        private readonly List<string> names;
         public List<string> Names { get => this.names; }
-        private string surname;
+        private readonly string surname;
         public string Surname { get => this.surname; }
-        private rank _rank;
-        public rank _Rank { get => this._rank; }
-        private string code;
+        private readonly Rank rank;
+        public Rank Rank { get => this.rank; }
+        private readonly string code;
         public string Code { get => this.code; }
-        private List<IClass> classes;
+        private readonly List<IClass> classes;
         public List<IClass> Classes { get => this.classes; }
-        public Teacher(string[] names, string surname, rank _rank, string code)
+        public Teacher(string[] names, string surname, Rank rank, string code)
         {
+            Properties = new();
             this.names = new List<string>();
             foreach (string name in names)
             {
                 this.names.Add(name);
             }
+            Properties.AddOrIgnore("name", this.names);
             this.surname = surname;
-            this._rank = _rank;
+            Properties.AddOrIgnore("surname", this.surname);
+            this.rank = rank;
+            Properties.AddOrIgnore("rank", this.rank);
             this.code = code;
+            Properties.AddOrIgnore("code", this.code);
             this.classes = new List<IClass>();
         }
         public void AddClass(Class c)
@@ -183,26 +144,32 @@ namespace Project
     }
     public class Student : IStudent
     {
-        private List<string> names;
+        public Dictionary<string, object> Properties { get; }
+        private readonly List<string> names;
         public List<string> Names { get => this.names; }
-        private string surname;
+        private readonly string surname;
         public string Surname { get => this.surname; }
-        private int semester;
+        private readonly int semester;
         public int Semester { get => this.semester; }
-        private string code;
+        private readonly string code;
         public string Code { get => this.code; }
-        private List<IClass> classes;
+        private readonly List<IClass> classes;
         public List<IClass> Classes { get => this.classes; }
         public Student(string[] names, string surname, int semester, string code)
         {
+            Properties = new();
             this.names = new List<string>();
             foreach (string name in names)
             {
                 this.names.Add(name);
             }
+            Properties.AddOrIgnore("name", this.names);
             this.surname = surname;
+            Properties.AddOrIgnore("surname", this.surname);
             this.semester = semester;
+            Properties.AddOrIgnore("semester", this.semester);
             this.code = code;
+            Properties.AddOrIgnore("code", this.code);
             this.classes = new List<IClass>();
         }
         public void AddClass(Class c)
