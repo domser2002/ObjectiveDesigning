@@ -64,7 +64,7 @@ namespace Project
     }
     public class HmTeacherAdapter : ITeacher
     {
-        public Dictionary<string,object> Properties { get; }
+        public Dictionary<string,object> Properties { get; set; }
         private readonly Hashmap.Teacher adaptee;
         public List<string> Names
         {
@@ -122,7 +122,7 @@ namespace Project
     }
     public class HmRoomAdapter : IRoom
     {
-        public Dictionary<string, object> Properties { get; }
+        public Dictionary<string, object> Properties { get; set; }
         private readonly Hashmap.Room adaptee;
         public int Number => this.adaptee.Number;
         public Type Type => this.adaptee._Type;
@@ -150,7 +150,7 @@ namespace Project
     }
     public class HmClassAdapter : IClass
     {
-        public Dictionary<string, object> Properties { get; }
+        public Dictionary<string, object> Properties { get; set; }
         private readonly Hashmap.Class adaptee;
         public HmClassAdapter(Hashmap.Class _class)
         {
@@ -207,7 +207,7 @@ namespace Project
     }
     public class HmStudentAdapter : IStudent
     {
-        public Dictionary<string,object> Properties { get; }
+        public Dictionary<string,object> Properties { get; set; }
         private readonly Hashmap.Student adaptee;
         public HmStudentAdapter(Hashmap.Student student)
         {

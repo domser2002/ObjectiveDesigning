@@ -47,7 +47,7 @@ namespace Project
     public interface IObject
     {
         public void Display();
-        public Dictionary<string, object> Properties { get; }
+        public Dictionary<string, object> Properties { get; set; }
     }
     public interface IMyCollection
     {
@@ -66,5 +66,10 @@ namespace Project
         string[] Arguments { get; set; }
         string? CommandName { get; }
         void Execute();
+    }
+    public interface IBuilder
+    {
+        IObject Result { get; set; }
+        void SetProperty(string name, object value);
     }
 }

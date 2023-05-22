@@ -24,6 +24,27 @@ namespace Project
             this.teachers=new List<(string, Stack<string>)>();
             this.students=new List<(string, Stack<string>)>();
         }
+        public void Add(IObject obj)
+        {           
+            foreach(var p in obj.Properties)
+            {
+                string key = p.Key;
+                object value = p.Value;
+                if(value is Array)
+                {
+                    Array array = (Array) value;
+                    if(obj is Student)
+                    {
+                        (string, Stack<string>) student = new()
+                        {
+                            Item1 = key,
+                            Item2 = new()
+                        };
+                        student.Item2.Push(array.Length.ToString());
+                    }
+                }
+            }
+        }
         public void AddRoom(int number, Type _type, string[] class_codes)
         {
             (int, Stack<string>) room;
@@ -110,9 +131,5 @@ namespace Project
             student.Item2.Push("Classes");
             this.students.Add(student);
         }
-        //public class Room
-        //{
-        //    (int, Stack<string>) room;
-        //}
     }
 }

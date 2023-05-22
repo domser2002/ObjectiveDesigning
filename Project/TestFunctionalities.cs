@@ -35,7 +35,7 @@ namespace Project
                 return obj1.GetHashCode().CompareTo(obj2.GetHashCode());
             }
             );
-            IObject? a = null;
+            //IObject? a = null;
             foreach(Student s in first.Students)
             {
                 L.Insert(s);

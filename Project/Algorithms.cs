@@ -52,25 +52,25 @@ namespace Project
         {
             Console.WriteLine();
             Console.WriteLine("Rooms:");
-            foreach(IRoom room in representation.Rooms)
+            foreach (IRoom room in representation.Rooms)
             {
                 room.Display();
             }
             Console.WriteLine();
             Console.WriteLine("Classes:");
-            foreach(IClass c in representation.Classes)
+            foreach (IClass c in representation.Classes)
             {
                 c.Display();
             }
             Console.WriteLine();
             Console.WriteLine("Students:");
-            foreach(IStudent student in representation.Students)
+            foreach (IStudent student in representation.Students)
             {
                 student.Display();
             }
             Console.WriteLine();
             Console.WriteLine("Teachers:");
-            foreach(ITeacher teacher in representation.Teachers)
+            foreach (ITeacher teacher in representation.Teachers)
             {
                 teacher.Display();
             }
@@ -102,19 +102,19 @@ namespace Project
                 c.Display();
             }
         }
-        public static void AddOrIgnore<T1,T2>(this Dictionary<T1, T2> dictionary, T1 key, T2 value) where T1 : notnull
+        public static void AddOrIgnore<T1, T2>(this Dictionary<T1, T2> dictionary, T1 key, T2 value) where T1 : notnull
         {
             if (!dictionary.ContainsKey(key))
                 dictionary.Add(key, value);
         }
-        public static IObject? Find(this IMyCollection collection,Func<IObject,
-            bool> pred,bool frombeginning)
+        public static IObject? Find(this IMyCollection collection, Func<IObject,
+            bool> pred, bool frombeginning)
         {
-            IMyiterator iter=frombeginning?collection.GetForwardIterator():
+            IMyiterator iter = frombeginning ? collection.GetForwardIterator() :
                 collection.GetBackwardIterator();
-            while(iter is not null && iter.Current is not null)
+            while (iter is not null && iter.Current is not null)
             {
-                if(pred(iter.Current)) return iter.Current;
+                if (pred(iter.Current)) return iter.Current;
                 if (!iter.MoveNext()) break;
             }
             return null;
@@ -131,12 +131,12 @@ namespace Project
                 if (!iter.MoveNext()) break;
             }
         }
-        public static void ForEach(IMyiterator iterator,Action<IObject?> func)
+        public static void ForEach(IMyiterator iterator, Action<IObject?> func)
         {
             //IMyiterator tmp=iterator;
             while (iterator is not null && iterator.Current is not null)
             {
-                IObject tmp=iterator.Current;
+                IObject tmp = iterator.Current;
                 func(iterator.Current);
                 iterator.Current = tmp;
                 if (!iterator.MoveNext()) break;
@@ -146,12 +146,54 @@ namespace Project
             bool> pred)
         {
             int count = 0;
-            while(iterator is not null && iterator.Current is not null)
+            while (iterator is not null && iterator.Current is not null)
             {
-                if(pred(iterator.Current)) count++; 
-                if(!iterator.MoveNext()) break; 
+                if (pred(iterator.Current)) count++;
+                if (!iterator.MoveNext()) break;
             }
             return count;
+        }
+        public static void SetProperty(this IObject obj, string name, object value)
+        {
+            if (obj.Properties.ContainsKey(name))
+            {
+                if (obj.Properties[name] is List<string> L)
+                {
+                    L.Add((string)value);
+                }
+                obj.Properties[name] = value;
+            }
+        }
+        public static IObject[] GetCollectionByKey(string key)
+        {
+            switch (key)
+            {
+                case "students":
+                    return Program.first.Students;
+                case "teachers":
+                    return Program.first.Teachers;
+                case "rooms":
+                    return Program.first.Rooms;
+                case "classes":
+                    return Program.first.Classes;
+                default:
+                    break;
+            }
+            throw new InvalidArgumentsException("No such collection");
+        }
+        public static string Display(this IMyCommand command)
+        {
+            string s="";
+            if (command.CommandName is not null)
+                s +=command.CommandName;
+            s +=":";
+            foreach (string t in command.Arguments)
+            {
+                s +=" ";
+                s += t;
+            }
+            s += '\n';
+            return s;
         }
     }
 }
