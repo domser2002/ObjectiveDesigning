@@ -49,6 +49,7 @@ namespace Project
     {
         public void Display();
         public Dictionary<string, object> Properties { get; set; }
+        public IObject Copy();
     }
     public interface IMyCollection
     {

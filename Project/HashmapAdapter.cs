@@ -119,6 +119,10 @@ namespace Project
             this.adaptee = teacher;
         }
         public void Display() => Extensions.Display(this);
+        public IObject Copy()
+        {
+            return (IObject)this.MemberwiseClone();
+        }
     }
     public class HmRoomAdapter : IRoom
     {
@@ -147,6 +151,10 @@ namespace Project
             this.adaptee = room;
         }
         public void Display() => Extensions.Display(this);
+        public IObject Copy()
+        {
+            return (IObject)this.MemberwiseClone();
+        }
     }
     public class HmClassAdapter : IClass
     {
@@ -204,6 +212,10 @@ namespace Project
             }
         }
         public void Display() => Extensions.Display(this);
+        public IObject Copy()
+        {
+            return (IObject)this.MemberwiseClone();
+        }
     }
     public class HmStudentAdapter : IStudent
     {
@@ -263,5 +275,9 @@ namespace Project
             }
         }
         public void Display() => Extensions.Display(this);
+        public IObject Copy()
+        {
+            return (IObject)this.MemberwiseClone();
+        }
     }
 }

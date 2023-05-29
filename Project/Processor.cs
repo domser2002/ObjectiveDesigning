@@ -9,7 +9,6 @@ namespace Project
     public class Processor
     {
         public static Queue<IMyCommand> commands_queue=new();
-        //private readonly CommandFactory _commandFactory;
         public Processor()
         {
             CommandFactory.emptytypes.AddOrIgnore("students", new Student());

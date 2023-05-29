@@ -141,7 +141,8 @@ namespace Project
                 Console.WriteLine("Incorrect arguments");
                 return false;
             }
-            CommandFactory.emptytypes.TryGetValue(args[1].ToLower(), out obj);
+            CommandFactory.emptytypes.TryGetValue(args[1].ToLower(), out IObject? tmp);
+            obj = tmp.Copy();
             if (obj is null)
             {
                 Console.WriteLine("No such class!");
@@ -181,7 +182,7 @@ namespace Project
                     Program.first.Add(obj);
                     break;
                 case "secondary":
-                    Stacks.Add(obj);
+                    Program.third.Add(obj);
                     break;
                 default:
                     Console.WriteLine("Incorrect arguments");
@@ -198,7 +199,7 @@ namespace Project
                     Program.first.Delete(obj);
                     break;
                 case "secondary":
-                    Stacks.Delete(obj);
+                    Program.third.Delete(obj);
                     break;
                 default:
                     Console.WriteLine("Incorrect arguments");
@@ -257,8 +258,8 @@ namespace Project
                 Console.WriteLine("Requirments do not specify one record uniquely");
                 return false;
             }
-            toadd = found[0];
-            toremove = toadd;
+            toremove = found[0];
+            toadd = found[0].Copy();
             if (toadd is null || toremove is null) return false;
             string s = "[Available fields:";
             foreach (var p in toadd.Properties)

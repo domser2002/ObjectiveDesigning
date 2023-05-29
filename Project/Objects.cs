@@ -163,6 +163,10 @@ namespace Project
             this.classes.Add(c);
         }
         public void Display() => Extensions.Display(this);
+        public IObject Copy()
+        {
+            return new Room(this.number,this.type);
+        }
     }
     public class Class : IClass
     {
@@ -256,6 +260,10 @@ namespace Project
             this.teachers.Add(t);
         }
         public void Display() => Extensions.Display(this);
+        public IObject Copy()
+        {
+            return new Class(this.name,this.code,this.duration);
+        }
     }
     public class Teacher : ITeacher
     {
@@ -367,6 +375,10 @@ namespace Project
             this.classes.Add(c);
         }
         public void Display() => Extensions.Display(this);
+        public IObject Copy()
+        {
+            return new Teacher(this.names.ToArray(),this.surname,this.rank,this.code);
+        }
     }
     public class Student : IStudent
     {
@@ -479,5 +491,9 @@ namespace Project
             this.classes.Add(c);
         }
         public void Display() => Extensions.Display(this);
+        public IObject Copy()
+        {
+            return new Student(this.names.ToArray(),this.surname,this.semester,this.code);
+        }
     }
 }

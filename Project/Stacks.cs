@@ -24,29 +24,56 @@ namespace Project
             this.teachers=new List<(string, Stack<string>)>();
             this.students=new List<(string, Stack<string>)>();
         }
-        public static void Add(IObject obj)
-        {           
-            foreach(var p in obj.Properties)
+        public void Add(IObject obj)
+        {
+            if (obj is Room r)
             {
-                string key = p.Key;
-                object value = p.Value;
-                if (value is Array array)
+                List<string> class_codes = new();
+                foreach (Class cl in r.Classes.Cast<Class>())
                 {
-                    if (obj is Student)
-                    {
-                        (string, Stack<string>) student = new()
-                        {
-                            Item1 = key,
-                            Item2 = new()
-                        };
-                        student.Item2.Push(array.Length.ToString());
-                    }
+                    class_codes.Add(cl.Code);
                 }
+                AddRoom(r.Number,r.Type,class_codes.ToArray());
+            }
+            if (obj is Class c)
+            {
+                List<string> teacher_codes = new();
+                foreach(Teacher tch in c.Teachers.Cast<Teacher>())
+                {
+                    teacher_codes.Add(tch.Code);
+                }
+                List<string> student_codes = new();
+                foreach (Student st in c.Students.Cast<Student>())
+                {
+                    teacher_codes.Add(st.Code);
+                }
+                AddClass(c.Name,c.Code,c.Duration,teacher_codes.ToArray(),student_codes.ToArray());
+            }
+            if (obj is Teacher t)
+            {
+                List<string> class_codes = new();
+                foreach (Class cl in t.Classes.Cast<Class>())
+                {
+                    class_codes.Add(cl.Code);
+                }
+                AddTeacher(t.Names.ToArray(), t.Surname, t.Rank, t.Code, class_codes.ToArray());
+            }
+            if (obj is Student s)
+            {
+                List<string> class_codes = new();
+                foreach(Class cl in s.Classes.Cast<Class>())
+                {
+                    class_codes.Add(cl.Code);
+                }
+                AddStudent(s.Names.ToArray(), s.Surname, s.Semester, s.Code,class_codes.ToArray());
             }
         }
-        public static void Delete(IObject obj)
+        public void Delete(IObject obj)
         {
-
+            if(obj is Student s)
+            {
+                
+            }
         }
         public void AddRoom(int number, Type _type, string[] class_codes)
         {
