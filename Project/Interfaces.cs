@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Project
 {
@@ -48,6 +49,10 @@ namespace Project
     {
         public void Display();
         public Dictionary<string, object> Properties { get; set; }
+        //public object Clone()
+        //{
+        //    return this.MemberwiseClone();
+        //}
     }
     public interface IMyCollection
     {
@@ -63,9 +68,15 @@ namespace Project
     }
     public interface IMyCommand
     {
+        [XmlArray("Arguments")]
         string[] Arguments { get; set; }
+        [XmlElement("Name")]
         string? CommandName { get; }
         void Execute();
+        bool Prepare(string[] args);
+        //public new System.Xml.Schema.XmlSchema? GetSchema();
+        //public new void ReadXml(System.Xml.XmlReader reader);
+        //public new void WriteXml(System.Xml.XmlWriter writer);
     }
     public interface IBuilder
     {

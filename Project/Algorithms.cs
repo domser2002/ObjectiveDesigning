@@ -153,7 +153,7 @@ namespace Project
             }
             return count;
         }
-        public static void SetProperty(this IObject obj, string name, object value)
+        public static bool SetProperty(this IObject obj, string name, object value)
         {
             if (obj.Properties.ContainsKey(name))
             {
@@ -162,7 +162,9 @@ namespace Project
                     L.Add((string)value);
                 }
                 obj.Properties[name] = value;
+                return true;
             }
+            return false;
         }
         public static IObject[] GetCollectionByKey(string key)
         {
@@ -194,6 +196,57 @@ namespace Project
             }
             s += '\n';
             return s;
+        }
+        public static bool FullfillsRequirments(IObject o,List<(string,string,string)> requirments)
+        {
+            foreach ((string, string, string) requirment in requirments)
+            {
+                o.Properties.TryGetValue(requirment.Item1.ToLower(), out object? obj);
+                if (obj is not null)
+                {
+                    switch (requirment.Item2)
+                    {
+                        case "=":
+                            if (obj is List<string> list)
+                            {
+                                foreach (var item in list)
+                                {
+                                    if (item == requirment.Item3)
+                                        return true;
+                                }
+                                return false;
+                            }
+                            if (obj.ToString() != requirment.Item3)
+                            {
+                                return false;
+                            }
+                            break;
+                        case ">":
+                            if (int.TryParse(obj.ToString(), out int t1) && int.TryParse(requirment.Item3, out int t2))
+                            {
+                                if (t1 <= t2)
+                                    return false;
+                            }
+                            else if (string.Compare(obj.ToString(), requirment.Item3) <= 0)
+                            {
+                                return false;
+                            }
+                            break;
+                        case "<":
+                            if (int.TryParse(obj.ToString(), out int t3) && int.TryParse(requirment.Item3, out int t4))
+                            {
+                                if (t3 >= t4)
+                                    return false;
+                            }
+                            else if (string.Compare(obj.ToString(), requirment.Item3) >= 0)
+                            {
+                                return false;
+                            }
+                            break;
+                    }
+                }
+            }
+            return true;
         }
     }
 }
