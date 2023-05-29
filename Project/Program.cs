@@ -75,7 +75,7 @@ namespace Project
                     }
                     else
                     {
-                        p.Process(s);
+                        Processor.Process(s);
                     }
                 }
             }

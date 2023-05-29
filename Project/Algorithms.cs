@@ -183,7 +183,7 @@ namespace Project
             }
             throw new InvalidArgumentsException("No such collection");
         }
-        public static string Display(this IMyCommand command)
+        public static void Display(this IMyCommand command)
         {
             string s="";
             if (command.CommandName is not null)
@@ -195,7 +195,7 @@ namespace Project
                 s += t;
             }
             s += '\n';
-            return s;
+            Console.Write(s);
         }
         public static bool FullfillsRequirments(IObject o,List<(string,string,string)> requirments)
         {

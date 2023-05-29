@@ -19,6 +19,7 @@ namespace Project
         {
             Console.WriteLine("Couldn't find command: " + CommandName);
         }
+        public void UnExecute() { }
         public bool Prepare(string[] args)
         {
             Execute();
@@ -37,6 +38,7 @@ namespace Project
         }
         public bool Prepare(string[] args)
         {
+            Arguments = args;
             if (args.Length < 2 || args[1] is null)
             {
                 Console.WriteLine("Incorrect arguments");
@@ -63,10 +65,11 @@ namespace Project
         {
             foreach (IObject o in collection)
             {
-                if (Extensions.FullfillsRequirments(o,requirments))
+                if (Extensions.FullfillsRequirments(o, requirments))
                     o.Display();
             }
         }
+        public void UnExecute() { }
     }
     public class List : IMyCommand
     {
@@ -79,6 +82,7 @@ namespace Project
         }
         public bool Prepare(string[] args)
         {
+            Arguments = args;
             if (args.Length != 2 || args[1] is null)
             {
                 Console.WriteLine("Incorrect arguments");
@@ -99,6 +103,7 @@ namespace Project
                 o.Display();
             }
         }
+        public void UnExecute() { }
     }
     public class Exit : IMyCommand
     {
@@ -117,6 +122,7 @@ namespace Project
         {
             Environment.Exit(0);
         }
+        public void UnExecute() { }
     }
     public class Add : IMyCommand
     {
@@ -175,12 +181,30 @@ namespace Project
                     Program.first.Add(obj);
                     break;
                 case "secondary":
-                    Program.third.Add(obj);
+                    Stacks.Add(obj);
                     break;
                 default:
                     Console.WriteLine("Incorrect arguments");
                     return;
             }
+            CommandFactory.toundo.Push(this);
+        }
+        public void UnExecute()
+        {
+            if (obj is null) return;
+            switch (Arguments[2].ToLower())
+            {
+                case "base":
+                    Program.first.Delete(obj);
+                    break;
+                case "secondary":
+                    Stacks.Delete(obj);
+                    break;
+                default:
+                    Console.WriteLine("Incorrect arguments");
+                    return;
+            }
+            CommandFactory.toredo.Push(this);
         }
     }
     public class Edit : IMyCommand
@@ -225,7 +249,7 @@ namespace Project
             List<IObject> found = new();
             foreach (IObject o in collection)
             {
-                if (Extensions.FullfillsRequirments(o,requirments))
+                if (Extensions.FullfillsRequirments(o, requirments))
                     found.Add(o);
             }
             if (found.Count != 1)
@@ -247,7 +271,8 @@ namespace Project
             string? line;
             while ((line = Console.ReadLine()) != null)
             {
-                if (line.ToUpper() == "DONE" || line.ToUpper() == "EXIT") break;
+                if (line.ToUpper() == "DONE") break;
+                if (line.ToUpper() == "EXIT") return false;
                 string[] sub = line.Split('=', ' ');
                 if (!line.Contains('=') || sub.Length != 2)
                     Console.WriteLine("Input must contain exactly one '=' sign!");
@@ -264,6 +289,16 @@ namespace Project
                 Program.first.Delete(toremove);
                 Program.first.Add(toadd);
             }
+            CommandFactory.toundo.Push(this);
+        }
+        public void UnExecute()
+        {
+            if (toadd is not null && toremove is not null)
+            {
+                Program.first.Delete(toadd);
+                Program.first.Add(toremove);
+            }
+            CommandFactory.toredo.Push(this);
         }
     }
     public class Delete : IMyCommand
@@ -307,7 +342,7 @@ namespace Project
             }
             foreach (IObject o in collection)
             {
-                if (Extensions.FullfillsRequirments(o,requirments))
+                if (Extensions.FullfillsRequirments(o, requirments))
                     objects.Add(o);
             }
             if (objects.Count != 1)
@@ -322,100 +357,128 @@ namespace Project
         {
             if (toremove is not null)
                 Program.first.Delete(toremove);
+            CommandFactory.toundo.Push(this);
+        }
+        public void UnExecute()
+        {
+            if (toremove is not null)
+                Program.first.Add(toremove);
+            CommandFactory.toredo.Push(this);
         }
     }
-    public class Queue : IMyCommand
+    //public class Queue : IMyCommand
+    //{
+    //    public string[] Arguments { get; set; }
+    //    public string? CommandName => "queue";
+    //    public Queue()
+    //    {
+    //        Arguments = Array.Empty<string>();
+    //    }
+    //    public bool Prepare(string[] args)
+    //    {
+    //        Arguments = args;
+    //        Execute();
+    //        return true;
+    //    }
+    //    public void Execute()
+    //    {
+    //        switch (Arguments[1].ToLower())
+    //        {
+    //            case "print":
+    //                Print();
+    //                return;
+    //            case "commit":
+    //                Commit();
+    //                return;
+    //            case "dismiss":
+    //                Dismiss();
+    //                return;
+    //            case "export":
+    //                if (Arguments[3].ToLower() == "xml")
+    //                    ExportXML(Arguments[2]);
+    //                if (Arguments[3].ToLower() == "plaintext")
+    //                    ExportPlain(Arguments[2]);
+    //                return;
+    //            case "load":
+    //                ImportXML(Arguments[2]);
+    //                return;
+    //        }
+    //    }
+    //    public static void Print()
+    //    {
+    //        foreach (var command in Processor.commands_queue)
+    //        {
+    //            command.Display();
+    //        }
+    //    }
+    //    public static void Commit()
+    //    {
+    //        while (Processor.commands_queue.Count > 0)
+    //        {
+    //            var command = Processor.commands_queue.Dequeue();
+    //            command.Execute();
+    //        }
+    //    }
+    //    public static void Dismiss()
+    //    {
+    //        Processor.commands_queue.Clear();
+    //    }
+    //    public static void ExportXML(string filename)
+    //    {
+    //        var p = Processor.commands_queue;
+    //        System.Xml.Serialization.XmlSerializer x = new(p.GetType());
+    //        x.Serialize(new StreamWriter(filename), p);
+    //    }
+    //    public static void ExportPlain(string filename)
+    //    {
+    //        StreamWriter fs = new(filename);
+    //        foreach (var command in Processor.commands_queue)
+    //        {
+    //            command.Display();
+    //        }
+    //    }
+    //    public static void ImportXML(string filename)
+    //    {
+    //        var p = Processor.commands_queue;
+    //        System.Xml.Serialization.XmlSerializer x = new(p.GetType());
+    //        var q = (Queue<IMyCommand>?)x.Deserialize(new FileStream(filename, FileMode.Open));
+    //        if (q is not null)
+    //            Processor.commands_queue = q;
+    //    }
+    //    public static void ImportPlain(string filename)
+    //    {
+    //        Processor.commands_queue.Clear();
+    //        StreamReader fs = new(filename);
+    //        string s = fs.ReadToEnd();
+    //        string[] lines = s.Split('\n');
+    //        foreach (string line in lines)
+    //        {
+    //            string[] sub = line.Split(':');
+    //            s = sub[0] + sub[1];
+    //            Processor p = new Processor();
+    //            Processor.Process(s);
+    //        }
+    //    }
+    //}
+    public class History : IMyCommand
     {
         public string[] Arguments { get; set; }
-        public string? CommandName => "queue";
-        public Queue()
+        public string? CommandName => "history";
+        public History()
         {
             Arguments = Array.Empty<string>();
         }
         public bool Prepare(string[] args)
         {
-            Arguments = args;
-            Execute();
             return true;
         }
         public void Execute()
         {
-            switch (Arguments[1].ToLower())
-            {
-                case "print":
-                    Print();
-                    return;
-                case "commit":
-                    Commit();
-                    return;
-                case "dismiss":
-                    Dismiss();
-                    return;
-                case "export":
-                    if (Arguments[3].ToLower() == "xml")
-                        ExportXML(Arguments[2]);
-                    if (Arguments[3].ToLower() == "plaintext")
-                        ExportPlain(Arguments[2]);
-                    return;
-                case "load":
-                    ImportXML(Arguments[2]);
-                    return;
-            }
-        }
-        public static void Print()
-        {
             foreach (var command in Processor.commands_queue)
             {
-                Console.Write(command.Display());
+                command.Display();
             }
         }
-        public static void Commit()
-        {
-            while (Processor.commands_queue.Count > 0)
-            {
-                var command = Processor.commands_queue.Dequeue();
-                command.Execute();
-            }
-        }
-        public static void Dismiss()
-        {
-            Processor.commands_queue.Clear();
-        }
-        public static void ExportXML(string filename)
-        {
-            var p = Processor.commands_queue;
-            System.Xml.Serialization.XmlSerializer x = new(p.GetType());
-            x.Serialize(new StreamWriter(filename), p);
-        }
-        public static void ExportPlain(string filename)
-        {
-            StreamWriter fs = new(filename);
-            foreach (var command in Processor.commands_queue)
-            {
-                fs.Write(command.Display());
-            }
-        }
-        public static void ImportXML(string filename)
-        {
-            var p = Processor.commands_queue;
-            System.Xml.Serialization.XmlSerializer x = new(p.GetType());
-            var q = (Queue<IMyCommand>?)x.Deserialize(new FileStream(filename, FileMode.Open));
-            if (q is not null)
-                Processor.commands_queue = q;
-        }
-        public static void ImportPlain(string filename)
-        {
-            Processor.commands_queue.Clear();
-            StreamReader fs = new(filename);
-            string s = fs.ReadToEnd();
-            string[] lines = s.Split('\n');
-            foreach (string line in lines)
-            {
-                string[] sub = line.Split(':');
-                s = sub[0] + sub[1];
-                Processor p = new Processor();
-                p.Process(s);
-            }
-        }
+        public void UnExecute() { }
     }
 }

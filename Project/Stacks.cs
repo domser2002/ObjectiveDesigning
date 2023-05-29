@@ -24,16 +24,15 @@ namespace Project
             this.teachers=new List<(string, Stack<string>)>();
             this.students=new List<(string, Stack<string>)>();
         }
-        public void Add(IObject obj)
+        public static void Add(IObject obj)
         {           
             foreach(var p in obj.Properties)
             {
                 string key = p.Key;
                 object value = p.Value;
-                if(value is Array)
+                if (value is Array array)
                 {
-                    Array array = (Array) value;
-                    if(obj is Student)
+                    if (obj is Student)
                     {
                         (string, Stack<string>) student = new()
                         {
@@ -44,6 +43,10 @@ namespace Project
                     }
                 }
             }
+        }
+        public static void Delete(IObject obj)
+        {
+
         }
         public void AddRoom(int number, Type _type, string[] class_codes)
         {

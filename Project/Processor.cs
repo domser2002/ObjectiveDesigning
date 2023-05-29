@@ -16,9 +16,8 @@ namespace Project
             CommandFactory.emptytypes.AddOrIgnore("teachers", new Teacher());
             CommandFactory.emptytypes.AddOrIgnore("rooms", new Room());
             CommandFactory.emptytypes.AddOrIgnore("classes", new Class());
-            //_commandFactory = new();
         }
-        public void Process(string arg)
+        public static void Process(string arg)
         {
             var command = CommandFactory.CreateCommand(arg);
             if(command is not null)
