@@ -8,19 +8,19 @@ namespace Project
 {
     public class Processor
     {
-        private readonly CommandFactory _commandFactory;
+        public static Queue<IMyCommand> commands_queue=new();
         public Processor()
         {
-            _commandFactory = new();
-            CommandFactory.argumentParser.AddOrIgnore("students",Program.first.Students);
-            CommandFactory.argumentParser.AddOrIgnore("teachers", Program.first.Teachers);
-            CommandFactory.argumentParser.AddOrIgnore("rooms", Program.first.Rooms);
-            CommandFactory.argumentParser.AddOrIgnore("classes", Program.first.Classes);
+            CommandFactory.emptytypes.AddOrIgnore("students", new Student());
+            CommandFactory.emptytypes.AddOrIgnore("teachers", new Teacher());
+            CommandFactory.emptytypes.AddOrIgnore("rooms", new Room());
+            CommandFactory.emptytypes.AddOrIgnore("classes", new Class());
         }
-        public void Process(string arg)
+        public static void Process(string arg)
         {
-            var command = _commandFactory.CreateCommand(arg);
-            command.Execute();
+            var command = CommandFactory.CreateCommand(arg);
+            if(command is not null)
+                commands_queue.Enqueue(command);
         }
     }
 }

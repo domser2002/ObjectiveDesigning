@@ -11,15 +11,18 @@ namespace Project
         public BadRepresentationException()
         {
         }
-
         public BadRepresentationException(string message)
             : base(message)
         {
         }
-
-        public BadRepresentationException(string message, Exception inner)
-            : base(message, inner)
+        public BadRepresentationException(string message, Exception inner) : base(message, inner)
         {
         }
+    }
+    public class InvalidArgumentsException : Exception 
+    {
+        public InvalidArgumentsException() { }
+        public InvalidArgumentsException(string message) : base(message) { }
+        public InvalidArgumentsException(string message,Exception inner) : base(message, inner) { }
     }
 }

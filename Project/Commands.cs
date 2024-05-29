@@ -19,114 +19,91 @@ namespace Project
         {
             Console.WriteLine("Couldn't find command: " + CommandName);
         }
+        public void UnExecute() { }
+        public bool Prepare(string[] args)
+        {
+            Execute();
+            return true;
+        }
     }
     public class Find : IMyCommand
     {
         public string[] Arguments { get; set; }
         public string? CommandName => "find";
+        private readonly List<(string, string, string)> requirments = new();
+        private IObject[] collection = Array.Empty<IObject>();
         public Find()
         {
             Arguments = Array.Empty<string>();
         }
-        public void Execute()
+        public bool Prepare(string[] args)
         {
-            if (Arguments.Length < 2 || Arguments[1] is null)
+            Arguments = args;
+            if (args.Length < 2 || args[1] is null)
             {
                 Console.WriteLine("Incorrect arguments");
-                return;
+                return false;
             }
-            List<(string, string, string)> requirments = new();
-            for (int i = 2; i < Arguments.Length; i += 3)
+            for (int i = 2; i < args.Length; i += 3)
             {
-                if (i + 2 >= Arguments.Length)
+                if (i + 2 >= args.Length)
                 {
                     Console.WriteLine("Incorrect arguments");
-                    return;
+                    return false;
                 }
-                string name_of_field = Arguments[i];
-                string op = Arguments[i + 1];
-                string value = Arguments[i + 2];
+                string name_of_field = args[i];
+                string op = args[i + 1];
+                string value = args[i + 2];
                 requirments.Add((name_of_field, op, value));
             }
-            string className = Arguments[1].ToLower();
-            CommandFactory.argumentParser.TryGetValue(className, out IObject[]? collection);
-            if (collection is not null)
+            string className = args[1].ToLower();
+            collection = Extensions.GetCollectionByKey(className);
+            if (collection is null) return false;
+            return true;
+        }
+        public void Execute()
+        {
+            foreach (IObject o in collection)
             {
-                foreach (IObject o in collection)
-                {
-                    bool print = true;
-                    foreach ((string, string, string) requirment in requirments)
-                    {
-                        o.Properties.TryGetValue(requirment.Item1.ToLower(), out object? obj);
-                        if (obj is not null)
-                        {
-                            switch (requirment.Item2)
-                            {
-                                case "=":
-                                    if (obj.ToString() != requirment.Item3)
-                                    {
-                                        print = false;
-                                    }
-                                    break;
-                                case ">":
-                                    if (int.TryParse(obj.ToString(), out int t1) && int.TryParse(requirment.Item3, out int t2))
-                                    {
-                                        if (t1 <= t2)
-                                            print = false;
-                                    }
-                                    else if (String.Compare(obj.ToString(), requirment.Item3) <= 0)
-                                    {
-                                        print = false;
-                                    }
-                                    break;
-                                case "<":
-                                    if (int.TryParse(obj.ToString(), out int t3) && int.TryParse(requirment.Item3, out int t4))
-                                    {
-                                        if (t3 >= t4)
-                                            print = false;
-                                    }
-                                    else if (String.Compare(obj.ToString(), requirment.Item3) >= 0)
-                                    {
-                                        print = false;
-                                    }
-                                    break;
-                            }
-                        }
-                    }
-                    if (print)
-                        o.Display();
-                }
+                if (Extensions.FullfillsRequirments(o, requirments))
+                    o.Display();
             }
         }
+        public void UnExecute() { }
     }
     public class List : IMyCommand
     {
         public string[] Arguments { get; set; }
         public string? CommandName => "list";
+        private IObject[] collection = Array.Empty<IObject>();
         public List()
         {
             Arguments = Array.Empty<string>();
         }
+        public bool Prepare(string[] args)
+        {
+            Arguments = args;
+            if (args.Length != 2 || args[1] is null)
+            {
+                Console.WriteLine("Incorrect arguments");
+                return false;
+            }
+            collection = Extensions.GetCollectionByKey(args[1].ToLower());
+            if (collection is null)
+            {
+                Console.WriteLine("No such class!");
+                return false;
+            }
+            return true;
+        }
         public void Execute()
         {
-            if (Arguments.Length != 2 || Arguments[1] is null)
+            foreach (IObject o in collection)
             {
-                Console.WriteLine("Incorrect arguments");
-                return;
-            }
-            CommandFactory.argumentParser.TryGetValue(Arguments[1].ToLower(), out IObject[]? collection);
-            if (collection is not null)
-            {
-                foreach (IObject o in collection)
-                {
-                    o.Display();
-                }
-            }
-            else
-            {
-                Console.WriteLine("Incorrect arguments");
+                o.Display();
             }
         }
+        public void UnExecute() { }
     }
     public class Exit : IMyCommand
     {
@@ -136,88 +113,373 @@ namespace Project
         {
             Arguments = Array.Empty<string>();
         }
+        public bool Prepare(string[] args)
+        {
+            Execute();
+            return true;
+        }
         public void Execute()
         {
-            System.Environment.Exit(0);
+            Environment.Exit(0);
         }
+        public void UnExecute() { }
     }
     public class Add : IMyCommand
     {
         public string[] Arguments { get; set; }
         public string? CommandName => "add";
+        private IObject? obj;
         public Add()
         {
             Arguments = Array.Empty<string>();
         }
-        public void Execute()
+        public bool Prepare(string[] args)
         {
-            if (Arguments.Length != 3 || Arguments[1] is null || Arguments[2] is null)
+            Arguments = args;
+            if (args.Length != 3 || args[1] is null || args[2] is null)
             {
                 Console.WriteLine("Incorrect arguments");
-                return;
+                return false;
             }
-            switch (Arguments[1].ToLower())
+            CommandFactory.emptytypes.TryGetValue(args[1].ToLower(), out IObject? tmp);
+            obj = tmp.Copy();
+            if (obj is null)
             {
-                case "student":
-                    Console.Write("Names=");
-                    string tosub = Console.ReadLine() ?? "";
-                    string[] names = tosub.Split(' ');
-                    Console.Write("Surname=");
-                    string surname = Console.ReadLine() ?? "";
-                    Console.Write("Semester=");
-                    int.TryParse(Console.ReadLine(), out int semester);
-                    Console.Write("Code=");
-                    string code = Console.ReadLine() ?? "";
-                    Student s = new Student(names, surname, semester, code);
-                    if (Arguments[2] == "base")
-                        Program.first.AddStudent(s);
-                    if (Arguments[2] == "secondary")
-                        Program.third.AddStudent(names, surname, semester, code, Array.Empty<string>());
+                Console.WriteLine("No such class!");
+                return false;
+            }
+            string s = "[Available fields:";
+            foreach (var p in obj.Properties)
+            {
+                s += " ";
+                s += p.Key;
+            }
+            s += "]";
+            Console.WriteLine(s);
+            string? line;
+            while ((line = Console.ReadLine()) != null)
+            {
+                if (line.ToUpper() == "DONE") break;
+                if (line.ToUpper() == "EXIT") return false;
+                string[] sub = line.Split('=', ' ');
+                if (!line.Contains('=') || sub.Length != 2)
+                    Console.WriteLine("Input must contain exactly one '=' sign!");
+                string field = sub[0];
+                object value = sub[1];
+                if (!obj.SetProperty(field, value))
+                {
+                    Console.WriteLine("No such field!");
+                }
+            }
+            return true;
+        }
+        public void Execute()
+        {
+            if (obj is null) return;
+            switch (Arguments[2].ToLower())
+            {
+                case "base":
+                    Program.first.Add(obj);
                     break;
-                case "teacher":
-                    Console.Write("Names=");
-                    tosub = Console.ReadLine() ?? "";
-                    names = tosub.Split(' ');
-                    Console.Write("Surname=");
-                    surname = Console.ReadLine() ?? "";
-                    Console.Write("Rank=");
-                    Enum.TryParse(Console.ReadLine(), out Rank _rank);
-                    Console.Write("Code=");
-                    code = Console.ReadLine() ?? "";
-                    Teacher t = new Teacher(names, surname, _rank, code);
-                    if (Arguments[2] == "base")
-                        Program.first.AddTeacher(t);
-                    if (Arguments[2] == "secondary")
-                        Program.third.AddTeacher(names, surname, _rank, code, Array.Empty<string>());
-                    break;
-                case "class":
-                    Console.Write("Name=");
-                    string name = Console.ReadLine() ?? "";
-                    Console.Write("Code=");
-                    code = Console.ReadLine() ?? "";
-                    Console.Write("Duration=");
-                    int.TryParse(Console.ReadLine(), out int duration);
-                    Class c = new Class(name, code, duration);
-                    if (Arguments[2] == "base")
-                        Program.first.AddClass(c);
-                    if (Arguments[2] == "secondary")
-                        Program.third.AddClass(name, code, duration, Array.Empty<string>(), Array.Empty<string>());
-                    break;
-                case "room":
-                    Console.Write("Number=");
-                    int.TryParse(Console.ReadLine(), out int number);
-                    Console.Write("Type=");
-                    Enum.TryParse(Console.ReadLine(), out Type _type);
-                    Room r = new Room(number, _type);
-                    if (Arguments[2] == "base")
-                        Program.first.AddRoom(r);
-                    if (Arguments[2] == "secondary")
-                        Program.third.AddRoom(number, _type, Array.Empty<string>());
+                case "secondary":
+                    Program.third.Add(obj);
                     break;
                 default:
                     Console.WriteLine("Incorrect arguments");
+                    return;
+            }
+            CommandFactory.toundo.Push(this);
+        }
+        public void UnExecute()
+        {
+            if (obj is null) return;
+            switch (Arguments[2].ToLower())
+            {
+                case "base":
+                    Program.first.Delete(obj);
                     break;
+                case "secondary":
+                    Program.third.Delete(obj);
+                    break;
+                default:
+                    Console.WriteLine("Incorrect arguments");
+                    return;
+            }
+            CommandFactory.toredo.Push(this);
+        }
+    }
+    public class Edit : IMyCommand
+    {
+        public string[] Arguments { get; set; }
+        public string? CommandName => "edit";
+        private readonly List<(string, string, string)> requirments = new();
+        private IObject? toadd;
+        private IObject? toremove;
+        public Edit()
+        {
+            Arguments = Array.Empty<string>();
+        }
+        public bool Prepare(string[] args)
+        {
+            Arguments = args;
+            if (Arguments.Length < 2 || Arguments[1] is null)
+            {
+                Console.WriteLine("Incorrect arguments");
+                return false;
+            }
+            List<(string, string, string)> requirments = new();
+            for (int i = 2; i < Arguments.Length; i += 3)
+            {
+                if (i + 2 >= Arguments.Length)
+                {
+                    Console.WriteLine("Incorrect arguments");
+                    return false;
+                }
+                string name_of_field = Arguments[i];
+                string op = Arguments[i + 1];
+                string value = Arguments[i + 2];
+                requirments.Add((name_of_field, op, value));
+            }
+            string className = Arguments[1].ToLower();
+            IObject[] collection = Extensions.GetCollectionByKey(className);
+            if (collection is null)
+            {
+                Console.WriteLine("No such class!");
+                return false;
+            }
+            List<IObject> found = new();
+            foreach (IObject o in collection)
+            {
+                if (Extensions.FullfillsRequirments(o, requirments))
+                    found.Add(o);
+            }
+            if (found.Count != 1)
+            {
+                Console.WriteLine("Requirments do not specify one record uniquely");
+                return false;
+            }
+            toremove = found[0];
+            toadd = found[0].Copy();
+            if (toadd is null || toremove is null) return false;
+            string s = "[Available fields:";
+            foreach (var p in toadd.Properties)
+            {
+                s += " ";
+                s += p.Key;
+            }
+            s += "]";
+            Console.WriteLine(s);
+            string? line;
+            while ((line = Console.ReadLine()) != null)
+            {
+                if (line.ToUpper() == "DONE") break;
+                if (line.ToUpper() == "EXIT") return false;
+                string[] sub = line.Split('=', ' ');
+                if (!line.Contains('=') || sub.Length != 2)
+                    Console.WriteLine("Input must contain exactly one '=' sign!");
+                string field = sub[0];
+                object value = sub[1];
+                toadd.SetProperty(field, value);
+            }
+            return true;
+        }
+        public void Execute()
+        {
+            if (toadd is not null && toremove is not null)
+            {
+                Program.first.Delete(toremove);
+                Program.first.Add(toadd);
+            }
+            CommandFactory.toundo.Push(this);
+        }
+        public void UnExecute()
+        {
+            if (toadd is not null && toremove is not null)
+            {
+                Program.first.Delete(toadd);
+                Program.first.Add(toremove);
+            }
+            CommandFactory.toredo.Push(this);
+        }
+    }
+    public class Delete : IMyCommand
+    {
+        public string[] Arguments { get; set; }
+        public string? CommandName => "delete";
+
+        readonly List<(string, string, string)> requirments = new();
+        private IObject? toremove;
+        public Delete()
+        {
+            Arguments = Array.Empty<string>();
+        }
+        public bool Prepare(string[] args)
+        {
+            Arguments = args;
+            if (Arguments.Length < 2 || Arguments[1] is null)
+            {
+                Console.WriteLine("Incorrect arguments");
+                return false;
+            }
+            for (int i = 2; i < Arguments.Length; i += 3)
+            {
+                if (i + 2 >= Arguments.Length)
+                {
+                    Console.WriteLine("Incorrect arguments");
+                    return false;
+                }
+                string name_of_field = Arguments[i];
+                string op = Arguments[i + 1];
+                string value = Arguments[i + 2];
+                requirments.Add((name_of_field, op, value));
+            }
+            string className = Arguments[1].ToLower();
+            List<IObject> objects = new();
+            IObject[] collection = Extensions.GetCollectionByKey(className);
+            if (collection is null)
+            {
+                Console.WriteLine("No such class!");
+                return false;
+            }
+            foreach (IObject o in collection)
+            {
+                if (Extensions.FullfillsRequirments(o, requirments))
+                    objects.Add(o);
+            }
+            if (objects.Count != 1)
+            {
+                return false;
+            }
+            toremove = objects[0];
+            if (toremove is null) return false;
+            return true;
+        }
+        public void Execute()
+        {
+            if (toremove is not null)
+                Program.first.Delete(toremove);
+            CommandFactory.toundo.Push(this);
+        }
+        public void UnExecute()
+        {
+            if (toremove is not null)
+                Program.first.Add(toremove);
+            CommandFactory.toredo.Push(this);
+        }
+    }
+    //public class Queue : IMyCommand
+    //{
+    //    public string[] Arguments { get; set; }
+    //    public string? CommandName => "queue";
+    //    public Queue()
+    //    {
+    //        Arguments = Array.Empty<string>();
+    //    }
+    //    public bool Prepare(string[] args)
+    //    {
+    //        Arguments = args;
+    //        Execute();
+    //        return true;
+    //    }
+    //    public void Execute()
+    //    {
+    //        switch (Arguments[1].ToLower())
+    //        {
+    //            case "print":
+    //                Print();
+    //                return;
+    //            case "commit":
+    //                Commit();
+    //                return;
+    //            case "dismiss":
+    //                Dismiss();
+    //                return;
+    //            case "export":
+    //                if (Arguments[3].ToLower() == "xml")
+    //                    ExportXML(Arguments[2]);
+    //                if (Arguments[3].ToLower() == "plaintext")
+    //                    ExportPlain(Arguments[2]);
+    //                return;
+    //            case "load":
+    //                ImportXML(Arguments[2]);
+    //                return;
+    //        }
+    //    }
+    //    public static void Print()
+    //    {
+    //        foreach (var command in Processor.commands_queue)
+    //        {
+    //            command.Display();
+    //        }
+    //    }
+    //    public static void Commit()
+    //    {
+    //        while (Processor.commands_queue.Count > 0)
+    //        {
+    //            var command = Processor.commands_queue.Dequeue();
+    //            command.Execute();
+    //        }
+    //    }
+    //    public static void Dismiss()
+    //    {
+    //        Processor.commands_queue.Clear();
+    //    }
+    //    public static void ExportXML(string filename)
+    //    {
+    //        var p = Processor.commands_queue;
+    //        System.Xml.Serialization.XmlSerializer x = new(p.GetType());
+    //        x.Serialize(new StreamWriter(filename), p);
+    //    }
+    //    public static void ExportPlain(string filename)
+    //    {
+    //        StreamWriter fs = new(filename);
+    //        foreach (var command in Processor.commands_queue)
+    //        {
+    //            command.Display();
+    //        }
+    //    }
+    //    public static void ImportXML(string filename)
+    //    {
+    //        var p = Processor.commands_queue;
+    //        System.Xml.Serialization.XmlSerializer x = new(p.GetType());
+    //        var q = (Queue<IMyCommand>?)x.Deserialize(new FileStream(filename, FileMode.Open));
+    //        if (q is not null)
+    //            Processor.commands_queue = q;
+    //    }
+    //    public static void ImportPlain(string filename)
+    //    {
+    //        Processor.commands_queue.Clear();
+    //        StreamReader fs = new(filename);
+    //        string s = fs.ReadToEnd();
+    //        string[] lines = s.Split('\n');
+    //        foreach (string line in lines)
+    //        {
+    //            string[] sub = line.Split(':');
+    //            s = sub[0] + sub[1];
+    //            Processor p = new Processor();
+    //            Processor.Process(s);
+    //        }
+    //    }
+    //}
+    public class History : IMyCommand
+    {
+        public string[] Arguments { get; set; }
+        public string? CommandName => "history";
+        public History()
+        {
+            Arguments = Array.Empty<string>();
+        }
+        public bool Prepare(string[] args)
+        {
+            return true;
+        }
+        public void Execute()
+        {
+            foreach (var command in Processor.commands_queue)
+            {
+                command.Display();
             }
         }
+        public void UnExecute() { }
     }
 }

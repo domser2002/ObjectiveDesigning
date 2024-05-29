@@ -5,6 +5,7 @@ using System.Runtime.ExceptionServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Project
 {
@@ -23,26 +24,22 @@ namespace Project
             Console.WriteLine("Possible commands:");
             Console.WriteLine("list <name_of_the_class>");
             Console.WriteLine("find <name_of_the_class> [<name_of_field> =|<|> value]");
+            Console.WriteLine("edit <name_of_the_class> [<name_of_field> =|<|> value]");
+            Console.WriteLine("add <name_of_the_class> <representation>");
+            Console.WriteLine("delete <name_of_the_class> [<name_of_field> =|<|> value]");
+            Console.WriteLine("undo");
+            Console.WriteLine("redo");
+            Console.WriteLine("export");
+            Console.WriteLine("import");
             Console.WriteLine("exit");
-            Processor p= new();
+            Processor p = new();
             while (true)
             {
                 Console.WriteLine("Type your command:");
                 string? s = Console.ReadLine();
                 if (s is not null)
                 {
-                    if (s.ToLower() == "test adapter")
-                    {
-                        TestFunctionalities.TestAdapter(first, second, third);
-                    }
-                    else if (s.ToLower() == "test iterator")
-                    {
-                        TestFunctionalities.TestIterator(first, second, third);
-                    }
-                    else
-                    {
-                        p.Process(s);
-                    }
+                    Processor.Process(s);
                 }
             }
         }
